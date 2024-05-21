@@ -1,5 +1,5 @@
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import Route from "./Route";
+import Route from "./routes";
 
 function App() {
   return (
