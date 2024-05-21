@@ -47,20 +47,23 @@ export function Header() {
           >
             Learning
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a
+            href="/ticket"
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
             Ticket
           </a>
           <a
-            href="/ResortHub/FacilityController?action=getMarketplaceItem&Page=1&PageSize=12"
+            href="/about-us"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
             About us
           </a>
           <a
-            href="/ResortHub/FacilityController?action=getStory&Page=1&PageSize=20"
+            href="/chat"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Management
+            Chat
           </a>
         </div>
         <User />
