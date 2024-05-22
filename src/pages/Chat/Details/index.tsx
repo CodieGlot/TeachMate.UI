@@ -57,6 +57,7 @@ export function Details() {
   return (
     <>
       <Navbar />
+      {loading && Loading}
     </>
   );
 }
