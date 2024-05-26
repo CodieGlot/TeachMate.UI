@@ -1,15 +1,23 @@
-import * as Ably from "ably";
+import { useState } from "react";
+import { ably } from "../../../../config";
 import { AuthService } from "../../../../services";
 
 export function User() {
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const user = AuthService.getCurrentUser();
+
   if (user) {
-    const ably = new Ably.Realtime(import.meta.env.VITE_ABLY_API_KEY);
-    const channel = ably.channels.get("Test");
-    channel.subscribe("Notification", (message) => {
-      console.log(message);
+    const channel = ably.channels.get(`Notification:${user.id}`);
+    channel.subscribe("Notification", (notification) => {
+      console.log(notification);
     });
+
+    // const notifications = await NotificationService.getLatestNotifications();
   }
+
+  const toggleNotification = () => {
+    setIsNotificationOpen(!isNotificationOpen);
+  };
 
   const handleLogout = () => {
     AuthService.logout();
@@ -31,7 +39,8 @@ export function User() {
           <div className="relative font-[sans-serif] w-max mx-auto">
             <button
               type="button"
-              className="w-12 h-12 flex items-center justify-center rounded-full text-white text-sm font-semibold border-none outline-none bg-blue-600 hover:bg-blue-700 active:bg-blue-600"
+              className="w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold border-none outline-none bg-blue-800 hover:bg-blue-900 active:bg-blue-800"
+              onClick={toggleNotification}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,93 +54,79 @@ export function User() {
                 />
               </svg>
             </button>
-            <div className="absolute shadow-lg bg-white py-2 z-[1000] min-w-full rounded-lg w-[410px] max-h-[500px] overflow-auto">
-              <div className="flex items-center justify-between my-4 px-4">
-                <p className="text-xs text-blue-500 cursor-pointer">
-                  Clear all
-                </p>
-                <p className="text-xs text-blue-500 cursor-pointer">
-                  Mark as read
+            {isNotificationOpen && (
+              <div className="absolute shadow-lg bg-white py-2 z-[1000] min-w-full rounded-lg w-[410px] max-h-[500px] overflow-auto">
+                <div className="flex items-center justify-between my-4 px-4">
+                  <p className="text-xs text-blue-500 cursor-pointer">
+                    Clear all
+                  </p>
+                  <p className="text-xs text-blue-500 cursor-pointer">
+                    Mark as read
+                  </p>
+                </div>
+                <ul className="divide-y">
+                  <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
+                    <div className="ml-6">
+                      <h3 className="text-sm text-[#333] font-semibold">
+                        You have a new message from Yin
+                      </h3>
+                      <p className="text-xs text-gray-400 mt-2">
+                        Hello there, check this new items in from the your may
+                        interested from the motion school
+                      </p>
+                      <p className="text-xs text-blue-500 leading-3 mt-2">
+                        10 minutes ago
+                      </p>
+                    </div>
+                  </li>
+                  <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
+                    <div className="ml-6">
+                      <h3 className="text-sm text-[#333] font-semibold">
+                        You have a new message from Haper
+                      </h3>
+                      <p className="text-xs text-gray-400 mt-2">
+                        Hello there, check this new items in from the your may
+                        interested from the motion school
+                      </p>
+                      <p className="text-xs text-blue-500 leading-3 mt-2">
+                        2 hours ago
+                      </p>
+                    </div>
+                  </li>
+                  <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
+                    <div className="ml-6">
+                      <h3 className="text-sm text-[#333] font-semibold">
+                        You have a new message from San
+                      </h3>
+                      <p className="text-xs text-gray-400 mt-2">
+                        Hello there, check this new items in from the your may
+                        interested from the motion school
+                      </p>
+                      <p className="text-xs text-blue-500 leading-3 mt-2">
+                        1 day ago
+                      </p>
+                    </div>
+                  </li>
+                  <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
+                    <div className="ml-6">
+                      <h3 className="text-sm text-[#333] font-semibold">
+                        You have a new message from Seeba
+                      </h3>
+                      <p className="text-xs text-gray-400 mt-2">
+                        Hello there, check this new items in from the your may
+                        interested from the motion school
+                      </p>
+                      <p className="text-xs text-blue-500 leading-3 mt-2">
+                        30 minutes ago
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+                <p className="text-sm px-4 mt-6 mb-4 inline-block text-blue-500 cursor-pointer">
+                  View all Notifications
                 </p>
               </div>
-              <ul className="divide-y">
-                <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
-                  <img
-                    src="https://readymadeui.com/profile_2.webp"
-                    className="w-12 h-12 rounded-full shrink-0"
-                  />
-                  <div className="ml-6">
-                    <h3 className="text-sm text-[#333] font-semibold">
-                      Your have a new message from Yin
-                    </h3>
-                    <p className="text-xs text-gray-400 mt-2">
-                      Hello there, check this new items in from the your may
-                      interested from the motion school
-                    </p>
-                    <p className="text-xs text-blue-500 leading-3 mt-2">
-                      10 minutes ago
-                    </p>
-                  </div>
-                </li>
-                <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
-                  <img
-                    src="https://readymadeui.com/profile_3.webp"
-                    className="w-12 h-12 rounded-full shrink-0"
-                  />
-                  <div className="ml-6">
-                    <h3 className="text-sm text-[#333] font-semibold">
-                      Your have a new message from Haper
-                    </h3>
-                    <p className="text-xs text-gray-400 mt-2">
-                      Hello there, check this new items in from the your may
-                      interested from the motion school
-                    </p>
-                    <p className="text-xs text-blue-500 leading-3 mt-2">
-                      2 hours ago
-                    </p>
-                  </div>
-                </li>
-                <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
-                  <img
-                    src="https://readymadeui.com/profile_4.webp"
-                    className="w-12 h-12 rounded-full shrink-0"
-                  />
-                  <div className="ml-6">
-                    <h3 className="text-sm text-[#333] font-semibold">
-                      Your have a new message from San
-                    </h3>
-                    <p className="text-xs text-gray-400 mt-2">
-                      Hello there, check this new items in from the your may
-                      interested from the motion school
-                    </p>
-                    <p className="text-xs text-blue-500 leading-3 mt-2">
-                      1 day ago
-                    </p>
-                  </div>
-                </li>
-                <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
-                  <img
-                    src="https://readymadeui.com/profile_5.webp"
-                    className="w-12 h-12 rounded-full shrink-0"
-                  />
-                  <div className="ml-6">
-                    <h3 className="text-sm text-[#333] font-semibold">
-                      Your have a new message from Seeba
-                    </h3>
-                    <p className="text-xs text-gray-400 mt-2">
-                      Hello there, check this new items in from the your may
-                      interested from the motion school
-                    </p>
-                    <p className="text-xs text-blue-500 leading-3 mt-2">
-                      30 minutes ago
-                    </p>
-                  </div>
-                </li>
-              </ul>
-              <p className="text-sm px-4 mt-6 mb-4 inline-block text-blue-500 cursor-pointer">
-                View all Notifications
-              </p>
-            </div>
+            )}
           </div>
 
           <a href="#" className="group block flex-shrink-0">
@@ -148,7 +143,7 @@ export function User() {
                   {user.displayName}
                 </p>
                 <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                  {user.userRole}
+                  {user.email}
                 </p>
               </div>
             </div>

@@ -15,7 +15,7 @@ export function Details() {
   const handleCreateUser = async () => {
     if (user) {
       try {
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append("email", user.email as string);
         formData.append("username", user.email as string);
         formData.append("secret", user.uid as string);
