@@ -11,6 +11,8 @@ export function User() {
     channel.subscribe("Notification", (notification) => {
       console.log(notification);
     });
+
+    // const notifications = await NotificationService.getLatestNotifications();
   }
 
   const toggleNotification = () => {
@@ -141,7 +143,7 @@ export function User() {
                   {user.displayName}
                 </p>
                 <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                  {user.userRole}
+                  {user.email}
                 </p>
               </div>
             </div>
