@@ -1,22 +1,68 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { InboundMessage } from "ably";
 import { ably } from "../../../../config";
-import { AuthService } from "../../../../services";
+import { AuthService, NotificationService } from "../../../../services";
+import { PushNotification } from "../../../../interfaces";
+import { differenceInMinutes, differenceInHours } from "date-fns";
 
 export function User() {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState<PushNotification[]>([]);
+
   const user = AuthService.getCurrentUser();
 
-  if (user) {
-    const channel = ably.channels.get(`Notification:${user.id}`);
-    channel.subscribe("Notification", (notification) => {
-      console.log(notification);
-    });
+  useEffect(() => {
+    if (user) {
+      const fetchNotifications = async () => {
+        try {
+          const response = await NotificationService.getLatestNotifications();
 
-    // const notifications = await NotificationService.getLatestNotifications();
-  }
+          setNotifications(response.data);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+        }
+      };
+
+      fetchNotifications();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      const channel = ably.channels.get(`Notification:${user.id}`);
+      const handleNewNotification = (message: InboundMessage) => {
+        setNotifications((prevNotifications) => {
+          const newNotification = JSON.parse(message.data);
+          const updatedNotifications = [newNotification, ...prevNotifications];
+          if (updatedNotifications.length > 4) {
+            updatedNotifications.pop();
+          }
+          return updatedNotifications;
+        });
+      };
+
+      channel.subscribe("Notification", handleNewNotification);
+
+      return () => {
+        channel.unsubscribe("Notification", handleNewNotification);
+      };
+    }
+  }, [user]);
 
   const toggleNotification = () => {
     setIsNotificationOpen(!isNotificationOpen);
+  };
+
+  const formatNotificationTime = (date: Date) => {
+    const now = new Date();
+    const minutes = differenceInMinutes(now, date);
+
+    if (minutes < 60) {
+      return `${minutes} minutes ago`;
+    } else {
+      const hours = differenceInHours(now, date);
+      return `${hours} hours ago`;
+    }
   };
 
   const handleLogout = () => {
@@ -65,62 +111,26 @@ export function User() {
                   </p>
                 </div>
                 <ul className="divide-y">
-                  <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
-                    <div className="ml-6">
-                      <h3 className="text-sm text-[#333] font-semibold">
-                        You have a new message from Yin
-                      </h3>
-                      <p className="text-xs text-gray-400 mt-2">
-                        Hello there, check this new items in from the your may
-                        interested from the motion school
-                      </p>
-                      <p className="text-xs text-blue-500 leading-3 mt-2">
-                        10 minutes ago
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
-                    <div className="ml-6">
-                      <h3 className="text-sm text-[#333] font-semibold">
-                        You have a new message from Haper
-                      </h3>
-                      <p className="text-xs text-gray-400 mt-2">
-                        Hello there, check this new items in from the your may
-                        interested from the motion school
-                      </p>
-                      <p className="text-xs text-blue-500 leading-3 mt-2">
-                        2 hours ago
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
-                    <div className="ml-6">
-                      <h3 className="text-sm text-[#333] font-semibold">
-                        You have a new message from San
-                      </h3>
-                      <p className="text-xs text-gray-400 mt-2">
-                        Hello there, check this new items in from the your may
-                        interested from the motion school
-                      </p>
-                      <p className="text-xs text-blue-500 leading-3 mt-2">
-                        1 day ago
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer">
-                    <div className="ml-6">
-                      <h3 className="text-sm text-[#333] font-semibold">
-                        You have a new message from Seeba
-                      </h3>
-                      <p className="text-xs text-gray-400 mt-2">
-                        Hello there, check this new items in from the your may
-                        interested from the motion school
-                      </p>
-                      <p className="text-xs text-blue-500 leading-3 mt-2">
-                        30 minutes ago
-                      </p>
-                    </div>
-                  </li>
+                  {notifications.map((notification) => (
+                    <li
+                      key={notification.id}
+                      className="py-4 px-4 flex items-center hover:bg-gray-50 text-black text-sm cursor-pointer"
+                    >
+                      <div className="ml-6">
+                        <h3 className="text-sm text-[#333] font-semibold">
+                          {notification.creatorDisplayName
+                            ? `You have a new message from ${notification.creatorDisplayName}`
+                            : "System Notification"}
+                        </h3>
+                        <p className="text-xs text-gray-400 mt-2">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-blue-500 leading-3 mt-2">
+                          {formatNotificationTime(notification.createdAt)}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
                 <p className="text-sm px-4 mt-6 mb-4 inline-block text-blue-500 cursor-pointer">
                   View all Notifications

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { CreateUserDto, UserCredentialDto } from "../../common/dtos";
 import { UserRole } from "../../common/enums";
+import { AppUser } from "../../interfaces";
 
 export const AuthService = {
   isLogin: (): boolean => {
@@ -11,7 +12,7 @@ export const AuthService = {
   },
   getCurrentUser: () => {
     const userJson = localStorage.getItem("user");
-    return userJson !== null ? JSON.parse(userJson) : null;
+    return userJson !== null ? (JSON.parse(userJson) as AppUser) : null;
   },
   login: async (dto: UserCredentialDto) => {
     const response = await axios.post(
