@@ -12,7 +12,7 @@ export function Header() {
             <span className="sr-only">Resort Hub Logo</span>
             <img
               className="h-12 w-auto"
-              src="https://github.com/jpeseWang/ResortHub_Servlet/blob/main/web/assets/images/logo.png?raw=true"
+              src="src\assets\Group.svg"
               alt=""
             />
           </a>
