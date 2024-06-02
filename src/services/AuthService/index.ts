@@ -40,6 +40,7 @@ export const AuthService = {
     );
     localStorage.setItem("accessToken", response.data.accessToken.accessToken);
     localStorage.setItem("user", JSON.stringify(response.data.appUser));
+    return { accessToken: response.data.accessToken.accessToken, user: response.data.appUser};
   },
   logout: () => {
     localStorage.removeItem("accessToken");
