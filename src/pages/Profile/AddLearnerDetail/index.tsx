@@ -1,6 +1,5 @@
 import { Header } from "../../../layouts";
-import { AuthService } from "../../../services";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserDetailService } from "../../../services/UserDetailService";
 import { useLocation } from "react-router-dom";
@@ -10,9 +9,8 @@ export function AddLearnerDetail() {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [avatar, setAvatar] = useState("https://mailservices.columbia.edu/themes/custom/columbia/assets/img/people-default.svg"); // Assuming the initial value is null
+  const [avatar] = useState("https://mailservices.columbia.edu/themes/custom/columbia/assets/img/people-default.svg"); // Assuming the initial value is null
   const [gradeLevel, setGradeLevel] = useState(0);
-  const [description, setDescription] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
@@ -23,7 +21,7 @@ export function AddLearnerDetail() {
     return <div>No state available</div>;
   }
 
-  const {accessToken, user } = state;
+  const {accessToken } = state;
   
     try {
       
@@ -34,7 +32,7 @@ export function AddLearnerDetail() {
         avatar,
         gradeLevel,
         
-      }, accessToken, user);
+      }, accessToken);
 
       navigate("/");
     } catch (error) {
