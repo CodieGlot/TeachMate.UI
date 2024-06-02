@@ -11,7 +11,6 @@ export function AddTutorDetail() {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [avatar, setAvatar] = useState("https://mailservices.columbia.edu/themes/custom/columbia/assets/img/people-default.svg"); // Assuming the initial value is null
-  const [gradeLevel, setGradeLevel] = useState(0);
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +31,6 @@ export function AddTutorDetail() {
         email,
         phoneNumber,
         avatar,
-        gradeLevel,
         description
       }, accessToken, user);
 
