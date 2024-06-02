@@ -1,4 +1,4 @@
-import { Subject } from "../../common/enums/LearningModule";
+import { Subject } from "../../common/enums";
 
 export interface LearningModule {
     id: Int32Array,
