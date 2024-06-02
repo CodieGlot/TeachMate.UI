@@ -1,4 +1,4 @@
-import { AddTutorDetail, Profile,Home } from "../../pages";
+import { AddTutorDetail, Profile } from "../../pages";
 import { AddLearnerDetail } from "../../pages/Profile/AddLearnerDetail";
 const profileRoutes = [
   {
