@@ -1,7 +1,6 @@
 import { AddLearnerDetailDto } from './../../common/dtos/UserDetail/AddLearnerDetailDto';
 import axios from "axios";
 import { AddTutorDetailDto } from "../../common/dtos/UserDetail";
-import { AuthService } from "../AuthService";
 import { AppUser } from "../../interfaces";
 
 
