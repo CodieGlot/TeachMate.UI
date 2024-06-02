@@ -1,7 +1,6 @@
 import axios from "axios";
 import { LearningModule } from "../../interfaces/Learning/LearningModule";
 import { AuthService } from "../AuthService";
-import React, { useState } from "react";
 const token = AuthService.getAccessToken()
 
 export const LearningModuleService = {
