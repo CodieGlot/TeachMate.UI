@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import firebase from "firebase/compat/app";
-import { firebaseAuth } from "../config";
+import { fbAuth } from "../config";
 
 interface ChatAuthContextType {
   user: firebase.User | null;
@@ -26,7 +26,7 @@ export const ChatAuthProvider: React.FC<ChatAuthProviderProps> = ({
   const location = useLocation();
 
   useEffect(() => {
-    firebaseAuth.onAuthStateChanged((user) => {
+    fbAuth.onAuthStateChanged((user) => {
       setUser(user);
       setLoading(false);
 
