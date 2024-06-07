@@ -2,7 +2,6 @@ import { useRoutes } from "react-router-dom";
 import { Home, NotFound } from "../pages";
 import authRoutes from "./Auth";
 import learningRoutes from "./Learning";
-import chatRoutes from "./Chat";
 
 const Route = () => {
   const routes = useRoutes([
@@ -12,7 +11,6 @@ const Route = () => {
     },
     ...authRoutes,
     ...learningRoutes,
-    ...chatRoutes,
     {
       path: "*",
       element: <NotFound />,
