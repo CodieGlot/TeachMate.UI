@@ -1,9 +1,10 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
-import "firebase/compat/firestore";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const config = {
-  apiKey: "AIzaSyC5FYLptZigqJsLDT7dhuqffsGveCinrTw",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "teachmatefirebase.firebaseapp.com",
   projectId: "teachmatefirebase",
   storageBucket: "teachmatefirebase.appspot.com",
@@ -11,4 +12,8 @@ const config = {
   appId: "1:419542229655:web:4650f1208f890c5fb03fd2",
 };
 
-export const firebaseAuth = firebase.initializeApp(config).auth();
+const app = firebase.initializeApp(config);
+
+export const fbAuth = app.auth();
+export const fbDb = getFirestore();
+export const fbStorage = getStorage();

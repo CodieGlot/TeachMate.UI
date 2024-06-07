@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { firebaseAuth } from "../../../config";
+import { fbAuth } from "../../../config";
 import logo from "../../../assets/react.svg";
 
 export function Navbar() {
@@ -12,7 +12,7 @@ export function Navbar() {
   };
 
   const handleLogout = async () => {
-    await firebaseAuth.signOut();
+    await fbAuth.signOut();
     navigate("/chat");
   };
 
