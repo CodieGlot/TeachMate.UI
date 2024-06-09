@@ -60,8 +60,10 @@ export function Header() {
             About us
           </a>
           <a
-            href="/chat"
+            href={import.meta.env.VITE_TEACHMATE_CHATAPP_URL}
             className="text-sm font-semibold leading-6 text-gray-900"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Chat
           </a>

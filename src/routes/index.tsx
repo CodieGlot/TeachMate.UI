@@ -2,9 +2,11 @@ import { useRoutes } from "react-router-dom";
 import { Demo, Home, NotFound } from "../pages";
 import authRoutes from "./Auth";
 import learningRoutes from "./Learning";
-import chatRoutes from "./Chat";
+// import chatRoutes from "./Chat";
 import profileRoutes from "./Profile";
 import scheduleRoutes from "./Schedule";
+
+
 const Route = () => {
   const routes = useRoutes([
     {
@@ -17,9 +19,10 @@ const Route = () => {
     },
     ...authRoutes,
     ...learningRoutes,
-    ...chatRoutes,
+    // ...chatRoutes,
     ...profileRoutes,
     ...scheduleRoutes,
+
     {
       path: "*",
       element: <NotFound />,
