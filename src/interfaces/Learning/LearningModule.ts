@@ -7,9 +7,9 @@ export interface LearningModule {
     subject: Subject,
     gradeLevel: Int32Array,
     duration: Int32Array,
-    createdAt: Date,
-    startDate: Date,
-    endDate: Date,
+    createdAt: string,
+    startDate: string,
+    endDate: string,
     maximumLearners: Int32Array
   }
   

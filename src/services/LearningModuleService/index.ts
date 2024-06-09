@@ -1,6 +1,7 @@
 import axios from "axios";
 import { LearningModule } from "../../interfaces/Learning/LearningModule";
 import { AuthService } from "../AuthService";
+import { CreateLearningModuleDto } from "../../common/dtos";
 const token = AuthService.getAccessToken()
 
 export const LearningModuleService = {
@@ -27,6 +28,18 @@ export const LearningModuleService = {
             }
           );
           return response.data;
+      },
+
+      createLearningModule: async (dto: CreateLearningModuleDto) : Promise<LearningModule> => {
+        const response = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/Create`,dto,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        return response.data;
       }
       
 };

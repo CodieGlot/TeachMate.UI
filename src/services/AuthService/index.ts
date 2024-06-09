@@ -4,6 +4,8 @@ import { UserRole } from "../../common/enums";
 import { AppUser } from "../../interfaces";
 
 export const AuthService = {
+  
+
   isLogin: (): boolean => {
     return localStorage.getItem("accessToken") ? true : false;
   },
@@ -43,7 +45,9 @@ export const AuthService = {
     return { accessToken: response.data.accessToken.accessToken, user: response.data.appUser};
   },
   logout: () => {
+
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
+    
   },
 };

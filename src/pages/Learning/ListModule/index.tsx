@@ -1,3 +1,4 @@
+import { Subject } from "../../../common/enums";
 import { LearningModule } from "../../../interfaces/Learning/LearningModule";
 import { Header } from "../../../layouts";
 import { LearningModuleService } from "../../../services/LearningModuleService";
@@ -9,6 +10,11 @@ import { useState, useEffect } from "react";
 
 export function ListModule() {
   const [list, setList] = useState<LearningModule[]>([]);
+
+  //write tạm ở đây
+  const getSubjectString = (subjectCode: number): string => {
+    return Subject[subjectCode];
+  };
 
   useEffect(() => {
     const fetchLearningModules = async () => {
@@ -35,13 +41,13 @@ export function ListModule() {
             <div key={index} className="m-10 w-80 rounded-lg border-2 border-gray-100 py-8 px-6 shadow-lg shadow-gray-200">
               <p className="text-lg text-indigo-500 font-bold">{module.title}</p>
               <p className="text-sm font-semibold text-gray-500">Title</p>
-              <p className="mt-3 text-4xl font-bold">$65</p>
-              <p className="text-sm font-semibold text-gray-500">Per Agent per month</p>
+              <p className="mt-3 text-4xl font-bold">$0</p>
+              <p className="text-sm font-semibold text-gray-500">Per month</p>
               <button className="mt-4 w-full rounded-lg border-2 border-indigo-400 px-10 py-2 text-sm text-indigo-500 font-semibold hover:bg-indigo-400 hover:text-white">View details</button>
               <ul className="mt-4 space-y-2 font-semibold">
-                <li className="flex items-center space-x-4"><span className="h-2 w-2 rounded-full bg-black"></span><span>250 calls per month</span></li>
-                <li className="flex items-center space-x-4"><span className="h-2 w-2 rounded-full bg-black"></span><span>4 mediums</span></li>
-                <li className="flex items-center space-x-4"><span className="h-2 w-2 rounded-full bg-black"></span><span>10 users</span></li>
+                <li className="flex items-center space-x-4"><span className="h-2 w-2 rounded-full bg-black"></span><span>Duration: {module.duration}</span></li>
+                <li className="flex items-center space-x-4"><span className="h-2 w-2 rounded-full bg-black"></span><span>Start Date: {module.startDate}</span></li>
+                <li className="flex items-center space-x-4"><span className="h-2 w-2 rounded-full bg-black"></span><span>End Date: {module.endDate}</span></li>
               </ul>
               <hr className="my-4" />
               <ul className="space-y-2 font-semibold">
@@ -49,19 +55,19 @@ export function ListModule() {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" stroke-width="2">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
-                  <span>{module.description}</span>
+                  <span><i>Desc:</i> {module.description}</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" stroke-width="2">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
-                  <span>{module.subject}</span>
+                  <span>Subject: {getSubjectString(module.subject)}</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" stroke-width="2">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
-                  <span>{module.maximumLearners} learners</span>
+                  <span>Maximum Learners: {module.maximumLearners} learners</span>
                 </li>
               </ul>
             </div>

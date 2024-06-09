@@ -4,12 +4,15 @@ import { ably } from "../../../../config";
 import { AuthService, NotificationService } from "../../../../services";
 import { PushNotification } from "../../../../interfaces";
 import { differenceInMinutes, differenceInHours } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 export function User() {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState<PushNotification[]>([]);
-
+  
   const user = AuthService.getCurrentUser();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -67,7 +70,8 @@ export function User() {
 
   const handleLogout = () => {
     AuthService.logout();
-    window.location.reload();
+    navigate("/")
+
   };
   return (
     <>
@@ -137,7 +141,7 @@ export function User() {
               <div>
                 <img
                   className="inline-block h-9 w-9 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  src={user.avatar}
                   alt=""
                 />
               </div>

@@ -1,37 +1,37 @@
-import { Header } from "../../../layouts";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserDetailService } from "../../../services/UserDetailService";
 import { useLocation } from "react-router-dom";
+import { Stepper } from "../Stepper";
 
 export function AddLearnerDetail() {
 
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [avatar] = useState("https://mailservices.columbia.edu/themes/custom/columbia/assets/img/people-default.svg"); // Assuming the initial value is null
+  const [avatar] = useState("https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg"); // Assuming the initial value is null
   const [gradeLevel, setGradeLevel] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
   const handleAddUserDetail = async () => {
- 
 
-  if (!state) {
-    return <div>No state available</div>;
-  }
 
-  const {accessToken } = state;
-  
+    if (!state) {
+      return <div>No state available</div>;
+    }
+
+    const { accessToken } = state;
+
     try {
-      
+
       await UserDetailService.addLearnerDetail({
         displayName,
         email,
         phoneNumber,
         avatar,
         gradeLevel,
-        
+
       }, accessToken);
 
       navigate("/");
@@ -42,14 +42,15 @@ export function AddLearnerDetail() {
 
   return (
     <>
-      <Header />
-      <div className="w-1/2 mx-auto">
-        <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Add your details</span></h1>
-        <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Update your details so anyone can know you</p>
-      </div>
+      <Stepper />
+
       <section className="bg-white dark:bg-gray-900">
-        <div className="py-4 px-4 mx-auto max-w-2xl lg:py-8">
+        <div className="py-4 px-4 mx-auto max-w-2xl">
+          <div className=" mx-auto py-3 mb-5">
+            <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Add your details</span></h1>
+            <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Update your details so anyone can know you</p>
+          </div>
           <form action="#">
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
               <div className="sm:col-span-2">
@@ -125,12 +126,12 @@ export function AddLearnerDetail() {
               </div>
             </div>
             <div className="mt-8">
-            <button 
-            type="button"
-            onClick={handleAddUserDetail}
-             className ="text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-              Submit</button>
-              </div>
+              <button
+                type="button"
+                onClick={handleAddUserDetail}
+                className="text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                Submit</button>
+            </div>
           </form>
         </div>
       </section>
