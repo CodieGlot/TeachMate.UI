@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { CreateUserDto, UserCredentialDto } from "../../common/dtos";
 import { UserRole } from "../../common/enums";
 import { AppUser } from "../../interfaces";
@@ -8,11 +9,27 @@ export const AuthService = {
     return localStorage.getItem("accessToken") ? true : false;
   },
   getAccessToken: (): string => {
-    return localStorage.getItem("accessToken") ?? "";
+    const accessToken = localStorage.getItem("accessToken") ?? "";
+    return AuthService.isTokenExpired(accessToken) ? "" : accessToken;
   },
   getCurrentUser: () => {
     const userJson = localStorage.getItem("user");
-    return userJson !== null ? (JSON.parse(userJson) as AppUser) : null;
+    return userJson !== null && AuthService.getAccessToken().length !== 0
+      ? (JSON.parse(userJson) as AppUser)
+      : null;
+  },
+  isTokenExpired: (token: string): boolean => {
+    if (token.length == 0) {
+      return true;
+    }
+    try {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      return decodedToken.exp ? decodedToken.exp < currentTime : true;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return true;
+    }
   },
   login: async (dto: UserCredentialDto) => {
     const response = await axios.post(
