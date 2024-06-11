@@ -5,7 +5,7 @@ import learningRoutes from "./Learning";
 // import chatRoutes from "./Chat";
 import profileRoutes from "./Profile";
 import scheduleRoutes from "./Schedule";
-
+import searchRoutes from "./Search";
 
 const Route = () => {
   const routes = useRoutes([
@@ -22,6 +22,7 @@ const Route = () => {
     // ...chatRoutes,
     ...profileRoutes,
     ...scheduleRoutes,
+    ...searchRoutes,
 
     {
       path: "*",

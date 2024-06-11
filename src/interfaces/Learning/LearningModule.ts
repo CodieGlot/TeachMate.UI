@@ -1,15 +1,17 @@
 import { Subject } from "../../common/enums";
+import { LearningSession } from "./LearningSession";
 
 export interface LearningModule {
-    id: Int32Array,
+    id: number,
     title: string,
     description: string,
     subject: Subject,
-    gradeLevel: Int32Array,
-    duration: Int32Array,
+    gradeLevel: number,
+    duration: number,
     createdAt: string,
     startDate: string,
     endDate: string,
-    maximumLearners: Int32Array
+    maximumLearners: number
+    schedule: LearningSession[]
   }
   

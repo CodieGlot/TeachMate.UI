@@ -3,6 +3,7 @@ import { LearningModule } from "../../../interfaces/Learning/LearningModule";
 import { Header } from "../../../layouts";
 import { LearningModuleService } from "../../../services/LearningModuleService";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // const url = window.location.href;
 // const id = url.substring(url.lastIndexOf("/") + 1);
 // console.log(id);
@@ -10,11 +11,22 @@ import { useState, useEffect } from "react";
 
 export function ListModule() {
   const [list, setList] = useState<LearningModule[]>([]);
-
+  const [id, setId] = useState<string>("");
+  const navigate = useNavigate();
   //write tạm ở đây
   const getSubjectString = (subjectCode: number): string => {
     return Subject[subjectCode];
   };
+
+  const viewLearningModuleDetail = async (id : string) => {
+    try {
+      
+      navigate("/view-learning-module-detail?id="+id, {state: id})
+    } catch (error) {
+      console.error("Error fetching learning module:", error);
+
+    }
+  }
 
   useEffect(() => {
     const fetchLearningModules = async () => {
@@ -42,8 +54,10 @@ export function ListModule() {
               <p className="text-lg text-indigo-500 font-bold">{module.title}</p>
               <p className="text-sm font-semibold text-gray-500">Title</p>
               <p className="mt-3 text-4xl font-bold">$0</p>
-              <p className="text-sm font-semibold text-gray-500">Per month</p>
-              <button className="mt-4 w-full rounded-lg border-2 border-indigo-400 px-10 py-2 text-sm text-indigo-500 font-semibold hover:bg-indigo-400 hover:text-white">View details</button>
+              <p className="tesxt-sm font-semibold text-gray-500">Per month</p>
+              <button className="mt-4 w-full rounded-lg border-2 border-indigo-400 px-10 py-2 text-sm text-indigo-500 font-semibold hover:bg-indigo-400 hover:text-white"
+              onClick={() => viewLearningModuleDetail(module.id.toString())}
+              >View details</button>
               <ul className="mt-4 space-y-2 font-semibold">
                 <li className="flex items-center space-x-4"><span className="h-2 w-2 rounded-full bg-black"></span><span>Duration: {module.duration}</span></li>
                 <li className="flex items-center space-x-4"><span className="h-2 w-2 rounded-full bg-black"></span><span>Start Date: {module.startDate}</span></li>

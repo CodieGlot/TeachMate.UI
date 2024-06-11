@@ -38,7 +38,7 @@ export function CreateLearningModule() {
 
     try {
       
-      await LearningModuleService.createLearningModule({
+      const learningModule = await LearningModuleService.createLearningModule({
         title,
         description,
         subject,
@@ -50,8 +50,8 @@ export function CreateLearningModule() {
         moduleType,
         numOfWeeks
       });
-
-      navigate("/learning");
+      if (moduleType == ModuleType.Weekly) navigate("/add-weekly-schedule", {state: {learningModule}})
+        else navigate("/learning");
     } catch (error) {
       console.error("Add learning module failed:", error);
     }

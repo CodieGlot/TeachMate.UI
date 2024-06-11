@@ -1,7 +1,8 @@
 import axios from "axios";
-import { CreateUserDto, UserCredentialDto } from "../../common/dtos";
+import { ChangePassworddto, CreateUserDto, UserCredentialDto } from "../../common/dtos";
 import { UserRole } from "../../common/enums";
 import { AppUser } from "../../interfaces";
+import { ForgetPasswordDto } from "../../common/dtos/ForgetPassword/ForgetPasswordDto";
 
 export const AuthService = {
   
@@ -50,4 +51,22 @@ export const AuthService = {
     localStorage.removeItem("user");
     
   },
+  ForgetPassword : async (dto :ForgetPasswordDto)=>{
+    const response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/api/Auth/ForgetPassWord`,
+      dto
+    );
+
+  },
+  ChangePassword : async (dto :ChangePassworddto, accessToken: string)=>{
+    const response = await axios.put(
+      `${import.meta.env.VITE_SERVER_URL}/api/Auth/ChangePassWord`,
+      dto,{
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    
+  }
 };

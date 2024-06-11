@@ -1,4 +1,5 @@
-import { Login, Signup } from "../../pages";
+import { ChangePassword, ForgetPassword, Login, Signup } from "../../pages";
+import { SendOTP } from "../../pages/Auth/SendOTP";
 
 const authRoutes = [
   {
@@ -8,6 +9,18 @@ const authRoutes = [
   {
     path: "/auth/signup",
     element: <Signup />,
+  },
+  {
+    path: "/auth/SendOTP",
+    element: <SendOTP />,
+  },
+  {
+    path: "/auth/Forgetpassword",
+    element: <ForgetPassword />,
+  },
+  {
+    path: "/auth/ChangePassword",
+    element: <ChangePassword />,
   },
 ];
 

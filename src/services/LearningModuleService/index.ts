@@ -5,7 +5,7 @@ import { CreateLearningModuleDto } from "../../common/dtos";
 const token = AuthService.getAccessToken()
 
 export const LearningModuleService = {
-    getLearningModuleById: async (id: string) : Promise<LearningModule> => {
+    getLearningModuleById: async (id: string | null) : Promise<LearningModule> => {
         const response = await axios.get(
           `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/`+id,
           {
@@ -39,7 +39,8 @@ export const LearningModuleService = {
             },
           }
         );
-        return response.data;
+        const learningModule: LearningModule = response.data;
+        return learningModule;
       }
       
 };
