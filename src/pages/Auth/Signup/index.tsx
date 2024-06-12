@@ -16,14 +16,21 @@ export function Signup() {
 
   const handleSignup = async () => {
     try {
-      await AuthService.signup({
+      const { accessToken, user } = await AuthService.signup({
         username,
         password,
         confirmPassword,
         userRole,
       });
-
-      navigate("/");
+      if (user.userRole == 2) {
+      navigate('/add-tutor-detail', {
+        state: { accessToken, user }
+      }); }
+      if (user.userRole == 4) {
+        navigate('/add-learner-detail', {
+          state: { accessToken, user }
+        }); }
+      
     } catch (error) {
       console.error("Signup failed:", error);
     }

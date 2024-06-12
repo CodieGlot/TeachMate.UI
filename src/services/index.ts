@@ -2,4 +2,7 @@ export * from "./AuthService";
 export * from "./ChatEngineService";
 export * from "./FileService";
 export * from "./NotificationService";
+export * from "./UserDetailService";
 export * from "./StorageService";
+export * from "./SearchService"
+export * from "./SendOTPservice"

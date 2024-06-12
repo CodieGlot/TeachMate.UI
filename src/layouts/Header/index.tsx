@@ -1,6 +1,12 @@
+// import { useNavigate } from "react-router-dom";
 import { User } from "./ui";
 
+
 export function Header() {
+  // const navigate = useNavigate();
+
+ 
+
   return (
     <header className="bg-white">
       <nav
@@ -11,11 +17,38 @@ export function Header() {
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Resort Hub Logo</span>
             <img
-              className="h-12 w-auto"
-              src="https://github.com/jpeseWang/ResortHub_Servlet/blob/main/web/assets/images/logo.png?raw=true"
+             className="h-12 w-auto indigo-400"
+              src="src/assets/Group.svg"
               alt=""
             />
           </a>
+         
+          <div>
+            <form
+              className="relative w-full flex max-w-md mx-auto lg:mx-0 lg:max-w-none ml-auto"
+              style={{ marginLeft: '50px' }}
+              
+            >
+              <input
+                type="search"
+                className="block w-full p-2.5 text-sm text-gray-900 bg-white border-2 border-violet-200 rounded-l-lg focus:ring-blue-500 focus:border-blue-500 ml-2"
+                placeholder="Search . . ."
+                required
+              />
+              <button
+                type="submit"
+                className="p-2.5 text-sm font-medium text-violet-400 bg-white border-solid border-2 border-violet-200 rounded-r-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
+                style={{ backgroundColor: 'bg-violet-400' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'bg-violet-400'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'bg-violet-400'}
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 19L13.65 13.65M11 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span className="sr-only">Search</span>
+              </button>
+            </form>
+          </div>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -48,10 +81,10 @@ export function Header() {
             Learning
           </a>
           <a
-            href="/ticket"
+            href="/search"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Ticket
+            Search
           </a>
           <a
             href="/about-us"

@@ -124,10 +124,10 @@ export function Login() {
                   <label htmlFor="remember-me" className="ml-3 block text-sm">
                     Remember me
                   </label>
-                </div>
+                </div>              
                 <div>
                   <a
-                    href="jajvascript:void(0);"
+                    href="/auth/SendOTP"
                     className="text-blue-600 font-semibold text-sm hover:underline"
                   >
                     Forgot Password?
