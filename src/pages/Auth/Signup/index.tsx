@@ -23,14 +23,16 @@ export function Signup() {
         userRole,
       });
       if (user.userRole == 2) {
-      navigate('/add-tutor-detail', {
-        state: { accessToken, user }
-      }); }
+        navigate('/add-tutor-detail', {
+          state: { accessToken, user }
+        });
+      }
       if (user.userRole == 4) {
         navigate('/add-learner-detail', {
           state: { accessToken, user }
-        }); }
-      
+        });
+      }
+
     } catch (error) {
       console.error("Signup failed:", error);
     }
@@ -46,10 +48,10 @@ export function Signup() {
             alt="login-image"
           />
         </div>
-        <div className="flex items-center md:p-8 p-6 bg-[#0C172C] h-full lg:w-11/12 lg:ml-auto">
+        <div className="flex items-center md:p-8 p-6 bg-gradient-to-r from-sky-400/10 to-indigo-600/10 h-full lg:w-11/12 lg:ml-auto">
           <form className="max-w-lg w-full mx-auto">
             <div className="mb-12">
-              <h3 className="text-3xl font-bold text-yellow-400">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent">
                 Create an account
               </h3>
             </div>
@@ -147,7 +149,7 @@ export function Signup() {
                 />
                 <label
                   htmlFor="default-radio-1"
-                  className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  className="ms-2 text-sm font-medium text-white dark:text-white"
                 >
                   Learner
                 </label>
@@ -163,7 +165,7 @@ export function Signup() {
                 />
                 <label
                   htmlFor="default-radio-2"
-                  className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  className="ms-2 text-sm font-medium text-white dark:text-white"
                 >
                   Tutor
                 </label>
@@ -173,15 +175,17 @@ export function Signup() {
               <button
                 type="button"
                 onClick={handleSignup}
-                className="w-max shadow-xl py-2.5 px-8 text-sm font-semibold rounded-md bg-transparent text-yellow-400 border border-yellow-400 focus:outline-none"
+                className="relative w-max shadow-xl py-2.5 px-8 text-sm font-semibold rounded-md bg-gradient-to-r from-sky-400 to-indigo-600 text-transparent border-[1px] border-transparent bg-clip-border before:absolute before:inset-0 before:rounded-md before:bg-white before:bg-gradient-to-r before:from-sky-400 before:to-indigo-600 before:p-[1px] before:-z-10 before:content-['']"
               >
-                Register
+                <span className="bg-clip-text text-transparent text-white dark:text-white">
+                  Register
+                </span>
               </button>
               <p className="text-sm mt-8">
                 Already have an account?{" "}
                 <a
                   href="/auth/login"
-                  className="text-yellow-400 font-semibold hover:underline ml-1"
+                  className="font-semibold ml-1 hover:underline text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600"
                 >
                   Login here
                 </a>

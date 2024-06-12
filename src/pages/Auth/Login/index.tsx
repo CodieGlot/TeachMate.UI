@@ -33,12 +33,12 @@ export function Login() {
           <div className="md:max-w-md w-full sm:px-6 py-4">
             <form>
               <div className="mb-12">
-                <h3 className="text-3xl font-extrabold">Sign in</h3>
+                <h3 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600">Sign in</h3>
                 <p className="text-sm mt-4 ">
                   Don't have an account{" "}
                   <a
                     href="/auth/signup"
-                    className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap"
+                    className="font-semibold hover:underline ml-1 whitespace-nowrap bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent"
                   >
                     Register here
                   </a>
@@ -124,11 +124,11 @@ export function Login() {
                   <label htmlFor="remember-me" className="ml-3 block text-sm">
                     Remember me
                   </label>
-                </div>              
+                </div>
                 <div>
                   <a
                     href="/auth/SendOTP"
-                    className="text-blue-600 font-semibold text-sm hover:underline"
+                    className="font-semibold text-sm hover:underline bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent"
                   >
                     Forgot Password?
                   </a>
@@ -138,7 +138,7 @@ export function Login() {
                 <button
                   type="button"
                   onClick={handleLogin}
-                  className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+                  className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-blue-700 focus:outline-none"
                 >
                   Sign in
                 </button>
@@ -156,7 +156,7 @@ export function Login() {
               </div>
             </form>
           </div>
-          <div className="md:h-full max-md:mt-10 bg-[#000842] rounded-xl lg:p-12 p-8">
+          <div className="md:h-full max-md:mt-10 bg-gradient-to-r to-indigo-600 from-sky-400 rounded-xl lg:p-12 p-8">
             <img
               src="https://readymadeui.com/signin-image.webp"
               className="w-full h-full object-contain"
