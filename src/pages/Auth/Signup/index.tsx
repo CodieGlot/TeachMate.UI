@@ -2,12 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
+import { AxiosError } from "../../../interfaces";
 
 export function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userRole, setUserRole] = useState(UserRole.LEARNER);
+  const [error, setError] = useState<AxiosError | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,16 +26,27 @@ export function Signup() {
         userRole,
       });
       if (user.userRole == 2) {
-      navigate('/add-tutor-detail', {
-        state: { accessToken, user }
-      }); }
+        navigate('/add-tutor-detail', {
+          state: { accessToken, user }
+        });
+      }
       if (user.userRole == 4) {
         navigate('/add-learner-detail', {
           state: { accessToken, user }
-        }); }
-      
-    } catch (error) {
+        });
+      }
+
+    } catch (err) {
       console.error("Signup failed:", error);
+      setError(err as AxiosError);
+      setMessage(error?.response.data.message || null);
+      if (password !== confirmPassword) {
+        setMessage("Password confirmation failed. Please ensure both passwords match.");
+      } else if (password.length < 5 || password.length > 15) {
+        setMessage("Password must be between 5 and 15 characters in length.");
+      } else if (username.length < 5 || username.length > 15) {
+        setMessage("Username must be between 5 and 15 characters in length.");
+      }
     }
   };
 
@@ -147,7 +161,7 @@ export function Signup() {
                 />
                 <label
                   htmlFor="default-radio-1"
-                  className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  className="ms-2 text-sm font-medium text-white dark:text-gray-300"
                 >
                   Learner
                 </label>
@@ -163,7 +177,7 @@ export function Signup() {
                 />
                 <label
                   htmlFor="default-radio-2"
-                  className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  className="ms-2 text-sm font-medium text-white dark:text-gray-300"
                 >
                   Tutor
                 </label>
@@ -177,6 +191,23 @@ export function Signup() {
               >
                 Register
               </button>
+
+              <div className="flex p-4 mb-4 text-sm text-white rounded-lg bg-[#0C172C] mg-10 dark:bg-gray-800 dark:text-blue-400" role="alert">
+                <svg className="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span className="sr-only">Info</span>
+                <div>
+                  <span className="font-medium">Ensure that these requirements are met:</span>
+                  <ul className="mt-1.5 list-disc list-inside">
+                    <li>At least 5 characters (and up to 15 characters)</li>
+                    <li>At least one lowercase character</li>
+                    <li>Inclusion of at least one special character, e.g., ! @ # ?</li>
+                  </ul>
+                </div>
+              </div>
+              <p className="text-white font-medium text-sm">{message}</p>
+
               <p className="text-sm mt-8">
                 Already have an account?{" "}
                 <a
