@@ -2,16 +2,25 @@ import React, { useState, useEffect } from "react";
 // import { Header } from "../../../layouts";
 import { AppUser } from "../../../interfaces";
 import { SearchService } from "../../../services";
+interface SearchTutorProps {
+  searchQuery: string | undefined; // Allow undefined in case it's not provided
+}
 
-export function SearchTutor() {
+export function SearchTutor({ searchQuery }: SearchTutorProps) {
   const [displayName, setDisplayName] = useState<string>("");
   const [tutors, setTutors] = useState<AppUser[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedTutor, setExpandedTutor] = useState<number | null>(null); // State to manage expanded tutor details
   const sectionsPerPage = 3;
   const totalPages = Math.ceil(tutors.length / sectionsPerPage);
-
   useEffect(() => {
+    if (searchQuery) {
+      setDisplayName(searchQuery || "");
+    }
+  }, [searchQuery]);
+  useEffect(() => {
+
+
     const fetchTutors = async () => {
       try {
         const data = await SearchService.searchTutor({ displayName });
@@ -22,6 +31,7 @@ export function SearchTutor() {
     };
     fetchTutors();
   }, [displayName]); // Fetch tutors whenever displayName changes
+
 
   const indexOfLastTutor = currentPage * sectionsPerPage;
   const indexOfFirstTutor = indexOfLastTutor - sectionsPerPage;
@@ -43,24 +53,26 @@ export function SearchTutor() {
     <>
       <div className="container mx-auto my-20 w-2/3">
         <form className="relative w-full flex max-w-md mx-auto lg:mx-0 lg:max-w-none mb-8">
-          <input
-            type="search"
-            className="block w-full p-2.5 text-sm text-gray-900 bg-white border-2 border-violet-200 rounded-l-lg focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search Tutor ..."
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            required
-          />
-          <button
-            type="submit"
-            className="p-2.5 text-sm font-medium text-violet-400 bg-white border-solid border-2 border-violet-200 rounded-r-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
-            style={{ backgroundColor: 'bg-violet-400' }}
-          >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 20 20" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 19L13.65 13.65M11 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <span className="sr-only">Search</span>
-          </button>
+          <div className="relative w-full flex rounded-lg overflow-hidden bg-gradient-to-r from-sky-400 to-indigo-600/30 p-0.5 shadow-lg">
+            <input
+              type="search"
+              className="block w-full p-2.5 text-sm text-gray-900 bg-white border-2 border-violet-200 rounded-l-lg focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Search Tutor ..."
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className="p-2.5 text-sm font-medium text-violet-400 bg-white border-solid border-2 border-violet-200 rounded-r-lg focus:ring-4 focus:outline-none focus:ring-blue-30"
+              style={{ backgroundColor: 'bg-violet-400' }}
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 19L13.65 13.65M11 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              <span className="sr-only">Search</span>
+            </button>
+          </div>
         </form>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {currentTutors.map((tutor, index) => (
@@ -98,7 +110,7 @@ export function SearchTutor() {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                    <div className="text-sm font-bold tracking-wide text-gray-600 dark:text-gray-300 font-mono text-xl">
+                    <div className="text-xs font-bold tracking-wide text-gray-600 dark:text-gray-300 font-mono text-xl">
                       {tutor.email}
                     </div>
                   </div>
@@ -165,7 +177,7 @@ export function SearchTutor() {
                   {/* Toggle Details Button */}
                   <button
                     onClick={() => toggleDetails(index)}
-                    className="mt-4 px-4 py-2 text-sm text-violet-500 bg-violet-200 rounded hover:bg-violet-300"
+                    className="mt-4 px-4 py-2 text-sm text-violet-500 bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300"
                   >
                     {expandedTutor === index ? "Hide Details" : "Show Details"}
                   </button>

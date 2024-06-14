@@ -51,23 +51,17 @@ export function HeroSection() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
               <h1>
-                <span className="block text-base font-semibold text-gray-500 sm:text-lg lg:text-base xl:text-lg">
-                  Coming soon
-                </span>
                 <span className="mt-1 block text-4xl font-bold tracking-tight sm:text-5xl xl:text-6xl">
-                  <span className="block text-gray-900">Streamlining Your</span>
-                  <span className="block text-indigo-600">
-                    Resort Experience
+                  <span className="block bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent">
+                    Discover Potential
                   </span>
                 </span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                ResortHub is an all-in-one resort management website designed to
-                enhance the efficiency and overall experience for both resort
-                owners and guests.{" "}
+                TeachMate is a groundbreaking platform in the field of peer tutor management, designed to optimize teaching effectiveness and enhance the comprehensive customer experience. With TeachMate, learning becomes easy, engaging and inspiring, helping learners not only achieve their learning goals but also discover and develop their potential.{" "}
               </p>
-              <div className="mt-8 sm:mx-auto sm:max-w-lg sm:text-center lg:mx-0 lg:text-left">
-                <p className="text-base font-medium text-gray-900">
+              <div className="mt-1 block font-bold tracking-tight">
+                <p className="block bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent">
                   Sign up to get notified when it’s ready.
                 </p>
                 <form action="#" method="POST" className="mt-3 sm:flex">
@@ -78,19 +72,19 @@ export function HeroSection() {
                     type="email"
                     name="email"
                     id="email"
-                    className="block w-full rounded-md border-gray-300 py-3 text-base placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:flex-1"
+                    className="block w-full rounded-md border-gray-300 py-3 text-base placeholder-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:flex-1"
                     placeholder="Enter your email"
                   />
                   <button
                     type="submit"
-                    className="mt-3 w-full rounded-md border border-transparent bg-gray-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:inline-flex sm:w-auto sm:flex-shrink-0 sm:items-center"
+                    className="mt-3 w-full rounded-md bg-gradient-to-r to-indigo-600 from-sky-400 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:inline-flex sm:w-auto sm:flex-shrink-0 sm:items-center"
                   >
                     Notify me
                   </button>
                 </form>
-                <p className="mt-3 text-sm text-gray-500">
+                <p className="mt-3 text-sm text-gray-300">
                   We care about the protection of your data. Read our{" "}
-                  <a href="#" className="font-medium text-gray-900 underline">
+                  <a href="#" className="font-medium bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent underline">
                     Privacy Policy
                   </a>
                   .
@@ -147,7 +141,7 @@ export function HeroSection() {
                   <span className="sr-only">Watch our video to learn more</span>
                   <img
                     className="w-full"
-                    src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src="src/assets/study.jpg"
                     alt=""
                   />
                 </button>

@@ -1,11 +1,12 @@
 import { useRoutes } from "react-router-dom";
-import { Demo, Home, NotFound } from "../pages";
+import { Home, NotFound } from "../pages";
 import authRoutes from "./Auth";
 import learningRoutes from "./Learning";
 // import chatRoutes from "./Chat";
 import profileRoutes from "./Profile";
 import scheduleRoutes from "./Schedule";
 import searchRoutes from "./Search";
+import feedbackRoutes from "./Feedback"
 
 const Route = () => {
   const routes = useRoutes([
@@ -13,16 +14,14 @@ const Route = () => {
       path: "/",
       element: <Home />,
     },
-    {
-      path: "/demo",
-      element: <Demo />,
-    },
+
     ...authRoutes,
     ...learningRoutes,
     // ...chatRoutes,
     ...profileRoutes,
     ...scheduleRoutes,
     ...searchRoutes,
+    ...feedbackRoutes,
 
     {
       path: "*",
