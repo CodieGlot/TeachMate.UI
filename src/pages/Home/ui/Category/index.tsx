@@ -4,9 +4,10 @@ export function Category() {
       <div className="bg-white">
         <div className="py-16 sm:py-24 xl:mx-auto xl:max-w-7xl xl:px-8">
           <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-              International escapes{" "}
+            <h2 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent">
+              Subject
             </h2>
+
             <a
               href="#"
               className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
@@ -25,7 +26,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="https://ik.imagekit.io/tvlk/image/imageResource/2023/06/15/1686809670686-39d479a1982b653cabfec3031a1a6b1d.png?tr=q-75,w-256"
+                        src="src/assets/maths.jpg"
                         alt=""
                         className="h-full w-full object-cover object-center"
                       />
@@ -35,7 +36,7 @@ export function Category() {
                       className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
                     />
                     <span className="relative mt-auto text-center text-xl font-bold text-white">
-                      Bali
+                      Maths
                     </span>
                   </a>
                   <a
@@ -44,8 +45,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="https://ik.imagekit.io/tvlk/image/imageResource/2023/06/15/1686809673729-a58c108356a01e5a0407277df2586bae.png?tr=q-75,w-256"
-                        alt=""
+                        src="src/assets/english.jpg"
                         className="h-full w-full object-cover object-center"
                       />
                     </span>
@@ -54,7 +54,7 @@ export function Category() {
                       className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
                     />
                     <span className="relative mt-auto text-center text-xl font-bold text-white">
-                      Bangkok
+                      English
                     </span>
                   </a>
                   <a
@@ -63,7 +63,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="https://ik.imagekit.io/tvlk/image/imageResource/2023/06/15/1686809678054-620c707b1fe8951b7810fcdff7409dc4.png?tr=q-75,w-256"
+                        src="src/assets/physic.jpg"
                         alt=""
                         className="h-full w-full object-cover object-center"
                       />
@@ -73,7 +73,7 @@ export function Category() {
                       className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
                     />
                     <span className="relative mt-auto text-center text-xl font-bold text-white">
-                      Seoul
+                      Physics
                     </span>
                   </a>
                   <a
@@ -82,7 +82,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="https://ik.imagekit.io/tvlk/image/imageResource/2023/06/15/1686809681490-91ea692e8ba8d462f997a6e9043e9de3.png?tr=q-75,w-256"
+                        src="src/assets/chemistry.jpg"
                         alt=""
                         className="h-full w-full object-cover object-center"
                       />
@@ -92,7 +92,7 @@ export function Category() {
                       className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
                     />
                     <span className="relative mt-auto text-center text-xl font-bold text-white">
-                      Istanbul
+                      Chemistry
                     </span>
                   </a>
                   <a
@@ -101,7 +101,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="https://ik.imagekit.io/tvlk/image/imageResource/2023/06/15/1686809684715-b1d790b3eaaf43e4a13fcc14e926f5ba.png?tr=q-75,w-256"
+                        src="src/assets/Geography.jpg"
                         alt=""
                         className="h-full w-full object-cover object-center"
                       />
@@ -111,7 +111,7 @@ export function Category() {
                       className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
                     />
                     <span className="relative mt-auto text-center text-xl font-bold text-white">
-                      Liverpool
+                      Geography
                     </span>
                   </a>
                 </div>
@@ -133,38 +133,43 @@ export function Category() {
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl">
           <div className="relative overflow-hidden rounded-lg lg:h-96">
             <div className="absolute inset-0">
-              <img
-                src="https://images.unsplash.com/photo-1704616950334-38157594e3c9?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt=""
-                className="h-full w-full object-cover object-center"
-              />
             </div>
             <div
-              aria-hidden="true"
               className="relative h-96 w-full lg:hidden"
             />
             <div
               aria-hidden="true"
               className="relative h-32 w-full lg:hidden"
             />
-            <div className="absolute inset-x-0 bottom-0 rounded-bl-lg rounded-br-lg bg-black bg-opacity-75 p-6 backdrop-blur backdrop-filter sm:flex sm:items-center sm:justify-between lg:inset-x-auto lg:inset-y-0 lg:w-96 lg:flex-col lg:items-start lg:rounded-br-none lg:rounded-tl-lg">
-              <div>
-                <h2 className="text-xl font-bold text-white">
-                  Workspace Collection
-                </h2>
-                <p className="mt-1 text-sm text-gray-300">
-                  Upgrade your desk with objects that keep you organized and
-                  clear-minded.
-                </p>
+
+            <div className="flex flex-col lg:flex-row items-center justify-center space-y-6 lg:space-y-0 lg:space-x-6">
+              <div className="relative lg:w-1/3 bg-white bg-opacity-90 p-8 backdrop-blur-lg backdrop-filter rounded-bl-lg rounded-br-lg lg:rounded-br-none lg:rounded-tl-lg shadow-2xl flex flex-col items-center justify-center overflow-hidden">
+                <div className="flex flex-col items-center justify-center py-10 px-6 bg-gray-50 rounded-lg shadow-lg">
+                  <div className="relative">
+                    <h2 className="relative font-extrabold font-handwriting text-2xl text-purple-700 z-10 ">
+                      Start as Learner!
+                    </h2>
+                    <div className="top-1/2 left-0 transform -translate-y-1/2 w-full h-10 bg-yellow-400 rotate-3 -z-10 rounded-md"></div>
+                  </div>
+                  <p className="mt-6 text-lg text-gray-800 text-center">
+                    Get a free tutoring session for yourself to see how other tutors use the site. Not only will you get homework help, but you'll also gain the confidence to see if tutoring is right for you!
+                  </p>
+                </div>
+                <a href="#" className="mt-6 flex items-center justify-center rounded-full border border-transparent bg-gradient-to-r from-sky-500 to-indigo-700 px-6 py-3 text-base font-semibold text-white shadow-lg transition-transform transform hover:scale-105 w-full">
+                  Sign Up as Learner
+                </a>
               </div>
-              <a
-                href="#"
-                className="mt-6 flex flex-shrink-0 items-center justify-center rounded-md border border-white border-opacity-25 bg-white bg-opacity-0 px-4 py-3 text-base font-medium text-white hover:bg-opacity-10 sm:ml-8 sm:mt-0 lg:ml-0 lg:w-full"
-              >
-                View the collection
-              </a>
+
+              <div className="relative flex overflow-hidden lg:w-2/3">
+                <video className="w-70 h-70 object-cover border-2 rounded-md border-indigo-300" controls>
+                  <source src="src/assets/intro.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </div>
+
           </div>
+
         </div>
       </div>
     </>

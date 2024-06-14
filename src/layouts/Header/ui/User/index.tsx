@@ -90,12 +90,12 @@ export function User() {
           <div className="relative font-[sans-serif] w-max mx-auto">
             <button
               type="button"
-              className="w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold border-none outline-none bg-blue-800 hover:bg-white-900 active:bg-white-800"
+              className="w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-semibold border-none outline-none bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-white-900 active:bg-white-800"
               onClick={toggleNotification}
             >
               <i
                 className="fa-regular fa-bell fa-lg"
-                style={{ color: "#74C0FC" }}
+                style={{ color: "white" }}
               />
             </button>
             {isNotificationOpen && (
@@ -138,25 +138,29 @@ export function User() {
           </div>
 
           <a href="/profile" className="group block flex-shrink-0">
-            <div className="flex items-center">
-              <div>
-                <img
-                  className="inline-block h-9 w-9 rounded-full"
-                  src={user.avatar}
-                  alt=""
-                />
-              </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                  {user.displayName}
-                </p>
-                <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                  {user.email}
-                </p>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-sky-400 to-indigo-600 rounded-full shadow-md border border-gray-200"></div>
+              <div className="relative flex items-center justify-center p-1 bg-white rounded-full shadow-lg">
+                <div>
+                  <img
+                    className="inline-block h-8 w-8 rounded-full"
+                    src={user.avatar}
+                    alt=""
+                  />
+                </div>
+                <div className="ml-2">
+                  <p className="text-xs font-medium text-gray-700 group-hover:text-gray-900">
+                    {user.displayName}
+                  </p>
+                  <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
+                    {user.email}
+                  </p>
+                </div>
               </div>
             </div>
           </a>
-          <Dropdown/>
+
+          <Dropdown />
 
           {/* <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots" className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
             <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
@@ -207,7 +211,7 @@ export function User() {
           <div className="border-l mx-4" />
           <button
             onClick={handleLogout}
-            className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 pt-1"
+            className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-600 pt-1"
           >
             Log out <span aria-hidden="true">→</span>
           </button>

@@ -1,18 +1,24 @@
 export function Story() {
+
+  const highlightStyle = {
+    background: 'linear-gradient(90deg, #6c63ff, #5bc0eb)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    fontWeight: 'bold',
+    fontSize: '4rem',
+    textShadow: '2px 2px 4px rgba(0,0,0,0.2)',
+    letterSpacing: '2px',
+    fontFamily: 'Arial, sans-serif',
+  };
+
   return (
-    <section id="testimonies" className="py-20 bg-slate-900">
+    <section id="testimonies" className="py-20 rounded-lg bg-gradient-to-r from-sky-400/20 to-indigo-600/20">
       <div className="max-w-6xl mx-8 md:mx-10 lg:mx-20 xl:mx-auto">
         <div className="transition duration-500 ease-in-out transform scale-100 translate-x-0 translate-y-0 opacity-100">
           <div className="mb-12 space-y-5 md:mb-16 md:text-center">
-            <div className="inline-block px-3 py-1 text-sm font-semibold text-indigo-100 rounded-lg md:text-center text-cn bg-[#202c47] bg-opacity-60 hover:cursor-pointer hover:bg-opacity-40">
-              Story - Words from Others
-            </div>
             <h1 className="mb-5 text-3xl font-semibold text-white md:text-center md:text-5xl">
-              It's not just us.
+              <span style={highlightStyle}>Feedbacks</span>
             </h1>
-            <p className="text-xl text-gray-100 md:text-center md:text-2xl">
-              Here's what others have to say about us.
-            </p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
@@ -24,7 +30,7 @@ export function Story() {
                   href="https://twitter.com/kanyewest"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg"
@@ -40,7 +46,7 @@ export function Story() {
                         </p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Find God.
                     </p>
                   </div>
@@ -54,7 +60,7 @@ export function Story() {
                   href="https://twitter.com/tim_cook"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg"
@@ -68,7 +74,7 @@ export function Story() {
                         <p className="text-gray-500 text-md">CEO of Apple</p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Diam quis enim lobortis scelerisque fermentum dui faucibus
                       in ornare. Donec pretium vulputate sapien nec sagittis
                       aliquam malesuada bibendum.
@@ -84,7 +90,7 @@ export function Story() {
                   href="https://twitter.com/kanyewest"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg"
@@ -100,7 +106,7 @@ export function Story() {
                         </p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Find God.
                     </p>
                   </div>
@@ -114,7 +120,7 @@ export function Story() {
                   href="https://twitter.com/tim_cook"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg"
@@ -128,7 +134,7 @@ export function Story() {
                         <p className="text-gray-500 text-md">CEO of Apple</p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Diam quis enim lobortis scelerisque fermentum dui faucibus
                       in ornare. Donec pretium vulputate sapien nec sagittis
                       aliquam malesuada bibendum.
@@ -143,7 +149,7 @@ export function Story() {
               <div className="relative group">
                 <div className="absolute transition rounded-lg opacity-25 -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 blur duration-400 group-hover:opacity-100 group-hover:duration-200"></div>
                 <a href="https://twitter.com/paraga" className="cursor-pointer">
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1375285353146327052/y6jeByyD_400x400.jpg"
@@ -157,7 +163,7 @@ export function Story() {
                         <p className="text-gray-500 text-md">CEO of Twitter</p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Enim neque volutpat ac tincidunt vitae semper. Mattis
                       aliquam faucibus purus in massa tempor. Neque vitae tempus
                       quam pellentesque nec. Turpis cursus in hac habitasse
@@ -174,7 +180,7 @@ export function Story() {
                   href="https://twitter.com/tim_cook"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg"
@@ -188,7 +194,7 @@ export function Story() {
                         <p className="text-gray-500 text-md">CEO of Apple</p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Diam quis enim lobortis scelerisque fermentum dui faucibus
                       in ornare. Donec pretium vulputate sapien nec sagittis
                       aliquam malesuada bibendum.
@@ -201,7 +207,7 @@ export function Story() {
               <div className="relative group">
                 <div className="absolute transition rounded-lg opacity-25 -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 blur duration-400 group-hover:opacity-100 group-hover:duration-200"></div>
                 <a href="https://twitter.com/paraga" className="cursor-pointer">
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1375285353146327052/y6jeByyD_400x400.jpg"
@@ -215,7 +221,7 @@ export function Story() {
                         <p className="text-gray-500 text-md">CEO of Twitter</p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Enim neque volutpat ac tincidunt vitae semper. Mattis
                       aliquam faucibus purus in massa tempor. Neque vitae tempus
                       quam pellentesque nec. Turpis cursus in hac habitasse
@@ -232,7 +238,7 @@ export function Story() {
                   href="https://twitter.com/tim_cook"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg"
@@ -246,7 +252,7 @@ export function Story() {
                         <p className="text-gray-500 text-md">CEO of Apple</p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Diam quis enim lobortis scelerisque fermentum dui faucibus
                       in ornare. Donec pretium vulputate sapien nec sagittis
                       aliquam malesuada bibendum.
@@ -264,7 +270,7 @@ export function Story() {
                   href="https://twitter.com/satyanadella"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1221837516816306177/_Ld4un5A_400x400.jpg"
@@ -280,7 +286,7 @@ export function Story() {
                         </p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Tortor dignissim convallis aenean et tortor at. At
                       ultrices mi tempus imperdiet nulla malesuada. Id cursus
                       metus aliquam eleifend mi. Quis ipsum suspendisse ultrices
@@ -297,7 +303,7 @@ export function Story() {
                   href="https://twitter.com/dan_schulman"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/516916920482672641/3jCeLgFb_400x400.jpeg"
@@ -311,7 +317,7 @@ export function Story() {
                         <p className="text-gray-500 text-md">CEO of PayPal</p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Quam pellentesque nec nam aliquam sem et tortor consequat
                       id. Enim sit amet venenatis urna cursus.
                     </p>
@@ -326,7 +332,7 @@ export function Story() {
                   href="https://twitter.com/satyanadella"
                   className="cursor-pointer"
                 >
-                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-slate-800 ring-1 ring-gray-900/5">
+                  <div className="relative p-6 space-y-6 leading-none rounded-lg bg-white ring-1 ring-gray-900/5">
                     <div className="flex items-center space-x-4">
                       <img
                         src="https://pbs.twimg.com/profile_images/1221837516816306177/_Ld4un5A_400x400.jpg"
@@ -342,7 +348,7 @@ export function Story() {
                         </p>
                       </div>
                     </div>
-                    <p className="leading-normal text-gray-300 text-md">
+                    <p className="leading-normal text-gray-500 text-md">
                       Tortor dignissim convallis aenean et tortor at. At
                       ultrices mi tempus imperdiet nulla malesuada. Id cursus
                       metus aliquam eleifend mi. Quis ipsum suspendisse ultrices

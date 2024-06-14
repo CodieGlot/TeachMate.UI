@@ -45,7 +45,7 @@ export function Login() {
                 </p>
               </div>
               <div>
-                <label className="text-xs block mb-2">Username or Email</label>
+                <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Username or Email</label>
                 <div className="relative flex items-center">
                   <input
                     name="username"
@@ -88,7 +88,7 @@ export function Login() {
                 </div>
               </div>
               <div className="mt-8">
-                <label className="text-xs block mb-2">Password</label>
+                <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Password</label>
                 <div className="relative flex items-center">
                   <input
                     name="password"

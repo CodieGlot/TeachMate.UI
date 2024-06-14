@@ -3,5 +3,4 @@ export * from "./CTA";
 export * from "./FAQs";
 export * from "./HeroSection";
 export * from "./Partner";
-export * from "./Pricing";
 export * from "./Story";
