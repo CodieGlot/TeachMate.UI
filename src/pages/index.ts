@@ -3,6 +3,7 @@ export * from "./Home";
 export * from "./NotFound";
 export * from "./Learning";
 export * from "./Profile";
-//DEMO
-export * from "./Search"
-export * from "./Demo"
+export * from "./Feedback";
+export * from "./Search";
+
+

@@ -36,6 +36,7 @@ export function Signup() {
         });
       }
 
+
     } catch (err) {
       console.error("Signup failed:", error);
       setError(err as AxiosError);
@@ -60,21 +61,21 @@ export function Signup() {
             alt="login-image"
           />
         </div>
-        <div className="flex items-center md:p-8 p-6 bg-[#0C172C] h-full lg:w-11/12 lg:ml-auto">
+        <div className="flex items-center md:p-8 p-6 bg-gradient-to-r from-sky-400/1 to-indigo-600/2 h-full lg:w-11/12 lg:ml-auto">
           <form className="max-w-lg w-full mx-auto">
             <div className="mb-12">
-              <h3 className="text-3xl font-bold text-yellow-400">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent">
                 Create an account
               </h3>
             </div>
             <div>
-              <label className="text-xs block mb-2">Username</label>
+              <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg-50">Username</label>
               <div className="relative flex items-center">
                 <input
                   name="username"
                   type="text"
                   required
-                  className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
+                  className="w-full bg-transparent text-black border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
                   placeholder="Enter username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -96,7 +97,7 @@ export function Signup() {
             </div>
 
             <div className="mt-8">
-              <label className="text-xs block mb-2">Password</label>
+              <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Password</label>
               <div className="relative flex items-center">
                 <input
                   name="password"
@@ -122,14 +123,14 @@ export function Signup() {
               </div>
             </div>
             <div className="mt-8">
-              <label className="text-xs block mb-2">Confirm Password</label>
+              <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Confirm Password</label>
               <div className="relative flex items-center">
                 <input
                   name="confirm-password"
                   type="password"
                   required
                   className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
-                  placeholder="Enter password"
+                  placeholder="Confirm password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
@@ -147,53 +148,46 @@ export function Signup() {
                 </svg>
               </div>
             </div>
-            <div className="mt-8">
-              <label className="text-xs block mb-2">Registered Role</label>
-              <div className="flex items-center mb-4">
-                <input
-                  defaultChecked
-                  id="default-radio-1"
-                  type="radio"
-                  value={UserRole.LEARNER}
-                  name="default-radio"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  onChange={handleRoleChange}
-                />
-                <label
-                  htmlFor="default-radio-1"
-                  className="ms-2 text-sm font-medium text-white dark:text-gray-300"
-                >
-                  Learner
-                </label>
+            <div className="flex justify-around gap-10 mt-10 items-center">
+              <div className="">
+                <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Role</label>
+                <div className="flex items-center mb-4">
+                  <input
+                    defaultChecked
+                    id="default-radio-1"
+                    type="radio"
+                    value={UserRole.LEARNER}
+                    name="default-radio"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    onChange={handleRoleChange}
+                  />
+                  <label
+                    htmlFor="default-radio-1"
+                    className="ms-2 text-sm font-medium text-gray-400 dark:text-white dark:border-gray-400"
+                  >
+                    Learner
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    id="default-radio-2"
+                    type="radio"
+                    value={UserRole.TUTOR}
+                    name="default-radio"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    onChange={handleRoleChange}
+                  />
+                  <label
+                    htmlFor="default-radio-2"
+                    className="ms-2 text-sm font-medium text-gray-400 dark:text-white dark:border-gray-400"
+                  >
+                    Tutor
+                  </label>
+                </div>
               </div>
-              <div className="flex items-center">
-                <input
-                  id="default-radio-2"
-                  type="radio"
-                  value={UserRole.TUTOR}
-                  name="default-radio"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  onChange={handleRoleChange}
-                />
-                <label
-                  htmlFor="default-radio-2"
-                  className="ms-2 text-sm font-medium text-white dark:text-gray-300"
-                >
-                  Tutor
-                </label>
-              </div>
-            </div>
-            <div className="mt-12">
-              <button
-                type="button"
-                onClick={handleSignup}
-                className="w-max shadow-xl py-2.5 px-8 text-sm font-semibold rounded-md bg-transparent text-yellow-400 border border-yellow-400 focus:outline-none"
-              >
-                Register
-              </button>
 
-              <div className="flex p-4 mb-4 text-sm text-white rounded-lg bg-[#0C172C] mg-10 dark:bg-gray-800 dark:text-blue-400" role="alert">
-                <svg className="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <div className="flex p-4 text-sm text-gray-400 rounded-lg bg-gradient-to-r from-sky-400/20 to-indigo-600/20 h-full lg:w-11/12 lg:ml-auto" role="alert">
+                <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                 </svg>
                 <span className="sr-only">Info</span>
@@ -206,13 +200,26 @@ export function Signup() {
                   </ul>
                 </div>
               </div>
-              <p className="text-white font-medium text-sm">{message}</p>
+            </div>
 
-              <p className="text-sm mt-8">
+            <div className="mt-12">
+              <button
+                type="button"
+                onClick={handleSignup}
+                className="relative w-max shadow-xl py-2.5 px-8 text-sm font-semibold rounded-md bg-gradient-to-r from-sky-400 to-indigo-600 text-transparent border-transparent bg-clip-border before:absolute before:inset-0 before:rounded-md before:bg-white before:bg-gradient-to-r before:from-sky-400 before:to-indigo-600 before:p-[1px] before:-z-10 before:content-['']"
+              >
+                <span className="bg-clip-text text-transparent text-white dark:text-white">
+                  Register
+                </span>
+              </button>
+
+              <p className="text-white font-medium text-sm text-red-500">{message}</p>
+
+              <p className="font-semibold ml-1 hover:underline text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600">
                 Already have an account?{" "}
                 <a
                   href="/auth/login"
-                  className="text-yellow-400 font-semibold hover:underline ml-1"
+                  className="font-semibold ml-1 hover:underline text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600"
                 >
                   Login here
                 </a>
