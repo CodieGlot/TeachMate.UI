@@ -173,7 +173,9 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     setSearchParams({
       ...searchParams,
       [e.target.name]: e.target.value,
-    });
+    })
+    if (currentPage > totalPages) setCurrentPage(1);
+    ;
   };
 
   const handleSubjectChange = (event: React.ChangeEvent<HTMLInputElement>) => {

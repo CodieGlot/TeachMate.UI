@@ -1,10 +1,12 @@
 import { User } from "./ui";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { AuthService } from "../../services";
+import { UserRole } from "../../common/enums";
 
 export function Header() {
   const navigate = useNavigate();
-
+  const appUser = AuthService.getCurrentUser();
   const handleSearch = async () => {
     navigate("/search", { state: { searchQuery } }); //gửi searchQuery qua trang search
   }
@@ -84,12 +86,23 @@ export function Header() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          <a
-            href="/learning"
-            className="text-sm font-semibold leading-6 bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent"
-          >
-            Learning
-          </a>
+          
+        {appUser?.userRole === UserRole.LEARNER && (
+                <a
+                    href="/learning"
+                    className="text-sm font-semibold leading-6 bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent"
+                >
+                    Learning
+                </a>
+            )}
+            {appUser?.userRole === UserRole.TUTOR && (
+                <a
+                    href="/teaching"
+                    className="text-sm font-semibold leading-6 bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent"
+                >
+                    Teaching
+                </a>
+            )}
           <a
             href="/forum"
             className="text-sm font-semibold leading-6 bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent"

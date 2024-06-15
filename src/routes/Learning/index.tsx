@@ -1,9 +1,12 @@
-import { CreateLearningModule, LearningModuleDetail, ListModule, TeachingDashboard, UpdateLearningModule } from "../../pages";
+import { CreateLearningModule, LearningDashboard, LearningModuleDetail, ListModule, TeachingDashboard, UpdateLearningModule } from "../../pages";
 
 const learningRoutes = [
   {
-    path: "/learning",
+    path: "/teaching",
     element: <TeachingDashboard />,
+  },{
+    path: "/learning",
+    element: <LearningDashboard />,
   },
   {
     path: "/list-learning-module",

@@ -124,7 +124,7 @@ export function LearningModuleDetail() {
 
           </div>
         </div>
-        <ViewClassSchedule />
+        <ViewClassSchedule learningModuleId={learningModule?.id}/>
       </div>
 
     </>

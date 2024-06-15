@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AuthService } from '../../../../../services';
+import { LearningModule, LearningSession } from '../../../../../interfaces';
+import { ScheduleService } from '../../../../../services/ScheduleService';
 
 type Session = {
     startTime: string;
@@ -7,22 +9,33 @@ type Session = {
     date: string;
 };
 
-export function ViewClassSchedule() {
+interface ViewClassScheduleProps {
+    learningModuleId: number | undefined;
+  }
+
+export function ViewClassSchedule({learningModuleId} : ViewClassScheduleProps) {
     const user = AuthService.getCurrentUser();
+    const [learningSessions, setLearningSessions] = useState<LearningSession[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
-    // Mock data for demonstration (replace with actual data if needed)
-    const sessions: Session[] = [
-        { startTime: '8:30', endTime: '10:00', date: "2024-06-10" },
-        { startTime: '8:30', endTime: '10:00', date: "2024-06-11" },
-        { startTime: '8:30', endTime: '10:00', date: "2024-06-12" },
-        { startTime: '9:30', endTime: '13:00', date: "2024-06-13" },
-        { startTime: '10:30', endTime: '12:00', date: "2024-06-14" },
-
-    ];
+    useEffect (() => {
+        const fetchLearningSessions = async (id: number ) => {
+            try {
+                const data = await ScheduleService.getScheduleById(id);
+                setLearningSessions(data);
+            } catch (error) {
+                console.log("Error fetching learning modules:", error);
+            };
+        }
+        if (learningModuleId !== undefined) {
+            fetchLearningSessions(learningModuleId);
+          };
+    })
+    const sessions: LearningSession[] = learningSessions;
 
     const timeStringToDouble = (timeString: string): number => {
         const [hours, minutes] = timeString.split(':').map(Number);
@@ -48,11 +61,11 @@ export function ViewClassSchedule() {
         const year = parseInt(parts[0], 10);
         const month = parseInt(parts[1], 10);
         const day = parseInt(parts[2], 10);
-        return new Date(year, month, day);
+        return new Date(year, month - 1, day);
     };
     // State to manage current week index and selected month
     const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
-    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
     // Function to get week dates based on index and selected month
     const getWeekDates = (index: number): Date[] => {
@@ -61,6 +74,8 @@ export function ViewClassSchedule() {
         currentDate.setHours(0, 0, 0, 0); // Start at the beginning of the day
 
         const weekDates = [];
+        const startOfWeek = new Date(currentDate);
+        startOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); 
         for (let i = 0; i < 7; i++) {
             const date = new Date(currentDate);
             date.setDate(currentDate.getDate() + i - currentDate.getDay()); // Start from Sunday
@@ -69,17 +84,12 @@ export function ViewClassSchedule() {
         return weekDates;
     };
 
-    // Function to filter sessions by selected month
-    const filterSessionsByMonth = (sessions: Session[], month: number): Session[] => {
-        return sessions.filter(session => parseDate(session.date).getMonth() === month);
-    };
-
     // Function to render sessions for a given week
     const renderSessions = (weekIndex: number): (JSX.Element | null)[] => {
         const weekDates = getWeekDates(weekIndex);
-        const filteredSessions = filterSessionsByMonth(sessions, selectedMonth);
+        // const filteredSessions = filterSessionsByMonth(sessions, selectedMonth);
 
-        return filteredSessions.map((session, index) => {
+        return sessions.map((session, index) => {
             const sessionDate = session.date;
             const matchingDay = weekDates.find(day => day.getDate() === parseDate(sessionDate).getDate() && day.getMonth() == parseDate(sessionDate).getMonth());
             if (!matchingDay) return null;
@@ -92,6 +102,7 @@ export function ViewClassSchedule() {
             const color = getColor(matchingDay);
 
             return (
+                <a href='www.google.com'>
                 <div
                     key={index}
                     className="flex items-center justify-center absolute w-[110px] shadow-md"
@@ -101,11 +112,14 @@ export function ViewClassSchedule() {
                         height: `${height}px`,
                         backgroundColor: color,
                         borderColor: color,
-                        boxShadow: `0 0 10px ${color}`
+                        boxShadow: `0 0 10px ${color}`,
+                        
                     }}
                 >
-                    {matchingDay.toLocaleDateString('en-US', { weekday: 'short' })}: {session.startTime}-{session.endTime}
+                   
+                    {session.startTime.substring(0,5)}-{session.endTime.substring(0,5)}
                 </div>
+                 </a>
             );
         }).filter(Boolean); // Filter out any null values
     };
@@ -152,18 +166,18 @@ export function ViewClassSchedule() {
                             onChange={handleMonthChange}
                             className="border-2 border-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-7 py-2.5 text-center mb-2"
                         >
-                            <option value={1}>January</option>
-                            <option value={2}>February</option>
-                            <option value={3}>March</option>
-                            <option value={4}>April</option>
-                            <option value={5}>May</option>
-                            <option value={6}>June</option>
-                            <option value={7}>July</option>
-                            <option value={8}>August</option>
-                            <option value={9}>September</option>
-                            <option value={10}>October</option>
-                            <option value={11}>November</option>
-                            <option value={12}>December</option>
+                            <option value={0}>January</option>
+                            <option value={1}>February</option>
+                            <option value={2}>March</option>
+                            <option value={3}>April</option>
+                            <option value={4}>May</option>
+                            <option value={5}>June</option>
+                            <option value={6}>July</option>
+                            <option value={7}>August</option>
+                            <option value={8}>September</option>
+                            <option value={9}>October</option>
+                            <option value={10}>November</option>
+                            <option value={11}>December</option>
                         </select>
 
                         <button
@@ -183,7 +197,7 @@ export function ViewClassSchedule() {
                         </button>
                         {/* //Modal for add custom session */}
                         <div>
-                            {user?.tutor === null && (
+                            {user?.tutor !== null && (
                                 <button
                                     onClick={toggleModal}
                                     className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-4 text-center mb-2"
@@ -193,7 +207,7 @@ export function ViewClassSchedule() {
                                 </button>
                             )}
 
-                            {isModalOpen && user?.tutor === null && (
+                            {isModalOpen && user?.tutor !== null && (
                                 <div
                                     id="default-modal"
                                     tabIndex={-1}
@@ -319,7 +333,7 @@ export function ViewClassSchedule() {
                     <p>Week</p>
                     {getWeekDates(currentWeekIndex).map((day, index) => (
                         <div key={index}>
-                            <p>{day.getDate()}/{day.getMonth()}</p>
+                            <p>{day.getDate()}/{day.getMonth()+1}</p>
                             <p>{day.toLocaleString('en-US', { weekday: 'short' })}</p>
                         </div>
                     ))}

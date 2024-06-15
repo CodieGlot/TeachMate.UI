@@ -7,6 +7,8 @@ interface SearchTutorProps {
 }
 
 export function SearchTutor({ searchQuery }: SearchTutorProps) {
+  const [message, setMessage] = useState<string | null>("");
+
   const [displayName, setDisplayName] = useState<string>(searchQuery || "");
   const [tutors, setTutors] = useState<AppUser[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +25,8 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
       try {
         const data = await SearchService.searchTutor({ displayName });
         setTutors(data);
+        if (data.length == 0) setMessage("Tutors not found"); else setMessage(null);
+        if (currentPage > totalPages) setCurrentPage(1);
       } catch (error) {
         console.error("Error fetching tutors:", error);
       }
@@ -72,7 +76,9 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
             </button>
           </div>
         </form>
+        <p className="mx-auto text-center">{message}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          
           {currentTutors.map((tutor, index) => (
             <div
               key={index}
