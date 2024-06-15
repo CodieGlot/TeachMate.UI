@@ -1,47 +1,34 @@
 // GiveFeedback.tsx
 import React, { useState } from 'react';
-import { GiveFeedbackDto } from '../../../common/dtos';
 import { FeedbackService } from '../../../services';
 
 export const GiveFeedback = () => {
     const [comment, setComment] = useState('');
-    const [star, setStar] = useState(5);
+    const [star, setStar] = useState(0);
     const [learningModuleId, setLearningModuleId] = useState(0);
     const [isAnonymous, setIsAnonymous] = useState(true);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        const feedbackDto: GiveFeedbackDto = {
-            comment,
-            star,
-            learningModuleId,
-            isAnonymous
-        };
+    const handleSubmit = async () => {
 
         try {
-            await FeedbackService.givefeedback(feedbackDto);
 
-            console.log('Feedback submitted successfully');
-
-            // Clear form fields after successful submission
-            setComment('');
-            setStar(5);
-            setLearningModuleId(0);
-            setIsAnonymous(true);
-
-            // Optionally: Provide user feedback, navigate, or update state as needed
-
+            FeedbackService.givefeedback({
+                comment,
+                star,
+                learningModuleId,
+                isAnonymous
+            })
         } catch (error) {
-            console.error('Error submitting feedback:', error);
-            // Handle error (e.g., show error message to the user)
+            console.error("Send Fail", error)
         }
-    };
+
+
+    }
 
     return (
         <main className="w-screen h-screen flex justify-center items-center dark:bg-gray-900">
             <div className="max-w-7xl dark:bg-gray-950 dark:text-white">
-                <form className="w-full p-4 rounded shadow-md" onSubmit={handleSubmit}>
+                <form className="w-full p-4 rounded shadow-md">
                     <h2 className="text-xl mb-4 tracking-wider font-lighter text-gray-900 dark:text-gray-200">Leave a Comment</h2>
                     <p className="text-gray-600 mb-4">Your email address will not be published. Required fields are marked *</p>
 
@@ -99,9 +86,9 @@ export const GiveFeedback = () => {
                         </div>
                     </div>
                     <div className="flex justify-end">
-                        <button
+                        <button onClick={handleSubmit}
                             type="submit"
-                            className="py-4 px-6 bg-blue-950 text-white rounded-sm hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-800"
+                            className="py-4 px-6 bg-blue-950 text-white rounded-sm bg-gradient-to-r to-indigo-600 from-sky-400 "
                         >
                             Post Comment →
                         </button>

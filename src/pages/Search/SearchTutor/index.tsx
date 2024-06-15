@@ -7,20 +7,18 @@ interface SearchTutorProps {
 }
 
 export function SearchTutor({ searchQuery }: SearchTutorProps) {
-  const [displayName, setDisplayName] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string>(searchQuery || "");
   const [tutors, setTutors] = useState<AppUser[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedTutor, setExpandedTutor] = useState<number | null>(null); // State to manage expanded tutor details
   const sectionsPerPage = 3;
   const totalPages = Math.ceil(tutors.length / sectionsPerPage);
-  useEffect(() => {
+  useEffect(() => {  // hàm này luôn chạy khi điều kiện dưới thay đổi
     if (searchQuery) {
       setDisplayName(searchQuery || "");
     }
   }, [searchQuery]);
   useEffect(() => {
-
-
     const fetchTutors = async () => {
       try {
         const data = await SearchService.searchTutor({ displayName });
@@ -59,7 +57,7 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
               className="block w-full p-2.5 text-sm text-gray-900 bg-white border-2 border-violet-200 rounded-l-lg focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search Tutor ..."
               value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+              onChange={(e) => setDisplayName(e.target.value)}  // onchange thì khi nào input thay đổi thì hàm này chạy để make new data
               required
             />
             <button
@@ -93,7 +91,7 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
                   </div>
                 </div>
                 <div className="mt-2 mt-20 text-center">
-                  <h3 className="mb-1 text-2xl font-bold leading-normal text-gray-700 dark:text-gray-300">
+                  <h3 className="text-lg text-indigo-500 font-bold">
                     {tutor.displayName}
                   </h3>
                   <div className="flex flex-row justify-center w-full mx-auto space-x-2 text-center">
@@ -184,11 +182,12 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
                   {/* Details Section */}
                   {expandedTutor === index && (
                     <div className="mt-4 text-gray-600 dark:text-gray-300">
-                      <p><strong>Bio:</strong> {tutor.displayName}</p>
+                      <p><strong>Bio:</strong> {tutor.tutor?.description}</p>
                       {/* <p><strong>Qualifications:</strong> {tutor.displayName}</p>
                       <p><strong>Subjects:</strong> {tutor.displayName.join(", ")}</p> */}
                       {/* Add any other fields you want to show */}
                     </div>
+
                   )}
                 </div>
               </div>
