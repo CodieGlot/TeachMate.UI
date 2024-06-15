@@ -22,7 +22,6 @@ export function CreateLearningModule() {
   const [numOfWeeks, setNumOfWeeks] = useState<number>(0);
   const navigate = useNavigate();
 
-
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartDate(e.target.value);
   };
