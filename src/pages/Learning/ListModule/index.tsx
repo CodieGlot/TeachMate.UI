@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 
 export function ListModule() {
   const [list, setList] = useState<LearningModule[]>([]);
-  const [id, setId] = useState<string>("");
   const navigate = useNavigate();
   //write tạm ở đây
   const getSubjectString = (subjectCode: number): string => {

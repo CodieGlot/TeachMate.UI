@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AuthService } from '../../../../../services';
 
 type Session = {
     startTime: string;
@@ -7,6 +8,7 @@ type Session = {
 };
 
 export function ViewClassSchedule() {
+    const user = AuthService.getCurrentUser();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleModal = () => {
@@ -42,10 +44,10 @@ export function ViewClassSchedule() {
     };
 
     const parseDate = (dateString: string) => {
-        let parts = dateString.split('-');
-        let year = parseInt(parts[0], 10);
-        let month = parseInt(parts[1], 10);
-        let day = parseInt(parts[2], 10);
+        const parts = dateString.split('-');
+        const year = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10);
+        const day = parseInt(parts[2], 10);
         return new Date(year, month, day);
     };
     // State to manage current week index and selected month
@@ -181,20 +183,22 @@ export function ViewClassSchedule() {
                         </button>
                         {/* //Modal for add custom session */}
                         <div>
-                            <button
-                                onClick={toggleModal}
-                                className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-4 text-center mb-2"
-                                type="button"
-                            >
-                                Add new session
-                            </button>
+                            {user?.tutor === null && (
+                                <button
+                                    onClick={toggleModal}
+                                    className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-4 text-center mb-2"
+                                    type="button"
+                                >
+                                    Add new session
+                                </button>
+                            )}
 
-                            {isModalOpen && (
+                            {isModalOpen && user?.tutor === null && (
                                 <div
                                     id="default-modal"
                                     tabIndex={-1}
                                     aria-hidden="true"
-                                    className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-[calc(100%-1rem)] max-h-full overflow-y-auto overflow-x-hidden inset-0 bg-gray-800 bg-opacity-75" // Updated to include gray background
+                                    className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-[calc(100%-1rem)] max-h-full overflow-y-auto overflow-x-hidden inset-0 bg-gray-800 bg-opacity-75"
                                 >
                                     <div className="relative p-4 w-full max-w-2xl max-h-full">
                                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -207,24 +211,48 @@ export function ViewClassSchedule() {
                                                     className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                                     onClick={toggleModal}
                                                 >
-                                                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13" />
+                                                    <svg
+                                                        className="w-3 h-3"
+                                                        aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 14 14"
+                                                    >
+                                                        <path
+                                                            stroke="currentColor"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="2"
+                                                            d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13"
+                                                        />
                                                     </svg>
                                                     <span className="sr-only">Close modal</span>
                                                 </button>
                                             </div>
                                             <div className="p-4 md:p-5 space-y-4">
-                                                <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                                                <input type="text" name="title" id="title"
+                                                <label
+                                                    htmlFor="title"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Title
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="title"
+                                                    id="title"
                                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="Type class title"
                                                     required
-                                                    
                                                 />
                                             </div>
                                             <div className="p-4 md:p-5 space-y-4">
                                                 <div className="w-full max-w-[7rem]">
-                                                    <label htmlFor={`start-time`} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start time</label>
+                                                    <label
+                                                        htmlFor={`start-time`}
+                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                    >
+                                                        Start time
+                                                    </label>
                                                     <input
                                                         type="time"
                                                         id={`start-time`}
@@ -235,20 +263,30 @@ export function ViewClassSchedule() {
                                                         max="18:00"
                                                         required
                                                     />
-
                                                 </div>
                                                 <div className="w-[300px]">
-                                                    <label htmlFor="startDate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                                                    <label
+                                                        htmlFor="startDate"
+                                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                    >
+                                                        Date
+                                                    </label>
                                                     <div className="relative max-w-sm">
                                                         <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                                            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                            <svg
+                                                                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                                                aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 20 20"
+                                                            >
                                                                 <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                                             </svg>
                                                         </div>
-                                                        <input type="date"
+                                                        <input
+                                                            type="date"
                                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                             placeholder="Select date"
-
                                                         />
                                                     </div>
                                                 </div>
@@ -274,6 +312,7 @@ export function ViewClassSchedule() {
                                 </div>
                             )}
                         </div>
+
                     </div>
                 </div>
                 <div className="flex text-gray-400 font-serif gap-20 mt-8">

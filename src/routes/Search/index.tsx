@@ -11,8 +11,9 @@ const searchRoutes = [
   },
   {
     path: "/search",
-    element: <SearchCategory/>
-  }
+    element: <SearchCategory />
+  },
+
 
 ];
 

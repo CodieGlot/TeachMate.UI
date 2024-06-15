@@ -97,10 +97,10 @@ export function Header() {
             Forum
           </a>
           <a
-            href="/about-us"
+            href="/contact"
             className="text-sm font-semibold leading-6 bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent"
           >
-            About us
+            Contact
           </a>
           <a
             href={import.meta.env.VITE_TEACHMATE_CHATAPP_URL}
