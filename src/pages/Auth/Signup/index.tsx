@@ -19,37 +19,42 @@ export function Signup() {
 
   const handleSignup = async () => {
     try {
-      const { accessToken, user } = await AuthService.signup({
-        username,
-        password,
-        confirmPassword,
-        userRole,
-      });
-      if (user.userRole == 2) {
-        navigate('/add-tutor-detail', {
-          state: { accessToken, user }
+        const { accessToken, user } = await AuthService.signup({
+            username,
+            password,
+            confirmPassword,
+            userRole,
         });
-      }
-      if (user.userRole == 4) {
-        navigate('/add-learner-detail', {
-          state: { accessToken, user }
-        });
-      }
 
+        if (user.userRole === UserRole.TUTOR) {
+            navigate('/add-tutor-detail', {
+                state: { accessToken, user }
+            });
+        } else if (user.userRole === UserRole.LEARNER) {
+            navigate('/add-learner-detail', {
+                state: { accessToken, user }
+            });
+        }
 
     } catch (err) {
-      console.error("Signup failed:", error);
-      setError(err as AxiosError);
-      setMessage(error?.response.data.message || null);
-      if (password !== confirmPassword) {
-        setMessage("Password confirmation failed. Please ensure both passwords match.");
-      } else if (password.length < 5 || password.length > 15) {
-        setMessage("Password must be between 5 and 15 characters in length.");
-      } else if (username.length < 5 || username.length > 15) {
-        setMessage("Username must be between 5 and 15 characters in length.");
-      }
+        console.error("Signup failed:", err);
+        const error = err as AxiosError;
+        setError(error);
+
+        // Handle specific error messages
+        if (password !== confirmPassword) {
+            setMessage("Password confirmation failed. Please ensure both passwords match.");
+        } else if (password.length < 5 || password.length > 15) {
+            setMessage("Password must be between 5 and 15 characters in length.");
+        } else if (username.length < 5 || username.length > 15) {
+            setMessage("Username must be between 5 and 15 characters in length.");
+        } else if (error.response && error.response.data && error.response.data.message) {
+            setMessage(error.response.data.message);
+        } else {
+            setMessage("An unexpected error occurred during signup.");
+        }
     }
-  };
+};
 
   return (
     <div className="font-[sans-serif] bg-white text-white md:h-screen">
@@ -103,7 +108,7 @@ export function Signup() {
                   name="password"
                   type="password"
                   required
-                  className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
+                  className="w-full bg-transparent text-gray-400 text-sm border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -129,7 +134,7 @@ export function Signup() {
                   name="confirm-password"
                   type="password"
                   required
-                  className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
+                  className="w-full bg-transparent text-gray-400 text-sm border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
                   placeholder="Confirm password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -213,7 +218,7 @@ export function Signup() {
                 </span>
               </button>
 
-              <p className="text-white font-medium text-sm text-red-500">{message}</p>
+              <p className="text-red-400 p-5 bg-white font-medium text-sm text-red-500">{message}</p>
 
               <p className="font-semibold ml-1 hover:underline text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600">
                 Already have an account?{" "}

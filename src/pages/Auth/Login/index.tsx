@@ -3,18 +3,35 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
+import { AxiosError } from "axios";
 
 export function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<AxiosError | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
       await AuthService.login({ username, password });
       navigate("/");
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch (err) {
+      console.error("Login failed:", err);
+        const error = err as AxiosError;
+        setError(error);
+
+        // Handle specific error messages
+       if (password.length < 5 || password.length > 15) {
+            setMessage("Password must be between 5 and 15 characters in length.");
+        } else if (username.length < 5 || username.length > 15) {
+            setMessage("Username must be between 5 and 15 characters in length.");
+        } else if (error.response && error.response.data && (error.response.data as any).message) {
+            setMessage((error.response.data as any).message);
+        } else {
+            setMessage("An unexpected error occurred during log in.");
+        }
+     
     }
   };
 
@@ -134,6 +151,8 @@ export function Login() {
                   </a>
                 </div>
               </div>
+              <p className="text-red-400 p-5 bg-white font-medium text-sm text-red-500">{message}</p>
+
               <div className="mt-12">
                 <button
                   type="button"
