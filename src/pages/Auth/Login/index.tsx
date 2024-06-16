@@ -1,9 +1,11 @@
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
 import { AxiosError } from "axios";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -11,6 +13,9 @@ export function Login() {
   const [error, setError] = useState<AxiosError | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -44,6 +49,7 @@ export function Login() {
   };
 
   return (
+    <div data-aos="zoom-in-left" data-aos-duration="1000">
     <div className="font-[sans-serif] text-[#333]">
       <div className="min-h-screen flex flex-col items-center justify-center">
         <div className="grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">
@@ -184,6 +190,7 @@ export function Login() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

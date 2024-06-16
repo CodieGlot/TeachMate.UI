@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
 import { AxiosError } from "../../../interfaces";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export function Signup() {
   const [username, setUsername] = useState("");
@@ -13,6 +15,9 @@ export function Signup() {
   const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    AOS.init();
+  }, []);
   const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserRole(Number(event.target.value) as UserRole);
   };
@@ -57,6 +62,8 @@ export function Signup() {
 };
 
   return (
+    <div data-aos="zoom-in-left" data-aos-duration="1000">
+
     <div className="font-[sans-serif] bg-white text-white md:h-screen">
       <div className="grid md:grid-cols-2 items-center gap-8 h-full">
         <div className="max-md:order-1 p-4">
@@ -234,5 +241,7 @@ export function Signup() {
         </div>
       </div>
     </div>
+    </div>
+
   );
 }
