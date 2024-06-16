@@ -1,4 +1,4 @@
-import { AddWeeklySchedule, UserSchedule} from "../../pages";
+import { AddWeeklySchedule, LearningSessionDetail, UserSchedule} from "../../pages";
 
 const scheduleRoutes = [
   {
@@ -9,6 +9,10 @@ const scheduleRoutes = [
     path: "/schedule",
     element: <UserSchedule />,
   },
+  {
+    path: "/session",
+    element: <LearningSessionDetail/>
+  }
 ];
 
 export default scheduleRoutes;
