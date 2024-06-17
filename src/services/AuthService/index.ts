@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ChangePassworddto, CreateUserDto, UserCredentialDto } from "../../common/dtos";
+import { ChangePassworddto, CreateUserDto, UserCredentialDto, VerifyOTPDto } from "../../common/dtos";
 import { jwtDecode } from "jwt-decode";
 import { UserRole } from "../../common/enums";
 import { AppUser } from "../../interfaces";
@@ -85,5 +85,10 @@ export const AuthService = {
       }
     );
     
+  }, VerifyOTP: async (dto: VerifyOTPDto) => {
+    await axios.post(
+     `${import.meta.env.VITE_SERVER_URL}/api/Auth/VerifyOTP`,
+     dto
+   );
   }
 };

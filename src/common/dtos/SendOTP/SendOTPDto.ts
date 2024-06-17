@@ -1,3 +1,3 @@
 export interface SendOTPdto {
-  gmailReceiveOTP: string
+  email: string
   }
