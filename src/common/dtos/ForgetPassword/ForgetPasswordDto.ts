@@ -1,5 +1,5 @@
 export interface ForgetPasswordDto{
-    otp : string;
+    email : string;
     newPassword : string;
     confirmPassword :string; 
 

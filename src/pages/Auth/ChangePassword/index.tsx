@@ -2,13 +2,15 @@ import { ChangeEvent, useState } from "react";
 import { AuthService } from "../../../services";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+
 
 export function ChangePassword() {
     const [new_Password, setNewPassword] = useState('');
     const [confirm_Password, setConfirmPassword] = useState('');
     const [old_Password, setOldPassword] = useState('');
     const navigate = useNavigate();
-    const  accessToken  = AuthService.getAccessToken();
+    const accessToken = AuthService.getAccessToken();
     const handleInputChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
         setNewPassword(event.target.value);
     };
@@ -19,13 +21,14 @@ export function ChangePassword() {
         setOldPassword(event.target.value);
     };
     const location = useLocation();
-
+    const [error, setError] = useState<AxiosError | null>(null);
+    const [message, setMessage] = useState<string | null>(null);
     const { state } = location;
     const handleSaveClick = async () => {
         try {
 
 
-            AuthService.ChangePassword({
+            await AuthService.ChangePassword({
                 old_Password,
                 new_Password,
                 confirm_Password
@@ -33,8 +36,15 @@ export function ChangePassword() {
             navigate("/")
 
 
-        } catch (error) {
-            console.error("Change fail", error)
+        } catch (err) {
+            console.error("Change Fail", err)
+            const error = err as AxiosError;
+            setError(error);
+            if (error.response && error.response.data && (error.response.data as any).message) {
+                setMessage((error.response.data as any).message);
+            } else {
+                setMessage("An unexpected error occurred during log in.");
+            }
         }
 
 
@@ -72,6 +82,9 @@ export function ChangePassword() {
                                 <label htmlFor="newsletter" className="font-light text-gray-500 dark:text-gray-300">I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
                             </div>
                         </div>
+                        <p className="text-sm text-red-500 p-4 text-center">
+                            {message}
+                        </p>
                         <button onClick={handleSaveClick} type="button" className="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4  focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 border">Change password</button>
                     </form>
                 </div>
