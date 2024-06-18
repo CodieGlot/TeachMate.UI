@@ -1,4 +1,13 @@
+import { useNavigate } from "react-router-dom";
+import React from "react";
+
+
 export function HeroSection() {
+  const navigate = useNavigate();
+  const handleSignUp = async () => {
+    navigate("/auth/signup");
+  }
+
   return (
     <div className="relative overflow-hidden bg-white">
       <div
@@ -75,8 +84,8 @@ export function HeroSection() {
                     className="block w-full rounded-md border-gray-300 py-3 text-base placeholder-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:flex-1"
                     placeholder="Enter your email"
                   />
-                  <button
-                    type="submit"
+                  <button onClick={handleSignUp}
+                    type="button"
                     className="mt-3 w-full rounded-md bg-gradient-to-r to-indigo-600 from-sky-400 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:inline-flex sm:w-auto sm:flex-shrink-0 sm:items-center"
                   >
                     Notify me

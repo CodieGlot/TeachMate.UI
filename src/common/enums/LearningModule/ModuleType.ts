@@ -1,4 +1,5 @@
 export enum ModuleType {
-    Custom,
-    Weekly
-  }
+  Custom,
+  Weekly,
+  None
+}
