@@ -144,6 +144,19 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     }
   };
 
+
+  const handleSubjectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const subjectValue = Number(event.target.value);
+    setSearchParams((prevParams) => ({
+      ...prevParams,
+      subject: prevParams.subject === subjectValue ? 0 : subjectValue, // Toggle subject value
+    }));
+  };
+
+  const handleJoinClass = (id: number) => {
+    navigate('/request-join', { state: { id } });
+  };
+
   const toggleDetails = (index: number) => {
     setExpandedClass(expandedClass === index ? null : index);
   };
@@ -429,6 +442,7 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                             </svg>
                             <span className="sr-only">Search</span>
                           </button>
+
                         </div>
                       </form>
                     </div>
@@ -539,18 +553,19 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                               onClick={() => toggleDetails(index)}
                               className="mt-4 w-full rounded-lg border-2 border-indigo-400 px-10 py-2 text-sm text-indigo-500 font-semibold hover:bg-indigo-400 hover:text-white"
                             >
-                              {expandedClass === index ? "Hide Details" : "Show Details"}
+
+                              {expandedClass === index && (
+                                <div className="mt-4 space-y-2">
+                                  <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" onClick={() => handleJoinClass(classItem.id)}>
+                                    Join
+                                  </button>
+                                  <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600" onClick={() => viewLearningModuleDetail(classItem.id.toString())}>
+                                    View Detail
+                                  </button>
+
+                                </div>
+                              )}
                             </button>
-                            {expandedClass === index && (
-                              <div className="mt-4 space-y-2">
-                                <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" onClick={() => viewLearningModuleDetail(classItem.id.toString())}>
-                                  Join
-                                </button>
-                                <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-                                  Try Now
-                                </button>
-                              </div>
-                            )}
                           </div>
                         </div>
                       ))}

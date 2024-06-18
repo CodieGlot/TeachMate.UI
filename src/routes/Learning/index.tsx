@@ -1,4 +1,4 @@
-import { CreateLearningModule, LearningDashboard, LearningModuleDetail, ListModule, TeachingDashboard, UpdateLearningModule } from "../../pages";
+import { CreateLearningModule, LearningDashboard, LearningModuleDetail, ListModule, ListRequestsForClass, RequestJoinLearningModule, TeachingDashboard, UpdateLearningModule } from "../../pages";
 
 const learningRoutes = [
   {
@@ -22,7 +22,16 @@ const learningRoutes = [
   {
     path: "/update-learning-module-detail",
     element: <UpdateLearningModule/>
-  }
+  },
+  {
+    path: "/request-join",
+    element: <RequestJoinLearningModule/>
+  },
+
+  {
+    path: "/list-request-class",
+    element: <ListRequestsForClass/>
+  },
 ];
 
 export default learningRoutes;

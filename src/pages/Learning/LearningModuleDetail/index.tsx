@@ -3,12 +3,11 @@ import { LearningModule } from "../../../interfaces/Learning/LearningModule";
 import { Header } from "../../../layouts";
 import { LearningModuleService } from "../../../services/LearningModuleService";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ViewClassSchedule } from "./ui/ClassSchedule";
 import { AuthService } from "../../../services";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { useEffect } from "react";
 // const url = window.location.href;
 // const id = url.substring(url.lastIndexOf("/") + 1);
 // console.log(id);
@@ -22,12 +21,18 @@ export function LearningModuleDetail() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
   const [learningModule, setLearningModule] = useState<LearningModule>();
-  //write tạm ở đây
+  const navigate = useNavigate();
+
+
   const getSubjectString = (subjectCode: number | undefined): string => {
+
     if (subjectCode == undefined) { return "" }
     return Subject[subjectCode];
   };
 
+  const handleListRequestsInLearningModule = (id: number) => {
+    navigate('/list-request-class', { state: { id } });
+  };
 
 
   useEffect(() => {
@@ -100,6 +105,7 @@ export function LearningModuleDetail() {
                     <button
                       type="button"
                       className="mx-auto text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 w-[35%] py-2.5 text-center mb-2"
+
                     >
                       Request enroll class
                     </button>
@@ -121,19 +127,24 @@ export function LearningModuleDetail() {
                     <button
                       type="button"
                       className="mx-auto text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 w-[35%] py-2.5 text-center mb-2"
+                      onClick={() => handleListRequestsInLearningModule(learningModule?.id || 0)}
                     >
-                      View as Learner
+                      Requests
                     </button>
                   </>
                 )}
 
               </div>
-
             </div>
           </div>
+
+
           <ViewClassSchedule learningModuleId={learningModule?.id} />
+
+
+
         </div>
-      </div>
-    </>
-  );
+        </div>
+      </>
+      );
 }

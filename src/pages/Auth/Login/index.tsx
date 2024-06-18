@@ -159,38 +159,40 @@ export function Login() {
                 </div>
                 <p className="text-red-400 p-5 bg-white font-medium text-sm text-red-500">{message}</p>
 
-                <div className="mt-12">
-                  <button
-                    type="button"
-                    onClick={handleLogin}
-                    className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-blue-700 focus:outline-none"
-                  >
-                    Sign in
-                  </button>
-                </div>
-                <p className="my-8 text-sm text-gray-400 text-center">
-                  or continue with
-                </p>
-                <div className="space-x-8 flex justify-center">
-                  <GoogleLogin
-                    onSuccess={handleGoogleLogin}
-                    onError={() => {
-                      console.log("Login with Google Failed");
-                    }}
-                  />
-                </div>
-              </form>
-            </div>
-            <div className="md:h-full max-md:mt-10 bg-gradient-to-r to-indigo-600 from-sky-400 rounded-xl lg:p-12 p-8">
-              <img
-                src="https://readymadeui.com/signin-image.webp"
-                className="w-full h-full object-contain"
-                alt="login-image"
-              />
-            </div>
+
+              <div className="mt-12">
+                <button
+                  type="button"
+                  onClick={handleLogin}
+                  className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-blue-700 focus:outline-none"
+                >
+                  Sign in
+                </button>
+              </div>
+              <p className="my-8 text-sm text-gray-400 text-center">
+                or continue with
+              </p>
+              <div className="space-x-8 flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleLogin}
+                  onError={() => {
+                    console.log("Login with Google Failed");
+                  }}
+                />
+              </div>
+            </form>
+          </div>
+          <div className="md:h-full max-md:mt-10  rounded-xl ">
+            <img
+              src="/src/assets/login-bg.png"
+              className="w-full h-full object-contain"
+              alt="login-image"
+            />
+
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

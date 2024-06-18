@@ -6,7 +6,7 @@ import { ScheduleService } from "../../../../services/ScheduleService";
 import { LearningModule } from "../../../../interfaces";
 import { WeeklySlotDto } from "../../../../common/dtos/Schedule/WeeklySlotDto";
 
-export function AddCustomLearningSession() {
+export function AddCustomSchedule() {
     const [slots, setSlots] = useState<{ key: string, day: DayOfWeek, startTime: string, endTime: string }[]>([]);
     const location = useLocation();
     const { state } = location;
