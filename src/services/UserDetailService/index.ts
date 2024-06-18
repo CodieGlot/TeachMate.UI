@@ -1,8 +1,11 @@
 import { AddLearnerDetailDto } from './../../common/dtos/UserDetail/AddLearnerDetailDto';
 import axios from "axios";
+import { AppUser } from '../../interfaces';
+import { AuthService } from '../AuthService';
 import { AddTutorDetailDto } from "../../common/dtos/UserDetail";
 import { UpdateTutorDetailDto } from '../../common/dtos/UserDetail/UpdateTutorDetailDto';
 import { UpdateLearnerDetailDto } from '../../common/dtos/UserDetail/UpdateLearnerDetailDto';
+const accessToken = AuthService.getAccessToken();
 export const UserDetailService = {
 
   addTutorDetail: async (dto: AddTutorDetailDto, accessToken: string) => {
@@ -62,6 +65,15 @@ export const UserDetailService = {
     localStorage.removeItem("user");
     localStorage.setItem("user", JSON.stringify(response.data));
 
+  }, getCurrentUserDetail: async () => {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/Auth/Me`, 
+      {headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },});
+    localStorage.removeItem("user");
+    localStorage.setItem("user", JSON.stringify(response.data));
+    const appUser: AppUser = response.data;
+    return appUser;
   }
 
 };

@@ -1,8 +1,25 @@
+import { useEffect, useState } from "react";
 import { UserRole } from "../../../common/enums";
 import { Header } from "../../../layouts";
-import { AuthService } from "../../../services";
+import { AuthService, UserDetailService } from "../../../services";
+import { AppUser } from "../../../interfaces";
 export function Profile() {
-    const user = AuthService.getCurrentUser();
+    const [user, setUser] = useState<AppUser>();
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+          try {
+            const userDetails = await UserDetailService.getCurrentUserDetail();
+            setUser(userDetails); // Update user state with fetched user details
+            
+          } catch (error) {
+            console.error('Failed to fetch user details', error);
+            // Handle error if needed
+          }
+        };
+    
+        fetchUserDetails(); // Call the async function to fetch user details
+      }, []); // Empty dependency array ensures this effect runs only once on component mount
+    
     const navigateToUpdate = () => {
         if(user?.userRole==UserRole.TUTOR){
         window.location.href = '/update-tutor-detail';

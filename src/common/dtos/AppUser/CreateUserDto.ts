@@ -5,4 +5,5 @@ export interface CreateUserDto {
   password: string;
   confirmPassword: string;
   userRole: UserRole;
+  email : String;
 }
