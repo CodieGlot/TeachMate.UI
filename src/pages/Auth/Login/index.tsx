@@ -181,9 +181,9 @@ export function Login() {
               </div>
             </form>
           </div>
-          <div className="md:h-full max-md:mt-10 bg-gradient-to-r to-indigo-600 from-sky-400 rounded-xl lg:p-12 p-8">
+          <div className="md:h-full max-md:mt-10  rounded-xl ">
             <img
-              src="https://readymadeui.com/signin-image.webp"
+              src="/src/assets/login-bg.png"
               className="w-full h-full object-contain"
               alt="login-image"
             />

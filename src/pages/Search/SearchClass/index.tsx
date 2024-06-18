@@ -185,6 +185,11 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
       subject: prevParams.subject === subjectValue ? 0 : subjectValue, // Toggle subject value
     }));
   };
+
+  const handleJoinClass = (id: number) => {
+    navigate('/request-join', { state: { id } });
+  };
+  
   // const isInputElement = (target: EventTarget): target is HTMLInputElement => {
   //   return (target as HTMLInputElement).type !== undefined;
   // };    //Buoc 1*****************
@@ -581,15 +586,13 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                           </button>
                           {expandedClass === index && (
                             <div className="mt-4 space-y-2">
-                              <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" onClick={() => viewLearningModuleDetail(classItem.id.toString())}>
+                              <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"  onClick={() => handleJoinClass(classItem.id)}>
                                 Join
                               </button>
-                              <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-                                Try Now
+                              <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600" onClick={() => viewLearningModuleDetail(classItem.id.toString())}>
+                                View Detail
                               </button>
-                              <button className="block w-full px-4 py-2 text-white bg-yellow-500 rounded hover:bg-yellow-600">
-                                Give Feedback
-                              </button>
+                             
                             </div>
                           )}
                         </div>
