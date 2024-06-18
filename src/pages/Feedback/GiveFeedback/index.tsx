@@ -1,36 +1,46 @@
-// GiveFeedback.tsx
 import React, { useState } from 'react';
 import { FeedbackService } from '../../../services';
 
 export const GiveFeedback = () => {
     const [comment, setComment] = useState('');
     const [star, setStar] = useState(0);
-    const [learningModuleId, setLearningModuleId] = useState(0);
+    const [learningModuleId, setLearningModuleId] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(true);
 
     const handleSubmit = async () => {
-
         try {
-
-            FeedbackService.givefeedback({
+            await FeedbackService.givefeedback({
                 comment,
                 star,
-                learningModuleId,
-                isAnonymous
-            })
+                learningModuleId: Number(learningModuleId),
+                isAnonymous,
+            });
+
+            // Optionally, reset form fields after successful submission
+            setComment('');
+            setStar(0);
+            setLearningModuleId('');
+            setIsAnonymous(true);
+
+            console.log('Feedback submitted successfully!');
         } catch (error) {
-            console.error("Send Fail", error)
+            console.error('Failed to submit feedback', error);
         }
+    };
 
-
-    }
+    const handleStarChange = (index: number) => {
+        setStar(index); // Update state when a star is clicked
+    };
 
     return (
         <main className="w-screen h-screen flex justify-center items-center dark:bg-gray-900">
             <div className="max-w-7xl dark:bg-gray-950 dark:text-white">
-                <form className="w-full p-4 rounded shadow-md">
-                    <h2 className="text-xl mb-4 tracking-wider font-lighter text-gray-900 dark:text-gray-200">Leave a Comment</h2>
-                    <p className="text-gray-600 mb-4">Your email address will not be published. Required fields are marked *</p>
+                <form className="w-full p-4 rounded shadow-md" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+                    <h2 className="text-xl mb-4 tracking-wider font-lighter text-gray-900 dark:text-gray-200">
+                        <span className="bg-gradient-to-r to-indigo-600 from-sky-400 bg-clip-text text-transparent font-bold">
+                            Give feedback
+                        </span>
+                    </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="mb-4 col-span-1 md:col-span-3">
@@ -40,37 +50,42 @@ export const GiveFeedback = () => {
                                 value={comment}
                                 onChange={(e) => setComment(e.target.value)}
                                 className="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed resize-none"
-                                placeholder="Type Comment...*"
+                                placeholder="Comment...*"
                                 rows={5}
                                 required
                             ></textarea>
                         </div>
 
-                        <div className="mb-4">
-                            <input
-                                type="number"
-                                id="star"
-                                name="star"
-                                value={star}
-                                onChange={(e) => setStar(Number(e.target.value))}
-                                className="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed"
-                                placeholder="Star Rating*"
-                                min={1}
-                                max={5}
-                                required
-                            />
+                        <div className="mb-4 col-span-1 md:col-span-3">
+                            <div className="flex items-center">
+                                {[...Array(5)].map((_, index) => (
+                                    <svg
+                                        key={index}
+                                        className={`w-4 h-4 cursor-pointer ${index < star ? 'text-yellow-300' : 'text-gray-300 dark:text-gray-500'} ms-1`}
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 22 20"
+                                        onClick={() => handleStarChange(index + 1)}
+                                    >
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                ))}
+                            </div>
                         </div>
+
                         <div className="mb-4">
                             <input
                                 type="number"
                                 id="learningModuleId"
                                 name="learningModuleId"
                                 value={learningModuleId}
-                                onChange={(e) => setLearningModuleId(Number(e.target.value))}
+                                onChange={(e) => setLearningModuleId(e.target.value)}
                                 className="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed"
                                 placeholder="Learning Module ID"
                             />
                         </div>
+
                         <div className="mb-4">
                             <label htmlFor="isAnonymous" className="text-gray-700 dark:text-gray-300">
                                 <input
@@ -85,10 +100,12 @@ export const GiveFeedback = () => {
                             </label>
                         </div>
                     </div>
+
                     <div className="flex justify-end">
-                        <button onClick={handleSubmit}
-                            type="submit"
-                            className="py-4 px-6 bg-blue-950 text-white rounded-sm bg-gradient-to-r to-indigo-600 from-sky-400 "
+                        <button
+                            type="button"
+                            onClick={handleSubmit}
+                            className="py-4 px-6 bg-blue-950 text-white rounded-sm bg-gradient-to-r to-indigo-600 from-sky-400"
                         >
                             Post Comment →
                         </button>
