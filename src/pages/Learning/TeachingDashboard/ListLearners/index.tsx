@@ -1,98 +1,59 @@
 
-import { RequestStatus } from "../../../../common/enums";
+// import { RequestStatus } from "../../../../common/enums";
 import { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
 import { LearningModuleService } from "../../../../services/LearningModuleService";
-import { LearningModuleRequest } from "../../../../interfaces/Learning/LearningModuleRequest";
 import { useSearchParams } from "react-router-dom";
-import { AuthService } from "../../../../services";
-export function ListRequestsForClass() {
-  const user= AuthService.getCurrentUser();
-  const location = useLocation();
+import { Learner } from "../../../../interfaces";
+export function LearnersInClass() {
+  
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
-  const [learningModuleRequests, setLearningModuleRequests] = useState<LearningModuleRequest[]>([])
-  const getStatusString = (statusCode: number): string => {
-    return RequestStatus[statusCode];
-  };
+  const [learners, setLearners] = useState<Learner[]>([])
+ 
 
   useEffect(() => {
-    const fetchLearningModuleRequests = async () => {
+    const fetchLearners = async () => {
       try {
         if (id) {
-          const learningModuleRequests = await LearningModuleService.getAllReceivedRequestsByModuleId(id);
-          setLearningModuleRequests(learningModuleRequests);
+          const learners = await LearningModuleService.getAllLearnersInLearningModule(id);
+          setLearners(learners);
         }
       } catch (error) {
-        console.error('Error fetching learning module requests:', error);
+        console.error('Error fetching learners:', error);
       }
     };
-    fetchLearningModuleRequests();
+    fetchLearners();
   }, []);
 
-  const handleAccept = async (moduleId: number, requestId: number) => {
-    try {
-      await LearningModuleService.updateRequestStatus({
-        learningModuleId: moduleId,
-        learningRequestId: requestId,
-        status: RequestStatus.Approved,
-      });
-      // Update the state to reflect the new status
-      setLearningModuleRequests(prevRequests =>
-        prevRequests.map(request =>
-          request.id === requestId ? { ...request, status: RequestStatus.Approved } : request
-        )
-      );
-    } catch (err) {
-      console.error('Error accepting request:', err);
-    }
-  };
+  // const handleAccept = async (moduleId: number, requestId: number) => {
+  //   try {
+  //     const request = await LearningModuleService.updateRequestStatus(
+  //       {learningModuleId: moduleId,
+  //       learningRequestId: requestId,
+  //       status: RequestStatus.Approved,
+  //       }
+  //     )
+  //     window.location.reload();
+  //   } catch (err) {
+  //     console.error('Error fetching accept requests:', err);
 
-  const handleReject = async (moduleId: number, requestId: number) => {
-    try {
-      await LearningModuleService.updateRequestStatus({
-        learningModuleId: moduleId,
-        learningRequestId: requestId,
-        status: RequestStatus.Rejected,
-      });
-      // Update the state to reflect the new status
-      setLearningModuleRequests(prevRequests =>
-        prevRequests.map(request =>
-          request.id === requestId ? { ...request, status: RequestStatus.Rejected } : request
-        )
-      );
-    } catch (err) {
-      console.error('Error rejecting request:', err);
-    }
-  };
+  //   }
+   
+  // }
+  // const handleReject = async (moduleId: number, requestId: number) => {
+  //   try {
+  //     const request = await LearningModuleService.updateRequestStatus(
+  //       {learningModuleId: moduleId,
+  //       learningRequestId: requestId,
+  //       status: RequestStatus.Rejected,
+  //       }
+  //     )
+  //     window.location.reload();
+  //   } catch (err) {
+  //     console.error('Error fetching accept requests:', err);
 
-  function getStatusClasses(status: RequestStatus) {
-    switch (status) {
-      case RequestStatus.Waiting:
-        return 'text-yellow-900';
-      case RequestStatus.Approved:
-        return 'text-green-900';
-      case RequestStatus.Rejected:
-        return 'text-red-900';
-      // Add more cases as needed
-      default:
-        return 'text-gray-900';
-    }
-  }
-
-  function getStatusBackgroundClasses(status: RequestStatus) {
-    switch (status) {
-      case RequestStatus.Waiting:
-        return 'bg-yellow-200';
-      case RequestStatus.Approved:
-        return 'bg-green-200';
-      case RequestStatus.Rejected:
-        return 'bg-red-200';
-      // Add more cases as needed
-      default:
-        return 'bg-gray-200';
-    }
-  }
+  //   }
+  // }
 
   return (
     <>
@@ -100,8 +61,8 @@ export function ListRequestsForClass() {
       <div className="mx-auto p-8 rounded-md w-5/6">
         <div className=" flex items-center justify-between pb-6">
           <div>
-            <h2 className="text-gray-600 font-semibold">Requests</h2>
-            <span className="text-xs">All request</span>
+            <h2 className="text-gray-600 font-semibold">Learners</h2>
+            <span className="text-xs">All learners in class</span>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex bg-gray-50 items-center p-2 rounded-md">
@@ -118,7 +79,7 @@ export function ListRequestsForClass() {
           </div>
         </div>
         <div>
-          {learningModuleRequests.length > 0 ? (
+          {learners.length > 0 ? (
             <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
               <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
                 <table className="min-w-full leading-normal">
@@ -128,22 +89,22 @@ export function ListRequestsForClass() {
                         Name
                       </th>
                       <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Title
+                        Grade Level
                       </th>
                       <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Created at
+                        {/* Created at */}
                       </th>
                       <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Status
+                        {/* Status */}
                       </th>
                       <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Action
+                        {/* Action */}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {learningModuleRequests.map(request => (
-                      <tr key={request.id}>
+                    {learners.map(learner => (
+                      <tr key={learner.id}>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 w-10 h-10">
@@ -154,28 +115,28 @@ export function ListRequestsForClass() {
                               />
                             </div>
                             <div className="ml-3">
-                              <p className="text-gray-900 whitespace-no-wrap">{request.requesterDisplayName}</p>
+                              <p className="text-gray-900 whitespace-no-wrap">{learner.displayName}</p>
                             </div>
                           </div>
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap font-semibold">{request.title}</p>
+                          <p className="text-gray-900 whitespace-no-wrap font-semibold">{learner.gradeLevel}</p>
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">{request.createdAt}</p>
+                          <p className="text-gray-900 whitespace-no-wrap"></p>
                         </td>
                         
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusClasses(request.status)}`}>
+                          {/* <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusClasses(request.status)}`}>
                             <span
                               className={`absolute inset-0 opacity-50 rounded-full ${getStatusBackgroundClasses(request.status)}`}
                               aria-hidden="true"
                             ></span>
                             <span className="relative">{getStatusString(request.status)}</span>
-                          </span>
+                          </span> */}
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-  <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
+  {/* <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
     {request.status === RequestStatus.Waiting && (
       <>
         <button onClick={() => handleAccept(request.learningModuleId, request.id)}>
@@ -206,7 +167,7 @@ export function ListRequestsForClass() {
         </button>
       </>
     )}
-  </p>
+  </p> */}
 </td>
 
                       </tr>

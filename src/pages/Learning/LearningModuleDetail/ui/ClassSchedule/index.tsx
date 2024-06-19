@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { LearningSession } from '../../../../../interfaces';
+import { LearningModule, LearningSession } from '../../../../../interfaces';
 import { ScheduleService } from '../../../../../services/ScheduleService';
 import { AddNewCustomSessionModal } from '../../../Schedule';
 import { useSearchParams } from 'react-router-dom';
+import { AuthService } from '../../../../../services';
+import { LearningModuleService } from '../../../../../services/LearningModuleService';
 
 
 export function ViewClassSchedule() {
     const [learningSessions, setLearningSessions] = useState<LearningSession[]>([]);
+
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const learningModuleId = Number.parseInt(id || "0");
-
+    const user = AuthService.getCurrentUser();
     useEffect(() => {
         const fetchLearningSessions = async (id: number) => {
             try {
                 const data = await ScheduleService.getScheduleById(id);
+               
                 setLearningSessions(data);
             } catch (error) {
                 console.log("Error fetching learning modules:", error);
@@ -22,6 +26,7 @@ export function ViewClassSchedule() {
         }
         if (id !== undefined) {
             fetchLearningSessions(learningModuleId);
+            
         }
     }, [])
     const sessions: LearningSession[] = learningSessions;
@@ -212,6 +217,7 @@ export function ViewClassSchedule() {
                             <AddNewCustomSessionModal learningModuleId={learningModuleId} />
                         </div>
                     </div>
+                    {user?.tutor !== null && (<p className='mx-auto text-right text-indigo-400'>Free session can only add before start date</p>)}
                     <div className="flex text-gray-400 font-serif gap-20 mt-8">
                         <p>Week</p>
                         {getWeekDates(currentWeekIndex).map((day, index) => (

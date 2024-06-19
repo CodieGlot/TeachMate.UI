@@ -4,6 +4,7 @@ import { AuthService } from "../AuthService";
 import { CreateLearningModuleDto, UpdateStatusDto } from "../../common/dtos";
 import { CreateLearningModuleRequestDto } from "../../common/dtos/LearningModule/CreateLearningModuleRequestDto";
 import { LearningModuleRequest } from "../../interfaces/Learning/LearningModuleRequest";
+import { Learner } from "../../interfaces";
 const token = AuthService.getAccessToken()
 
 export const LearningModuleService = {
@@ -93,6 +94,19 @@ export const LearningModuleService = {
         );
         const learningModuleRequests: LearningModuleRequest = response.data;
         return learningModuleRequests;
+      },
+
+      getAllLearnersInLearningModule: async (id: string | null) : Promise<Learner[]> => {
+        const response = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/Learners/GetAll?learningModuleId=`+id,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const learners: Learner[] = response.data;
+        return learners;
       },
       
 };

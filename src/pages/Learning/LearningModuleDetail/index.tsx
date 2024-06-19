@@ -5,7 +5,7 @@ import { LearningModuleService } from "../../../services/LearningModuleService";
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ViewClassSchedule } from "./ui/ClassSchedule";
-import { AuthService } from "../../../services";
+import { AuthService, UserDetailService } from "../../../services";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 // const url = window.location.href;
@@ -21,6 +21,8 @@ export function LearningModuleDetail() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
   const [learningModule, setLearningModule] = useState<LearningModule>();
+  const [number, setNumber] = useState(0);
+
   const navigate = useNavigate();
 
 
@@ -39,7 +41,9 @@ export function LearningModuleDetail() {
     const viewLearningModuleDetail = async () => {
       try {
         const data = await LearningModuleService.getLearningModuleById(id);
+        const number = (await LearningModuleService.getAllLearnersInLearningModule(id)).length;
         setLearningModule(data)
+        setNumber(number)
       } catch (error) {
         console.error("Error fetching learning module:", error);
 
@@ -68,7 +72,7 @@ export function LearningModuleDetail() {
                   </div>
                 </div>
                 <div><div style={{ width: '300px' }} className="bg-transparent hover:bg-sky-400  text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
-                  Learners: ../{learningModule?.maximumLearners}
+                  Learners: {number}/{learningModule?.maximumLearners}
                 </div></div>
                 <div><div style={{ width: '300px' }} className="bg-transparent hover:bg-sky-400  text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
                   Duration: {learningModule?.duration} minutes/ session
@@ -84,7 +88,7 @@ export function LearningModuleDetail() {
                   <div className="flex gap-5">
                     <img width={50} height={50} src="https://www.theventuretours.com/wp-content/uploads/2020/03/avatar-icon-png-1-1024x1024.png" />
                     <div>
-                      <h1>Tutor name</h1>
+                      <h1>{learningModule?.tutor?.displayName}</h1>
                       <h2>Tutor</h2>
                     </div>
                   </div>
@@ -124,13 +128,7 @@ export function LearningModuleDetail() {
                     >
                       Update Information
                     </button>
-                    <button
-                      type="button"
-                      className="mx-auto text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 w-[35%] py-2.5 text-center mb-2"
-                      onClick={() => handleListRequestsInLearningModule()}
-                    >
-                      Requests
-                    </button>
+                    
                   </>
                 )}
 

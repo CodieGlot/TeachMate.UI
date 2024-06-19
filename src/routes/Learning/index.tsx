@@ -46,6 +46,8 @@ const learningRoutes = [
     path: "/enroll-class",
     element: <EnrollClass />
   },
+
+ 
 ];
 
 export default learningRoutes;
