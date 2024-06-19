@@ -145,13 +145,13 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
   };
 
 
-  const handleSubjectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const subjectValue = Number(event.target.value);
-    setSearchParams((prevParams) => ({
-      ...prevParams,
-      subject: prevParams.subject === subjectValue ? 0 : subjectValue, // Toggle subject value
-    }));
-  };
+  // const handleSubjectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const subjectValue = Number(event.target.value);
+  //   setSearchParams((prevParams) => ({
+  //     ...prevParams,
+  //     subject: prevParams.subject === subjectValue ? 0 : subjectValue, // Toggle subject value
+  //   }));
+  // };
 
   const handleJoinClass = (id: number) => {
     navigate('/request-join', { state: { id } });
