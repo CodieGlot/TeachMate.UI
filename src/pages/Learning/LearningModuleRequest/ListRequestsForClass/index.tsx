@@ -8,7 +8,9 @@ import { LearningModuleService } from "../../../../services/LearningModuleServic
 import { LearningModule } from "../../../../interfaces";
 import { LearningModuleRequest } from "../../../../interfaces/Learning/LearningModuleRequest";
 import { useSearchParams } from "react-router-dom";
+import { AuthService } from "../../../../services";
 export function ListRequestsForClass() {
+  const user= AuthService.getCurrentUser();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
@@ -31,6 +33,33 @@ export function ListRequestsForClass() {
     fetchLearningModuleRequests();
   }, []);
 
+  const handleAccept = async (moduleId: number, requestId: number) => {
+    try {
+      const request = await LearningModuleService.updateRequestStatus(
+        {learningModuleId: moduleId,
+        learningRequestId: requestId,
+        status: RequestStatus.Approved,
+        }
+      )
+    } catch (err) {
+      console.error('Error fetching accept requests:', err);
+
+    }
+   
+  }
+  const handleReject = async (moduleId: number, requestId: number) => {
+    try {
+      const request = await LearningModuleService.updateRequestStatus(
+        {learningModuleId: moduleId,
+        learningRequestId: requestId,
+        status: RequestStatus.Rejected,
+        }
+      )
+    } catch (err) {
+      console.error('Error fetching accept requests:', err);
+
+    }
+  }
   function getStatusClasses(status: RequestStatus) {
     switch (status) {
       case RequestStatus.Waiting:
@@ -140,14 +169,15 @@ export function ListRequestsForClass() {
                           </span>
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
-                          <p className="flex gap-1 text-gray-900 whitespace-no-wrap"><button><span className={`relative inline-block px-3 py-1 font-semibold leading-tight text-green-800`}>
+                          <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
+                            <button  onClick={() => handleAccept(request.learningModuleId, request.id)}><span className={`relative inline-block px-3 py-1 font-semibold leading-tight text-green-800`}>
                             <span
                               className={`absolute inset-0 opacity-50 rounded-full bg-green-200`}
                               aria-hidden="true"
                             ></span>
                             <span className="relative"><img width="20" height="20" src="https://img.icons8.com/?size=100&id=21068&format=png&color=000000" alt="unfriend-female"/></span>
                           </span></button>
-                          <button><span className={`relative inline-block px-3 py-1 font-semibold leading-tight text-red-800`}>
+                          <button onClick={() => handleReject(request.learningModuleId, request.id)}><span className={`relative inline-block px-3 py-1 font-semibold leading-tight text-red-800`}>
                             <span
                               className={`absolute inset-0 opacity-50 rounded-full bg-red-200`}
                               aria-hidden="true"
