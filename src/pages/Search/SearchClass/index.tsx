@@ -43,7 +43,7 @@ interface SearchClassProps {
 
 export function SearchClass({ searchQuery }: SearchClassProps) {
 
-  
+
   const [message, setMessage] = useState<string | null>("");
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
@@ -99,15 +99,15 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     fetchClasses();
   }, [searchParams]);
 
-  const viewLearningModuleDetail = async (id: string) => {
-    try {
+  // const viewLearningModuleDetail = async (id: string) => {
+  //   try {
 
-      navigate("/view-learning-module-detail?id=" + id, { state: id })
-    } catch (error) {
-      console.error("Error fetching learning module:", error);
+  //     navigate("/view-learning-module-detail?id=" + id, { state: id })
+  //   } catch (error) {
+  //     console.error("Error fetching learning module:", error);
 
-    }
-  }
+  //   }
+  // }
   const indexOfLastClass = currentPage * sectionsPerPage;
   const indexOfFirstClass = indexOfLastClass - sectionsPerPage;
   const currentClasses = classes.slice(indexOfFirstClass, indexOfLastClass);
@@ -547,9 +547,9 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                             </button>
                             {expandedClass === index && (
                               <div className="mt-4 space-y-2">
-                               <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"  onClick={() => handleJoinClass(classItem.id)}>
-                                Join
-                              </button>
+                                <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" onClick={() => handleJoinClass(classItem.id)}>
+                                  Join
+                                </button>
                                 <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
                                   Try Now
                                 </button>

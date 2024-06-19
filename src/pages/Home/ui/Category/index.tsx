@@ -1,4 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 export function Category() {
+  const navigate = useNavigate();
+  const handleSignUp = async () => {
+    navigate("/auth/signup");
+  }
   return (
     <>
       <div className="bg-white">
@@ -155,7 +161,8 @@ export function Category() {
                       Get a free tutoring session for yourself to see how other tutors use the site. Not only will you get homework help, but you'll also gain the confidence to see if tutoring is right for you!
                     </p>
                   </div>
-                  <a href="#" className="mt-6 flex items-center justify-center rounded-full border border-transparent bg-gradient-to-r from-sky-500 to-indigo-700 px-6 py-3 text-base font-semibold text-white shadow-lg transition-transform transform hover:scale-105 w-full">
+                  <a href="#" className="mt-6 flex items-center justify-center rounded-full border border-transparent bg-gradient-to-r from-sky-500 to-indigo-700 px-6 py-3 text-base font-semibold text-white shadow-lg transition-transform transform hover:scale-105 w-full"
+                    onClick={handleSignUp}>
                     Sign Up as Learner
                   </a>
                 </div>

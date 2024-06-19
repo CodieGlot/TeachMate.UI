@@ -199,7 +199,7 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
                     {/* Details Section */}
                     {expandedTutor === index && (
                       <div className="mt-4 text-gray-600 dark:text-gray-300">
-                        <p><strong>Bio:</strong> {tutor.tutor?.description}</p>
+                        <p><strong>Description:</strong> {tutor.tutor?.description}</p>
                         {/* <p><strong>Qualifications:</strong> {tutor.displayName}</p>
                       <p><strong>Subjects:</strong> {tutor.displayName.join(", ")}</p> */}
                         {/* Add any other fields you want to show */}

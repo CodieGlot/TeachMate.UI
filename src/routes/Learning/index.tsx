@@ -1,5 +1,8 @@
-import { CreateLearningModule, LearningDashboard, LearningModuleDetail, ListModule, ListRequestsForClass, RequestJoinLearningModule, TeachingDashboard, UpdateLearningModule } from "../../pages";
+import { CreateLearningModule, LearningDashboard, LearningModuleDetail, ListRequestsForClass, RequestJoinLearningModule, TeachingDashboard } from "../../pages";
+import { ListModule } from "../../pages/Learning/TeachingDashboard";
+import { EnrollClass } from "../../pages/Learning/TeachingDashboard/ErollClass";
 import { ManageClass } from "../../pages/Learning/TeachingDashboard/ManageClass";
+import { UpdateLearningModule } from "../../pages/Learning/TeachingDashboard";
 
 const learningRoutes = [
   {
@@ -18,25 +21,30 @@ const learningRoutes = [
     path: "/list-learning-module",
     element: <ListModule />,
   },
-  { path: "/create-learning-module",
-    element: <CreateLearningModule/>
+  {
+    path: "/create-learning-module",
+    element: <CreateLearningModule />
   },
   {
     path: "/view-learning-module-detail",
-    element: <LearningModuleDetail/>
+    element: <LearningModuleDetail />
   },
   {
     path: "/update-learning-module-detail",
-    element: <UpdateLearningModule/>
+    element: <UpdateLearningModule />
   },
   {
     path: "/request-join",
-    element: <RequestJoinLearningModule/>
+    element: <RequestJoinLearningModule />
   },
 
   {
     path: "/list-request-class",
-    element: <ListRequestsForClass/>
+    element: <ListRequestsForClass />
+  },
+  {
+    path: "/enroll-class",
+    element: <EnrollClass />
   },
 ];
 

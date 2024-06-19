@@ -26,8 +26,13 @@ export function ListModule() {
 
   const viewLearningModuleDetail = async (id: string) => {
     try {
+      if (user?.userRole == UserRole.TUTOR) {
+        navigate("/manage-class?id=" + id,)
+      }
+      else if (user?.userRole == UserRole.LEARNER) {
+        navigate("/enroll-class?id=" + id,)
+      }
 
-      navigate("/manage-class?id=" + id, { state: id })
     } catch (error) {
       console.error("Error fetching learning module:", error);
 

@@ -4,9 +4,9 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { LearningModuleDetail } from '../../LearningModuleDetail';
 import { ViewClassSchedule } from '../../LearningModuleDetail/ui/ClassSchedule';
-import { ListRequestsForClass } from '../../LearningModuleRequest';
+import { GiveFeedback } from '../../../Feedback';
 
-export function ManageClass() {
+export function EnrollClass() {
     // Tạo state để lưu trữ tab đang được chọn
     const [selectedTab, setSelectedTab] = useState<string>('tutor');
     useEffect(() => {
@@ -54,7 +54,7 @@ export function ManageClass() {
                                 <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" />
                                 </svg>
-                                Request
+                                OVERTHINKING
                             </a>
                         </li>
                         <li>
@@ -89,13 +89,13 @@ export function ManageClass() {
                             <ViewClassSchedule />
                         )}
                         {selectedTab === 'settings' && (
-                            <ListRequestsForClass />
-                        )}
-                        {selectedTab === 'contact' && (
                             <div>
                                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Contact Tab</h3>
                                 <p className="mb-2">This is some placeholder content for the Contact tab's associated content. Clicking another tab will toggle the visibility of this one for the next.</p>
                             </div>
+                        )}
+                        {selectedTab === 'contact' && (
+                            <GiveFeedback />
                         )}
                     </div>
                 </div>
