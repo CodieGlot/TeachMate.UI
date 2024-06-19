@@ -1,7 +1,7 @@
-import { Subject } from "../../../common/enums";
-import { LearningModule } from "../../../interfaces/Learning/LearningModule";
-import { Header } from "../../../layouts";
-import { LearningModuleService } from "../../../services/LearningModuleService";
+import { Subject } from "../../../../common/enums";
+import { LearningModule } from "../../../../interfaces/Learning/LearningModule";
+import { Header } from "../../../../layouts";
+import { LearningModuleService } from "../../../../services/LearningModuleService";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AOS from 'aos';
@@ -25,7 +25,7 @@ export function ListModule() {
   const viewLearningModuleDetail = async (id: string) => {
     try {
 
-      navigate("/view-learning-module-detail?id=" + id, { state: id })
+      navigate("/manage-class?id=" + id, { state: id })
     } catch (error) {
       console.error("Error fetching learning module:", error);
 

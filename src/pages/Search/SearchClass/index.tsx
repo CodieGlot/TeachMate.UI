@@ -4,7 +4,6 @@ import { SearchClassDto } from "../../../common/dtos";
 import { LearningModule } from "../../../interfaces";
 import { Subject } from "../../../common/enums";
 import { ModuleType } from "../../../common/enums";
-import { useNavigate } from "react-router-dom";
 import {
   Dialog, //Là một thành phần UI dùng để hiển thị một hộp thoại (dialog) lên màn hình. Thường được sử dụng để yêu cầu người dùng cung cấp thông tin hay xác nhận một hành động quan trọng.
   DialogPanel, //Đây là thành phần dùng để hiển thị nội dung bên trong của dialog, chẳng hạn như nội dung text, nút xác nhận/hủy.
@@ -22,7 +21,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-
+import { useNavigate } from "react-router-dom";
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
   { name: 'Best Rating', href: '#', current: false },
@@ -43,12 +42,17 @@ interface SearchClassProps {
 }
 
 export function SearchClass({ searchQuery }: SearchClassProps) {
+
+  
   const [message, setMessage] = useState<string | null>("");
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   const navigate = useNavigate();
 
+  const handleJoinClass = (id: number) => {
+    navigate('/request-join', { state: { id } });
+  };
   const [searchParams, setSearchParams] = useState<SearchClassDto>({   // use state là biến để lưu ban đầu và được thay đổi trong quá trình code bằng hàm set
     titleOrDesc: searchQuery || "",
     subject: 0,
@@ -56,7 +60,7 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     startOpenDate: null,
     endOpenDate: null,
     maximumLearners: -1,
-    moduleType: 0,
+    moduleType: 2,
     numOfWeeks: -1,
   });
 
@@ -142,19 +146,6 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  };
-
-
-  const handleSubjectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const subjectValue = Number(event.target.value);
-    setSearchParams((prevParams) => ({
-      ...prevParams,
-      subject: prevParams.subject === subjectValue ? 0 : subjectValue, // Toggle subject value
-    }));
-  };
-
-  const handleJoinClass = (id: number) => {
-    navigate('/request-join', { state: { id } });
   };
 
   const toggleDetails = (index: number) => {
@@ -442,7 +433,6 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                             </svg>
                             <span className="sr-only">Search</span>
                           </button>
-
                         </div>
                       </form>
                     </div>
@@ -553,19 +543,18 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                               onClick={() => toggleDetails(index)}
                               className="mt-4 w-full rounded-lg border-2 border-indigo-400 px-10 py-2 text-sm text-indigo-500 font-semibold hover:bg-indigo-400 hover:text-white"
                             >
-
-                              {expandedClass === index && (
-                                <div className="mt-4 space-y-2">
-                                  <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" onClick={() => handleJoinClass(classItem.id)}>
-                                    Join
-                                  </button>
-                                  <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600" onClick={() => viewLearningModuleDetail(classItem.id.toString())}>
-                                    View Detail
-                                  </button>
-
-                                </div>
-                              )}
+                              {expandedClass === index ? "Hide Details" : "Show Details"}
                             </button>
+                            {expandedClass === index && (
+                              <div className="mt-4 space-y-2">
+                               <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"  onClick={() => handleJoinClass(classItem.id)}>
+                                Join
+                              </button>
+                                <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+                                  Try Now
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}

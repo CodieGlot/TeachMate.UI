@@ -30,8 +30,8 @@ export function LearningModuleDetail() {
     return Subject[subjectCode];
   };
 
-  const handleListRequestsInLearningModule = (id: number) => {
-    navigate('/list-request-class', { state: { id } });
+  const handleListRequestsInLearningModule = () => {
+    navigate('/list-request-class?id='+{id});
   };
 
 
@@ -50,7 +50,7 @@ export function LearningModuleDetail() {
   return (
     <>
       <div data-aos="zoom-in-left" data-aos-duration="1000">
-        <Header />
+       
         <div className="py-3 px-4 mx-auto max-w-4xl lg:py-5">
           <div className=" mx-auto py-2 mb-5 text-center">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
@@ -127,7 +127,7 @@ export function LearningModuleDetail() {
                     <button
                       type="button"
                       className="mx-auto text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 w-[35%] py-2.5 text-center mb-2"
-                      onClick={() => handleListRequestsInLearningModule(learningModule?.id || 0)}
+                      onClick={() => handleListRequestsInLearningModule()}
                     >
                       Requests
                     </button>
@@ -139,7 +139,7 @@ export function LearningModuleDetail() {
           </div>
 
 
-          <ViewClassSchedule learningModuleId={learningModule?.id} />
+          
 
 
 
