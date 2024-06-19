@@ -1,10 +1,16 @@
 import { CreateLearningModule, LearningDashboard, LearningModuleDetail, ListModule, ListRequestsForClass, RequestJoinLearningModule, TeachingDashboard, UpdateLearningModule } from "../../pages";
+import { ManageClass } from "../../pages/Learning/TeachingDashboard/ManageClass";
 
 const learningRoutes = [
   {
     path: "/teaching",
     element: <TeachingDashboard />,
-  },{
+  },
+  {
+    path: "/manage-class",
+    element: <ManageClass />,
+  },
+  {
     path: "/learning",
     element: <LearningDashboard />,
   },

@@ -31,7 +31,7 @@ export function UserSchedule() {
             };
         }
         fetchLearningSessions();
-    })
+    },[])
     const sessions: LearningSession[] = learningSessions;
 
     const timeStringToDouble = (timeString: string): number => {

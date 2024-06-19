@@ -3,18 +3,16 @@ import { AuthService } from '../../../../../services';
 import { LearningSession } from '../../../../../interfaces';
 import { ScheduleService } from '../../../../../services/ScheduleService';
 import { AddNewCustomSessionModal } from '../../../Schedule';
+import { useSearchParams } from 'react-router-dom';
 
 
-interface ViewClassScheduleProps {
-    learningModuleId: number | undefined;
-}
-
-export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) {
+export function ViewClassSchedule() {
     const user = AuthService.getCurrentUser();
     const [learningSessions, setLearningSessions] = useState<LearningSession[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const learningModuleId = Number.parseInt(id || "0");
 
     useEffect(() => {
         const fetchLearningSessions = async (id: number) => {
@@ -25,10 +23,10 @@ export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) 
                 console.log("Error fetching learning modules:", error);
             };
         }
-        if (learningModuleId !== undefined) {
+        if (id !== undefined) {
             fetchLearningSessions(learningModuleId);
         };
-    })
+    }, [])
     const sessions: LearningSession[] = learningSessions;
 
     const timeStringToDouble = (timeString: string): number => {
@@ -146,12 +144,33 @@ export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) 
 
     return (
         <>
-            <hr />
+        
+           
+            <div className='h-[1200px]'>
+            <div className=" flex items-center justify-between pb-6 w-5/6 p-8">
+          <div>
+            <h2 className="text-gray-600 font-semibold">Schedule</h2>
+            <span className="text-xs">All teaching session</span>
+          </div>
+          <hr />
+          <div className="flex items-center justify-between">
+            <div className="flex bg-gray-50 items-center p-2 rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clip-rule="evenodd" />
+              </svg>
+              <input className="bg-gray-50 outline-none ml-1 block " type="text" name="" id="" placeholder="search..." />
+            </div>
+            <div className="lg:ml-40 ml-10 space-x-8">
+            </div>
+          </div>
+        </div>
             <div className="mt-10 py-2 mb-5">
-                <h3 className="text-3xl font-bold dark:text-white">Schedule</h3>
-                <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">View Class Schedule</p>
+               
                 <div className="flex justify-between">
-                    <h5 className="text-xl font-bold dark:text-white">
+                    <h5 className="text-xl font-sm text-gray-600 dark:text-white">
                         {new Date().toLocaleString('en-US', { month: 'long' })}, {new Date().getDate()}-{new Date().getFullYear()}
                     </h5>
                     <div className="flex justify-end gap-2">
@@ -228,7 +247,8 @@ export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) 
                 ))}
                 {/* Render sessions */}
                 {renderSessions(currentWeekIndex)}
-            </div>
+            </div></div>
+     
         </>
     );
 }
