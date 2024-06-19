@@ -1,11 +1,12 @@
-import { Subject } from "../../../common/enums";
-import { LearningModule } from "../../../interfaces/Learning/LearningModule";
-import { Header } from "../../../layouts";
-import { LearningModuleService } from "../../../services/LearningModuleService";
+import { Subject, UserRole } from "../../../../common/enums";
+import { LearningModule } from "../../../../interfaces/Learning/LearningModule";
+import { Header } from "../../../../layouts";
+import { LearningModuleService } from "../../../../services/LearningModuleService";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { AuthService } from "../../../../services";
 // const url = window.location.href;
 // const id = url.substring(url.lastIndexOf("/") + 1);
 // console.log(id);
@@ -17,6 +18,7 @@ export function ListModule() {
   }, []);
   const [list, setList] = useState<LearningModule[]>([]);
   const navigate = useNavigate();
+  const user = AuthService.getCurrentUser();
   //write tạm ở đây
   const getSubjectString = (subjectCode: number): string => {
     return Subject[subjectCode];
@@ -24,8 +26,13 @@ export function ListModule() {
 
   const viewLearningModuleDetail = async (id: string) => {
     try {
+      if (user?.userRole == UserRole.TUTOR) {
+        navigate("/manage-class?id=" + id,)
+      }
+      else if (user?.userRole == UserRole.LEARNER) {
+        navigate("/enroll-class?id=" + id,)
+      }
 
-      navigate("/view-learning-module-detail?id=" + id, { state: id })
     } catch (error) {
       console.error("Error fetching learning module:", error);
 
@@ -35,8 +42,15 @@ export function ListModule() {
   useEffect(() => {
     const fetchLearningModules = async () => {
       try {
-        const data = await LearningModuleService.getAllCreatedLearningModule();
-        setList(data); // Cập nhật state list với dữ liệu từ API
+        if (user?.userRole == UserRole.TUTOR) {
+          const data = await LearningModuleService.getAllCreatedLearningModule();
+          setList(data);
+        }// Cập nhật state list với dữ liệu từ API
+
+        if (user?.userRole == UserRole.LEARNER) {
+          const data = await LearningModuleService.getAllEnrolledLearningModule();
+          setList(data);
+        }
       } catch (error) {
         console.error("Error fetching learning modules:", error);
       }
@@ -50,7 +64,7 @@ export function ListModule() {
         <section className="learning-module">
           <div className="w-1/2 mx-auto">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Your created classes</span></h1>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400"> {user?.userRole == UserRole.TUTOR ? 'Your created classes' : 'Your enrolled classes'}</span></h1>
             <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Here are your classes</p>
           </div>
           <div className="flex flex-wrap w-full mx-auto justify-center">

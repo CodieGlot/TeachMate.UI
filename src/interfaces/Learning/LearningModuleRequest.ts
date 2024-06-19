@@ -9,4 +9,5 @@ export interface LearningModuleRequest {
     status: RequestStatus;
     learningModuleId: number;
     learningModule: LearningModule | null; // Assuming LearningModule is defined elsewhere
+    createdAt: string
   }

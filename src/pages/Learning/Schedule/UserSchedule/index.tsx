@@ -9,29 +9,26 @@ import { Header } from '../../../../layouts';
 export function UserSchedule() {
     const user = AuthService.getCurrentUser();
     const [learningSessions, setLearningSessions] = useState<LearningSession[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
-    };
     useEffect(() => {
         const fetchLearningSessions = async () => {
             try {
                 if (user?.tutor != null) {
-                const data = await ScheduleService.getScheduleByTutor();
-                setLearningSessions(data); }
+                    const data = await ScheduleService.getScheduleByTutor();
+                    setLearningSessions(data);
+                }
                 else if (user?.learner != null) {
                     const data = await ScheduleService.getScheduleByLearner();
+                    setLearningSessions(data);
                 }
 
 
             } catch (error) {
                 console.log("Error fetching learning modules:", error);
-            };
+            }
         }
         fetchLearningSessions();
-    })
+    }, [])
     const sessions: LearningSession[] = learningSessions;
 
     const timeStringToDouble = (timeString: string): number => {
@@ -87,6 +84,8 @@ export function UserSchedule() {
         // const filteredSessions = filterSessionsByMonth(sessions, selectedMonth);
 
         return sessions.map((session, index) => {
+            //const learningModule = await LearningModuleService.getLearningModuleById(session.learningModuleId.toString());
+
             const sessionDate = session.date;
             const matchingDay = weekDates.find(day => day.getDate() === parseDate(sessionDate).getDate() && day.getMonth() == parseDate(sessionDate).getMonth());
             if (!matchingDay) return null;
@@ -99,7 +98,7 @@ export function UserSchedule() {
             const color = getColor(matchingDay);
 
             return (
-                <a href={`session?id=${session.id}`}>
+                <a href={`session?id=${session.id}`} className='inline-block'>
                     <div
                         key={index}
                         className="flex items-center justify-center absolute w-[110px] shadow-md"
@@ -113,8 +112,11 @@ export function UserSchedule() {
 
                         }}
                     >
+                         <div className='text-center'> {/* Sử dụng `div` thay vì `p` */}
+            <p>{session.learningModuleName}</p>
+            <p>{session.startTime.substring(0, 5)}-{session.endTime.substring(0, 5)}</p>
+        </div>
 
-                        {session.startTime.substring(0, 5)}-{session.endTime.substring(0, 5)}
                     </div>
                 </a>
             );
@@ -149,15 +151,15 @@ export function UserSchedule() {
 
     return (
         <>
-            <Header/>
+            <Header />
             <div className="py-3 px-4 mx-auto max-w-4xl lg:py-5">
                 <div className="mb-5 mx-auto py-2 mb-5  text-center">
                     <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Schedule</span></h1>
                     <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">View your schedule details</p>
-                    
+
                 </div>
-                <hr/>
+                <hr />
                 <div className="mt-10 py-2 mb-5">
 
                     <div className="flex justify-between">

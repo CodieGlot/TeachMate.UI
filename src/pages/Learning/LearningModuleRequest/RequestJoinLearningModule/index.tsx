@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import { LearningModuleService } from "../../../../services/LearningModuleService";
-import { LearningModule } from "../../../../interfaces";
+import { AxiosError, LearningModule } from "../../../../interfaces";
 
 export function RequestJoinLearningModule() {
     const [title, setTitle] = useState<string>("");
@@ -16,7 +16,10 @@ export function RequestJoinLearningModule() {
     const getSubjectString = (subjectCode: number): string => {
         return Subject[subjectCode];
       };
+      
     const navigate = useNavigate();
+    const [message, setMessage] = useState<string | null>(null);
+
 
     useEffect(() => {
         const fetchLearningModule = async () => {
@@ -25,8 +28,10 @@ export function RequestJoinLearningModule() {
                     const module = await LearningModuleService.getLearningModuleById(id);
                     setLearningModule(module);
                 }
-            } catch (error) {
-                console.error('Error fetching learning module:', error);
+            } catch (err) {
+               
+                
+                console.error('Error fetching learning module:', err);
             }
         };
 
@@ -42,10 +47,13 @@ export function RequestJoinLearningModule() {
             learningModuleId
           });
          navigate('/learning');
-        } catch (error) {
+        } catch (err) {
+            const error = err as AxiosError;
+            if (error.response && error.response.data && error.response.data.message) {
+                setMessage(error.response.data.message);
           console.error("Add learning module failed:", error);
         }
-      };
+      } };
     
 
 
@@ -155,6 +163,7 @@ export function RequestJoinLearningModule() {
                     </div>
                    
                 </div>
+                
                 <div className="py-3 px-4 mx-auto max-w-2xl lg:py-5">
                     <div className=" mx-auto py-2 mb-5">
                         <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
@@ -173,7 +182,10 @@ export function RequestJoinLearningModule() {
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
+                <p className="mx-auto text-center text-red-300">{message}</p>
+
                             </div>
+                            
                             <div className="mt-8">
 
                                 <button

@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { AuthService } from '../../../../../services';
 import { LearningSession } from '../../../../../interfaces';
 import { ScheduleService } from '../../../../../services/ScheduleService';
 import { AddNewCustomSessionModal } from '../../../Schedule';
+import { useSearchParams } from 'react-router-dom';
 
 
-interface ViewClassScheduleProps {
-    learningModuleId: number | undefined;
-}
-
-export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) {
-    const user = AuthService.getCurrentUser();
+export function ViewClassSchedule() {
     const [learningSessions, setLearningSessions] = useState<LearningSession[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const learningModuleId = Number.parseInt(id || "0");
 
     useEffect(() => {
         const fetchLearningSessions = async (id: number) => {
@@ -23,12 +18,12 @@ export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) 
                 setLearningSessions(data);
             } catch (error) {
                 console.log("Error fetching learning modules:", error);
-            };
+            }
         }
-        if (learningModuleId !== undefined) {
+        if (id !== undefined) {
             fetchLearningSessions(learningModuleId);
-        };
-    })
+        }
+    }, [])
     const sessions: LearningSession[] = learningSessions;
 
     const timeStringToDouble = (timeString: string): number => {
@@ -96,7 +91,7 @@ export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) 
             const color = getColor(matchingDay);
 
             return (
-                <a href={'session?id='+session.id}>
+                <a href={'session?id=' + session.id}>
                     <div
                         key={index}
                         className="flex items-center justify-center absolute w-[110px] shadow-md"
@@ -111,7 +106,10 @@ export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) 
                         }}
                     >
 
-                        {session.startTime.substring(0, 5)}-{session.endTime.substring(0, 5)}
+                        <div className='text-center'> {/* Sử dụng `div` thay vì `p` */}
+                            <p>{session.learningModuleName}</p>
+                            <p>{session.startTime.substring(0, 5)}-{session.endTime.substring(0, 5)}</p>
+                        </div>
                     </div>
                 </a>
             );
@@ -146,89 +144,111 @@ export function ViewClassSchedule({ learningModuleId }: ViewClassScheduleProps) 
 
     return (
         <>
-            <hr />
-            <div className="mt-10 py-2 mb-5">
-                <h3 className="text-3xl font-bold dark:text-white">Schedule</h3>
-                <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">View Class Schedule</p>
-                <div className="flex justify-between">
-                    <h5 className="text-xl font-bold dark:text-white">
-                        {new Date().toLocaleString('en-US', { month: 'long' })}, {new Date().getDate()}-{new Date().getFullYear()}
-                    </h5>
-                    <div className="flex justify-end gap-2">
-                        <select
-                            value={selectedMonth}
-                            onChange={handleMonthChange}
-                            className="border-2 border-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-7 py-2.5 text-center mb-2"
-                        >
-                            <option value={0}>January</option>
-                            <option value={1}>February</option>
-                            <option value={2}>March</option>
-                            <option value={3}>April</option>
-                            <option value={4}>May</option>
-                            <option value={5}>June</option>
-                            <option value={6}>July</option>
-                            <option value={7}>August</option>
-                            <option value={8}>September</option>
-                            <option value={9}>October</option>
-                            <option value={10}>November</option>
-                            <option value={11}>December</option>
-                        </select>
 
-                        <button
-                            type="button"
-                            className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center mb-2"
-                            onClick={handlePreviousWeek}
-                            disabled={currentWeekIndex === 0} // Disable if already at the first week
-                        >
-                            Previous Week
-                        </button>
-                        <button
-                            type="button"
-                            className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center mb-2"
-                            onClick={handleNextWeek}
-                        >
-                            Next Week
-                        </button>
 
-                        <AddNewCustomSessionModal learningModuleId={learningModuleId} />
+            <div className='h-[1200px]'>
+                <div className=" flex items-center justify-between pb-6 w-5/6 p-8">
+                    <div>
+                        <h2 className="text-gray-600 font-semibold">Schedule</h2>
+                        <span className="text-xs">All teaching session</span>
+                    </div>
+                    <hr />
+                    <div className="flex items-center justify-between">
+                        <div className="flex bg-gray-50 items-center p-2 rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <input className="bg-gray-50 outline-none ml-1 block " type="text" name="" id="" placeholder="search..." />
+                        </div>
+                        <div className="lg:ml-40 ml-10 space-x-8">
+                        </div>
                     </div>
                 </div>
-                <div className="flex text-gray-400 font-serif gap-20 mt-8">
-                    <p>Week</p>
-                    {getWeekDates(currentWeekIndex).map((day, index) => (
-                        <div key={index}>
-                            <p>{day.getDate()}/{day.getMonth() + 1}</p>
-                            <p>{day.toLocaleString('en-US', { weekday: 'short' })}</p>
-                        </div>
-                    ))}
-                </div>
+                <div className="mt-10 py-2 mb-5">
 
-                {/* Horizontal lines */}
-                <div className="relative">
+                    <div className="flex justify-between">
+                        <h5 className="text-xl font-sm text-gray-600 dark:text-white">
+                            {new Date().toLocaleString('en-US', { month: 'long' })}, {new Date().getDate()}-{new Date().getFullYear()}
+                        </h5>
+                        <div className="flex justify-end gap-2">
+                            <select
+                                value={selectedMonth}
+                                onChange={handleMonthChange}
+                                className="border-2 border-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-7 py-2.5 text-center mb-2"
+                            >
+                                <option value={0}>January</option>
+                                <option value={1}>February</option>
+                                <option value={2}>March</option>
+                                <option value={3}>April</option>
+                                <option value={4}>May</option>
+                                <option value={5}>June</option>
+                                <option value={6}>July</option>
+                                <option value={7}>August</option>
+                                <option value={8}>September</option>
+                                <option value={9}>October</option>
+                                <option value={10}>November</option>
+                                <option value={11}>December</option>
+                            </select>
+
+                            <button
+                                type="button"
+                                className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center mb-2"
+                                onClick={handlePreviousWeek}
+                                disabled={currentWeekIndex === 0} // Disable if already at the first week
+                            >
+                                Previous Week
+                            </button>
+                            <button
+                                type="button"
+                                className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center mb-2"
+                                onClick={handleNextWeek}
+                            >
+                                Next Week
+                            </button>
+
+                            <AddNewCustomSessionModal learningModuleId={learningModuleId} />
+                        </div>
+                    </div>
+                    <div className="flex text-gray-400 font-serif gap-20 mt-8">
+                        <p>Week</p>
+                        {getWeekDates(currentWeekIndex).map((day, index) => (
+                            <div key={index}>
+                                <p>{day.getDate()}/{day.getMonth() + 1}</p>
+                                <p>{day.toLocaleString('en-US', { weekday: 'short' })}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Horizontal lines */}
+                    <div className="relative">
+                        {[...Array(15)].map((_, index) => (
+                            <div
+                                key={index}
+                                style={{ top: `${50 + index * 50}px` }}
+                                className="absolute right-0 w-[88%] h-[1px] bg-gray-300"
+                            ></div>
+                        ))}
+                    </div>
+                </div>
+                {/* Schedule display area */}
+                <div className="relative mt-10 font-mono text-sm">
+                    {/* Render time slots */}
                     {[...Array(15)].map((_, index) => (
                         <div
                             key={index}
-                            style={{ top: `${50 + index * 50}px` }}
-                            className="absolute right-0 w-[88%] h-[1px] bg-gray-300"
-                        ></div>
+                            style={{ top: `${index * 50}px` }}
+                            className="absolute left-0 text-gray-400"
+                        >
+                            {index + 7}:00
+                        </div>
                     ))}
-                </div>
-            </div>
-            {/* Schedule display area */}
-            <div className="relative mt-10 font-mono text-sm">
-                {/* Render time slots */}
-                {[...Array(15)].map((_, index) => (
-                    <div
-                        key={index}
-                        style={{ top: `${index * 50}px` }}
-                        className="absolute left-0 text-gray-400"
-                    >
-                        {index + 7}:00
-                    </div>
-                ))}
-                {/* Render sessions */}
-                {renderSessions(currentWeekIndex)}
-            </div>
+                    {/* Render sessions */}
+                    {renderSessions(currentWeekIndex)}
+                </div></div>
+
         </>
     );
 }
