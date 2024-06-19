@@ -5,6 +5,7 @@ import 'aos/dist/aos.css';
 import { LearningModuleDetail } from '../../LearningModuleDetail';
 import { ViewClassSchedule } from '../../LearningModuleDetail/ui/ClassSchedule';
 import { ListRequestsForClass } from '../../LearningModuleRequest';
+import { LearnersInClass } from '../ListLearners';
 
 export function ManageClass() {
     // Tạo state để lưu trữ tab đang được chọn
@@ -72,6 +73,19 @@ export function ManageClass() {
                         </li>
                         <li>
                             <a
+                                href="#"
+                                onClick={() => handleTabClick('learner')}
+                                className={`inline-flex items-center px-4 py-3 ${selectedTab === 'learner' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
+                            >
+                                <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M7.824 5.937a1 1 0 0 0 .726-.312 2.042 2.042 0 0 1 2.835-.065 1 1 0 0 0 1.388-1.441 3.994 3.994 0 0 0-5.674.13 1 1 0 0 0 .725 1.688Z" />
+                                    <path d="M17 7A7 7 0 1 0 3 7a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V7a5 5 0 1 1 10 0v7.083A2.92 2.92 0 0 1 12.083 17H12a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a1.993 1.993 0 0 0 1.722-1h.361a4.92 4.92 0 0 0 4.824-4H17a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3Z" />
+                                </svg>
+                                Learners
+                            </a>
+                        </li>
+                        <li>
+                            <a
                                 className="inline-flex items-center px-4 py-3 text-gray-400 rounded-lg cursor-not-allowed bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300"
                             >
                                 <svg className="w-4 h-4 me-2 text-gray-400 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -92,10 +106,10 @@ export function ManageClass() {
                             <ListRequestsForClass />
                         )}
                         {selectedTab === 'contact' && (
-                            <div>
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Contact Tab</h3>
-                                <p className="mb-2">This is some placeholder content for the Contact tab's associated content. Clicking another tab will toggle the visibility of this one for the next.</p>
-                            </div>
+                             <p>List Feedback</p>
+                        )}
+                        {selectedTab === 'learner' && (
+                             <LearnersInClass/>
                         )}
                     </div>
                 </div>

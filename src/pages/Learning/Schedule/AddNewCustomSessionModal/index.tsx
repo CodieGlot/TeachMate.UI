@@ -43,7 +43,7 @@ export function AddNewCustomSessionModal({ learningModuleId }: AddNewCustomSessi
                 {user?.tutor !== null && (
                     <button
                         onClick={toggleModal}
-                        className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-4 text-center mb-2"
+                        className="text-white bg-indigo-400 hover:bg-indigo-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-4 text-center mb-2"
                         type="button"
                     >
                         Add free session

@@ -550,7 +550,7 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                                 <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" onClick={() => handleJoinClass(classItem.id)}>
                                   Join
                                 </button>
-                                <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+                                <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600" onClick={() => navigate("/enroll-class?id="+classItem.id)}>
                                   Try Now
                                 </button>
                               </div>

@@ -65,7 +65,7 @@ export function LearningSessionDetail() {
 
 
                         <div className="w-5/6 ml-3">
-                            <h2 className="font-semibold font-sans text-lg">Session {learningSession?.slot}/{learningSession?.learningModule.schedule.length}: {learningSession?.title}
+                            <h2 className="font-semibold font-sans text-lg">Session : {learningSession?.title}
                                 <span className="bg-sky-100 py-1 px-3 rounded ml-2 text-sm">Planned</span>
 
                             </h2>
