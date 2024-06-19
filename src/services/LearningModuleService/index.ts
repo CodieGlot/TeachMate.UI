@@ -1,7 +1,7 @@
 import axios from "axios";
 import { LearningModule } from "../../interfaces/Learning/LearningModule";
 import { AuthService } from "../AuthService";
-import { CreateLearningModuleDto } from "../../common/dtos";
+import { CreateLearningModuleDto, UpdateStatusDto } from "../../common/dtos";
 import { CreateLearningModuleRequestDto } from "../../common/dtos/LearningModule/CreateLearningModuleRequestDto";
 import { LearningModuleRequest } from "../../interfaces/Learning/LearningModuleRequest";
 const token = AuthService.getAccessToken()
@@ -23,6 +23,17 @@ export const LearningModuleService = {
       getAllCreatedLearningModule: async () : Promise<LearningModule[]> => {
         const response = await axios.get(
             `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/Tutor/GetAll`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          return response.data;
+      },
+      getAllEnrolledLearningModule: async () : Promise<LearningModule[]> => {
+        const response = await axios.get(
+            `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/Learner/GetAll`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -70,6 +81,18 @@ export const LearningModuleService = {
         return learningModuleRequests;
       },
 
-      
+      updateRequestStatus: async (dto: UpdateStatusDto) : Promise<LearningModuleRequest> => {
+        const response = await axios.put(
+          `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/Request/UpdateStatus`,
+          dto,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const learningModuleRequests: LearningModuleRequest = response.data;
+        return learningModuleRequests;
+      },
       
 };

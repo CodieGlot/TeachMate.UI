@@ -23,6 +23,7 @@ export function UserSchedule() {
                 setLearningSessions(data); }
                 else if (user?.learner != null) {
                     const data = await ScheduleService.getScheduleByLearner();
+                    setLearningSessions(data);
                 }
 
 
