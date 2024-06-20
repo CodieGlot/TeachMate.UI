@@ -1,11 +1,13 @@
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
 import { AxiosError } from "axios";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { ApiValidationException } from "../../../interfaces";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -17,13 +19,24 @@ export function Login() {
     AOS.init();
   }, []);
 
+  const showToast = () => toast.success("Here is a basic toast message.");
+
   const handleLogin = async () => {
     try {
       await AuthService.login({ username, password });
       navigate("/");
     } catch (err) {
       console.error("Login failed:", err);
+
       const error = err as AxiosError;
+      const data = error.response?.data as ApiValidationException;
+
+      Object.values(data.errors).forEach((errMsgList) => {
+        errMsgList.forEach((errMsg) => {
+          toast.error(errMsg);
+        });
+      });
+
       setError(error);
 
       // Handle specific error messages
@@ -31,12 +44,15 @@ export function Login() {
         setMessage("Password must be between 5 and 15 characters in length.");
       } else if (username.length < 5 || username.length > 15) {
         setMessage("Username must be between 5 and 15 characters in length.");
-      } else if (error.response && error.response.data && (error.response.data as any).message) {
+      } else if (
+        error.response &&
+        error.response.data &&
+        (error.response.data as any).message
+      ) {
         setMessage((error.response.data as any).message);
       } else {
         setMessage("An unexpected error occurred during log in.");
       }
-
     }
   };
 
@@ -56,7 +72,10 @@ export function Login() {
             <div className="md:max-w-md w-full sm:px-6 py-4">
               <form>
                 <div className="mb-12">
-                  <h3 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600">Sign in</h3>
+                  <button onClick={showToast}>Basic toast message</button>
+                  <h3 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600">
+                    Sign in
+                  </h3>
                   <p className="text-sm mt-4 ">
                     Don't have an account{" "}
                     <a
@@ -68,7 +87,9 @@ export function Login() {
                   </p>
                 </div>
                 <div>
-                  <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Username or Email</label>
+                  <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">
+                    Username or Email
+                  </label>
                   <div className="relative flex items-center">
                     <input
                       name="username"
@@ -111,7 +132,9 @@ export function Login() {
                   </div>
                 </div>
                 <div className="mt-8">
-                  <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Password</label>
+                  <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">
+                    Password
+                  </label>
                   <div className="relative flex items-center">
                     <input
                       name="password"
@@ -157,42 +180,42 @@ export function Login() {
                     </a>
                   </div>
                 </div>
-                <p className="text-red-400 p-5 bg-white font-medium text-sm text-red-500">{message}</p>
+                <p className="text-red-400 p-5 bg-white font-medium text-sm text-red-500">
+                  {message}
+                </p>
 
-
-              <div className="mt-12">
-                <button
-                  type="button"
-                  onClick={handleLogin}
-                  className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-blue-700 focus:outline-none"
-                >
-                  Sign in
-                </button>
-              </div>
-              <p className="my-8 text-sm text-gray-400 text-center">
-                or continue with
-              </p>
-              <div className="space-x-8 flex justify-center">
-                <GoogleLogin
-                  onSuccess={handleGoogleLogin}
-                  onError={() => {
-                    console.log("Login with Google Failed");
-                  }}
-                />
-              </div>
-            </form>
-          </div>
-          <div className="md:h-full max-md:mt-10  rounded-xl ">
-            <img
-              src="/src/assets/login-bg.png"
-              className="w-full h-full object-contain"
-              alt="login-image"
-            />
-
+                <div className="mt-12">
+                  <button
+                    type="button"
+                    onClick={handleLogin}
+                    className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-blue-700 focus:outline-none"
+                  >
+                    Sign in
+                  </button>
+                </div>
+                <p className="my-8 text-sm text-gray-400 text-center">
+                  or continue with
+                </p>
+                <div className="space-x-8 flex justify-center">
+                  <GoogleLogin
+                    onSuccess={handleGoogleLogin}
+                    onError={() => {
+                      console.log("Login with Google Failed");
+                    }}
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="md:h-full max-md:mt-10  rounded-xl ">
+              <img
+                src="/src/assets/login-bg.png"
+                className="w-full h-full object-contain"
+                alt="login-image"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }
