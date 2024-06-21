@@ -7,6 +7,7 @@ import profileRoutes from "./Profile";
 import scheduleRoutes from "./Schedule";
 import searchRoutes from "./Search";
 import feedbackRoutes from "./Feedback"
+import adminRoutes from "./Admin"
 
 const Route = () => {
   const routes = useRoutes([
@@ -22,6 +23,7 @@ const Route = () => {
     ...scheduleRoutes,
     ...searchRoutes,
     ...feedbackRoutes,
+    ...adminRoutes,
 
     {
       path: "*",
