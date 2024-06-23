@@ -100,6 +100,7 @@ export function Login() {
         <div className="min-h-screen flex flex-col items-center justify-center">
           <div className="grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">
             <div className="md:max-w-md w-full sm:px-6 py-4">
+              
               <Formik
                 initialValues={initialFormValues}
                 validationSchema={validationSchema}
@@ -109,12 +110,18 @@ export function Login() {
                   <Form>
                     {/* Form elements here */}
                     <div className="mb-12">
-                      <h3 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600">
-                        Sign in
-                      </h3>
-                      {/* Other form fields and buttons */}
-                    </div>
-
+                  <h3 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600">Sign in</h3>
+                  <p className="text-sm mt-4 ">
+                    Don't have an account{" "}
+                    <a
+                      href="/auth/signup"
+                      className="font-semibold hover:underline ml-1 whitespace-nowrap bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent"
+                    >
+                      Register here
+                    </a>
+                  </p>
+                </div>
+                    
                     {/* Username field */}
                     <div>
                       <label
