@@ -3,16 +3,38 @@ import { useNavigate } from "react-router-dom";
 import { UserDetailService } from "../../../services/UserDetailService";
 import { useLocation } from "react-router-dom";
 import { Stepper } from "../Stepper";
+import toast from "react-hot-toast";
+import { StorageService } from "../../../services";
 
 export function AddLearnerDetail() {
 
   const [displayName, setDisplayName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [avatar] = useState("https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg"); // Assuming the initial value is null
+  const [avatar, setAvatar] = useState("https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg"); // Assuming the initial value is null
   const [gradeLevel, setGradeLevel] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
+  const [imageSrc, setImageSrc] = useState<string>("https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg");
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // If you need to handle the file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      if (validTypes.includes(file.type)) {
+        setImageSrc(URL.createObjectURL(file));
+        setSelectedFile(file);
+
+      } else {
+        toast.error('Please upload a valid image file (JPEG, PNG, GIF)');
+      }
+
+    }
+  };
+
+
+
   const handleAddUserDetail = async () => {
 
 
@@ -21,9 +43,11 @@ export function AddLearnerDetail() {
     }
 
     const { accessToken } = state;
-
+  
     try {
-
+      // if (selectedFile) {
+      //   setAvatar(await StorageService.uploadFile(selectedFile));
+      // }
       await UserDetailService.addLearnerDetail({
         displayName,
         phoneNumber,
@@ -64,7 +88,7 @@ export function AddLearnerDetail() {
                   onChange={(e) => setDisplayName(e.target.value)}
                 />
               </div>
-              
+
               <div className="w-full">
                 <label htmlFor="phoneNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number:</label>
                 <div className="relative">
@@ -89,13 +113,35 @@ export function AddLearnerDetail() {
 
 
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
-                <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" />
-                <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                <div className="flex items-center space-x-6">
+                  <div className="shrink-0">
+                    <img
+                      id="preview_img"
+                      className="h-16 w-16 object-cover rounded-full"
+                      src={imageSrc}
+                      alt="Current profile photo"
+                    />
+                  </div>
+                  <label className="block">
+                    <span className="sr-only">Choose profile photo</span>
+                    <input
+                      type="file"
+                      onChange={loadFile}
+                      className="block w-full text-sm text-slate-500
+                     file:mr-4 file:py-2 file:px-4
+                     file:rounded-full file:border-0
+                     file:text-sm file:font-semibold
+                     file:bg-violet-50 file:text-violet-700
+                     hover:file:bg-violet-100"
+                    />
+                  </label>
+
+
+                </div>
 
               </div>
 
-              <div>
+              <div className="items-start">
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Grade Level</label>
                 <input
                   type="number"
@@ -109,6 +155,21 @@ export function AddLearnerDetail() {
                   value={gradeLevel}
                   onChange={(e) => setGradeLevel(Number.parseInt(e.target.value))}
                 />
+              </div>
+
+            </div>
+            {/* //note */}
+            <div className="mt-10 flex p-4 text-sm text-gray-400 rounded-lg bg-gradient-to-r from-sky-400/20 to-indigo-600/20 h-full lg:w-full lg:ml-auto" role="alert">
+              <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+              </svg>
+              <span className="sr-only">Info</span>
+              <div>
+                <span className="font-medium">Ensure that these requirements are met:</span>
+                <ul className="mt-1.5 list-disc list-inside">
+                  <li>You can only upload PNG, JPG, JPEG file</li>
+
+                </ul>
               </div>
             </div>
             <div className="mt-8">
