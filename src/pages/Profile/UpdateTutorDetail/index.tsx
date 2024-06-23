@@ -1,30 +1,28 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { AuthService, UserDetailService } from "../../../services";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { AxiosError } from "axios";
+
 export function UpdateTutorDetail() {
+  
+  const [error, setError] = useState<AxiosError | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
     const user = AuthService.getCurrentUser();
     const [email, setEmail] = useState(user?.email ?? '');
     const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber ?? '');
     const [description, setDescription] = useState(user?.tutor?.description ?? '');
     const [displayName, setDisplayName] = useState(user?.displayName ?? '');
-
     const [gradeLevel, setGradeLevel] = useState(0);
-
+    useEffect(() => {
+      if (email == user?.email) setEmail('');
+    }, [email]);
   const [avatar,setAvatar] = useState(user?.avatar ?? '' ); // Assuming the initial value is null
   const navigate = useNavigate();
-  const location = useLocation();
-  const { state } = location;
 const accessToken = AuthService.getAccessToken();
-    
-    
-   
-    
-    
-   
-    
     const handleSaveClick = async () => {
        try {
-        UserDetailService.updateTutorDetail({
+        
+       await UserDetailService.updateTutorDetail({
             email, 
             phoneNumber,
             description,
@@ -33,12 +31,21 @@ const accessToken = AuthService.getAccessToken();
             gradeLevel
         },accessToken);
         navigate("/Profile")
-       } catch (error) {
-        console.error("Update Fail",error)
-       }
-       
+        window.location.reload();
 
-        // You can add additional logic here to save the edited email if needed
+       } catch (err) {
+        console.error("Update Fail", err)
+      const error = err as AxiosError;
+      if(phoneNumber.length <10 || phoneNumber.length>=11){
+        setMessage("Phone number must 10 numbers")
+      }
+      if (error.response && error.response.data && (error.response.data as any).message) {
+        setMessage((error.response.data as any).message);
+      } else {
+        setMessage("An unexpected error occurred during update.");
+      }
+       }
+    // You can add additional logic here to save the edited email if needed
    
   };
   
@@ -79,7 +86,7 @@ const accessToken = AuthService.getAccessToken();
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Your email"
                   required
-                  value={email}
+                  value={email===''?user?.email:email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
@@ -126,6 +133,9 @@ const accessToken = AuthService.getAccessToken();
               </div>
 
             </div>
+            <p className="text-sm text-red-500 p-4 text-center">
+                            {message}
+                        </p>
             <div className="mt-8">
               <button
                 type="button"

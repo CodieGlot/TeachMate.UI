@@ -1,10 +1,19 @@
-import { CreateLearningModule, LearningDashboard, LearningModuleDetail, ListModule, TeachingDashboard, UpdateLearningModule } from "../../pages";
+import { CreateLearningModule, LearningDashboard, LearningModuleDetail, ListRequestsForClass, RequestJoinLearningModule, TeachingDashboard } from "../../pages";
+import { ListModule } from "../../pages/Learning/TeachingDashboard";
+import { EnrollClass } from "../../pages/Learning/TeachingDashboard/ErollClass";
+import { ManageClass } from "../../pages/Learning/TeachingDashboard/ManageClass";
+import { UpdateLearningModule } from "../../pages/Learning/TeachingDashboard";
 
 const learningRoutes = [
   {
     path: "/teaching",
     element: <TeachingDashboard />,
-  },{
+  },
+  {
+    path: "/manage-class",
+    element: <ManageClass />,
+  },
+  {
     path: "/learning",
     element: <LearningDashboard />,
   },
@@ -12,17 +21,33 @@ const learningRoutes = [
     path: "/list-learning-module",
     element: <ListModule />,
   },
-  { path: "/create-learning-module",
-    element: <CreateLearningModule/>
+  {
+    path: "/create-learning-module",
+    element: <CreateLearningModule />
   },
   {
     path: "/view-learning-module-detail",
-    element: <LearningModuleDetail/>
+    element: <LearningModuleDetail />
   },
   {
     path: "/update-learning-module-detail",
-    element: <UpdateLearningModule/>
-  }
+    element: <UpdateLearningModule />
+  },
+  {
+    path: "/request-join",
+    element: <RequestJoinLearningModule />
+  },
+
+  {
+    path: "/list-request-class",
+    element: <ListRequestsForClass />
+  },
+  {
+    path: "/enroll-class",
+    element: <EnrollClass />
+  },
+
+ 
 ];
 
 export default learningRoutes;

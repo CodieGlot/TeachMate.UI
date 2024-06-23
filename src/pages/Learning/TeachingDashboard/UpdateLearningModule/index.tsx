@@ -1,8 +1,8 @@
 
-import { ModuleType, Subject } from "../../../common/enums";
-import { Header } from "../../../layouts";
+import { ModuleType, Subject } from "../../../../common/enums";
+import { Header } from "../../../../layouts";
 import { useState } from "react";
-import { LearningModuleService } from "../../../services/LearningModuleService";
+import { LearningModuleService } from "../../../../services/LearningModuleService";
 import { useNavigate } from "react-router-dom";
 
 export function UpdateLearningModule() {

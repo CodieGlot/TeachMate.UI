@@ -13,4 +13,5 @@ export const NotificationService = {
     );
     return notifications;
   },
+  
 };

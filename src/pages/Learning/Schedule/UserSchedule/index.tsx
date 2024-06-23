@@ -2,32 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { AuthService } from '../../../../services';
 import { LearningSession } from '../../../../interfaces';
 import { ScheduleService } from '../../../../services/ScheduleService';
+import { Header } from '../../../../layouts';
 
 
 
 export function UserSchedule() {
     const user = AuthService.getCurrentUser();
     const [learningSessions, setLearningSessions] = useState<LearningSession[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
-    };
-    useEffect (() => {
+    useEffect(() => {
         const fetchLearningSessions = async () => {
             try {
-                
-                const data = await ScheduleService.getScheduleByTutor();
+                if (user?.tutor != null) {
+                    const data = await ScheduleService.getScheduleByTutor();
                     setLearningSessions(data);
-                
-               
+                }
+                else if (user?.learner != null) {
+                    const data = await ScheduleService.getScheduleByLearner();
+                    setLearningSessions(data);
+                }
+
+
             } catch (error) {
                 console.log("Error fetching learning modules:", error);
-            };
+            }
         }
-            fetchLearningSessions();
-    })
+        fetchLearningSessions();
+    }, [])
     const sessions: LearningSession[] = learningSessions;
 
     const timeStringToDouble = (timeString: string): number => {
@@ -68,7 +69,7 @@ export function UserSchedule() {
 
         const weekDates = [];
         const startOfWeek = new Date(currentDate);
-        startOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); 
+        startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
         for (let i = 0; i < 7; i++) {
             const date = new Date(currentDate);
             date.setDate(currentDate.getDate() + i - currentDate.getDay()); // Start from Sunday
@@ -83,6 +84,8 @@ export function UserSchedule() {
         // const filteredSessions = filterSessionsByMonth(sessions, selectedMonth);
 
         return sessions.map((session, index) => {
+            //const learningModule = await LearningModuleService.getLearningModuleById(session.learningModuleId.toString());
+
             const sessionDate = session.date;
             const matchingDay = weekDates.find(day => day.getDate() === parseDate(sessionDate).getDate() && day.getMonth() == parseDate(sessionDate).getMonth());
             if (!matchingDay) return null;
@@ -95,24 +98,27 @@ export function UserSchedule() {
             const color = getColor(matchingDay);
 
             return (
-                <a href='www.google.com'>
-                <div
-                    key={index}
-                    className="flex items-center justify-center absolute w-[110px] shadow-md"
-                    style={{
-                        left: `${leftPosition}px`,
-                        top: `${topPosition}px`,
-                        height: `${height}px`,
-                        backgroundColor: color,
-                        borderColor: color,
-                        boxShadow: `0 0 10px ${color}`,
-                        
-                    }}
-                >
-                   
-                    {session.startTime.substring(0,5)}-{session.endTime.substring(0,5)}
-                </div>
-                 </a>
+                <a href={`session?id=${session.id}`} className='inline-block'>
+                    <div
+                        key={index}
+                        className="flex items-center justify-center absolute w-[110px] shadow-md"
+                        style={{
+                            left: `${leftPosition}px`,
+                            top: `${topPosition}px`,
+                            height: `${height}px`,
+                            backgroundColor: color,
+                            borderColor: color,
+                            boxShadow: `0 0 10px ${color}`,
+
+                        }}
+                    >
+                         <div className='text-center'> {/* Sử dụng `div` thay vì `p` */}
+            <p>{session.learningModuleName}</p>
+            <p>{session.startTime.substring(0, 5)}-{session.endTime.substring(0, 5)}</p>
+        </div>
+
+                    </div>
+                </a>
             );
         }).filter(Boolean); // Filter out any null values
     };
@@ -145,90 +151,96 @@ export function UserSchedule() {
 
     return (
         <>
-        <div className="py-3 px-4 mx-auto max-w-4xl lg:py-5">
-            <hr />
-            <div className="mt-10 py-2 mb-5">
-                <h3 className="text-3xl font-bold dark:text-white">Schedule</h3>
-                <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">View Class Schedule</p>
-                <div className="flex justify-between">
-                    <h5 className="text-xl font-bold dark:text-white">
-                        {new Date().toLocaleString('en-US', { month: 'long' })}, {new Date().getDate()}-{new Date().getFullYear()}
-                    </h5>
-                    <div className="flex justify-end gap-2">
-                        <select
-                            value={selectedMonth}
-                            onChange={handleMonthChange}
-                            className="border-2 border-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-7 py-2.5 text-center mb-2"
-                        >
-                            <option value={0}>January</option>
-                            <option value={1}>February</option>
-                            <option value={2}>March</option>
-                            <option value={3}>April</option>
-                            <option value={4}>May</option>
-                            <option value={5}>June</option>
-                            <option value={6}>July</option>
-                            <option value={7}>August</option>
-                            <option value={8}>September</option>
-                            <option value={9}>October</option>
-                            <option value={10}>November</option>
-                            <option value={11}>December</option>
-                        </select>
+            <Header />
+            <div className="py-3 px-4 mx-auto max-w-4xl lg:py-5">
+                <div className="mb-5 mx-auto py-2 mb-5  text-center">
+                    <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Schedule</span></h1>
+                    <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">View your schedule details</p>
 
-                        <button
-                            type="button"
-                            className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center mb-2"
-                            onClick={handlePreviousWeek}
-                            disabled={currentWeekIndex === 0} // Disable if already at the first week
-                        >
-                            Previous Week
-                        </button>
-                        <button
-                            type="button"
-                            className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center mb-2"
-                            onClick={handleNextWeek}
-                        >
-                            Next Week
-                        </button>
-                        
+                </div>
+                <hr />
+                <div className="mt-10 py-2 mb-5">
 
+                    <div className="flex justify-between">
+                        <h5 className="text-xl font-bold dark:text-white">
+                            {new Date().toLocaleString('en-US', { month: 'long' })}, {new Date().getDate()}-{new Date().getFullYear()}
+                        </h5>
+                        <div className="flex justify-end gap-2">
+                            <select
+                                value={selectedMonth}
+                                onChange={handleMonthChange}
+                                className="border-2 border-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-7 py-2.5 text-center mb-2"
+                            >
+                                <option value={0}>January</option>
+                                <option value={1}>February</option>
+                                <option value={2}>March</option>
+                                <option value={3}>April</option>
+                                <option value={4}>May</option>
+                                <option value={5}>June</option>
+                                <option value={6}>July</option>
+                                <option value={7}>August</option>
+                                <option value={8}>September</option>
+                                <option value={9}>October</option>
+                                <option value={10}>November</option>
+                                <option value={11}>December</option>
+                            </select>
+
+                            <button
+                                type="button"
+                                className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center mb-2"
+                                onClick={handlePreviousWeek}
+                                disabled={currentWeekIndex === 0} // Disable if already at the first week
+                            >
+                                Previous Week
+                            </button>
+                            <button
+                                type="button"
+                                className="text-white bg-sky-400 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center mb-2"
+                                onClick={handleNextWeek}
+                            >
+                                Next Week
+                            </button>
+
+
+                        </div>
+                    </div>
+                    <div className="flex text-gray-400 font-serif gap-20 mt-8">
+                        <p>Week</p>
+                        {getWeekDates(currentWeekIndex).map((day, index) => (
+                            <div key={index}>
+                                <p>{day.getDate()}/{day.getMonth() + 1}</p>
+                                <p>{day.toLocaleString('en-US', { weekday: 'short' })}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Horizontal lines */}
+                    <div className="relative">
+                        {[...Array(15)].map((_, index) => (
+                            <div
+                                key={index}
+                                style={{ top: `${50 + index * 50}px` }}
+                                className="absolute right-0 w-[88%] h-[1px] bg-gray-300"
+                            ></div>
+                        ))}
                     </div>
                 </div>
-                <div className="flex text-gray-400 font-serif gap-20 mt-8">
-                    <p>Week</p>
-                    {getWeekDates(currentWeekIndex).map((day, index) => (
-                        <div key={index}>
-                            <p>{day.getDate()}/{day.getMonth()+1}</p>
-                            <p>{day.toLocaleString('en-US', { weekday: 'short' })}</p>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Horizontal lines */}
-                <div className="relative">
+                {/* Schedule display area */}
+                <div className="relative mt-10 font-mono text-sm">
+                    {/* Render time slots */}
                     {[...Array(15)].map((_, index) => (
                         <div
                             key={index}
-                            style={{ top: `${50 + index * 50}px` }}
-                            className="absolute right-0 w-[88%] h-[1px] bg-gray-300"
-                        ></div>
+                            style={{ top: `${index * 50}px` }}
+                            className="absolute left-0 text-gray-400"
+                        >
+                            {index + 7}:00
+                        </div>
                     ))}
-                </div>
-            </div>
-            {/* Schedule display area */}
-            <div className="relative mt-10 font-mono text-sm">
-                {/* Render time slots */}
-                {[...Array(15)].map((_, index) => (
-                    <div
-                        key={index}
-                        style={{ top: `${index * 50}px` }}
-                        className="absolute left-0 text-gray-400"
-                    >
-                        {index + 7}:00
-                    </div>
-                ))}
-                {/* Render sessions */}
-                {renderSessions(currentWeekIndex)}
-            </div></div>
+                    {/* Render sessions */}
+                    {renderSessions(currentWeekIndex)}
+                </div></div>
         </>
     );
 }

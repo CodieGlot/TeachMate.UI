@@ -8,7 +8,6 @@ import { Stepper } from "../Stepper";
 export function AddTutorDetail() {
 
   const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [avatar] = useState("https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg"); // Assuming the initial value is null
   const [description, setDescription] = useState("");
@@ -31,7 +30,6 @@ export function AddTutorDetail() {
 
       await UserDetailService.addTutorDetail({
         displayName,
-        email,
         phoneNumber,
         avatar,
         description
@@ -68,19 +66,7 @@ export function AddTutorDetail() {
                   onChange={(e) => setDisplayName(e.target.value)}
                 />
               </div>
-              <div className="sm:col-span-2">
-                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand</label>
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Your email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
+              
               <div className="w-full">
                 <label htmlFor="phoneNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number:</label>
                 <div className="relative">

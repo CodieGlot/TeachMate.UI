@@ -11,8 +11,7 @@ export function ManageAccount() {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<SearchUserDto>({
-    displayName: null,
-    name: null,
+    displayNameorUsername: null,
     userRole: null, // Adjust default value based on your enums
     isDisable: null,
   });
@@ -60,8 +59,7 @@ export function ManageAccount() {
       // Perform search based on displayName or username
       const searchResult = await AdminService.searchUser({
         ...searchQuery,
-        displayName: value,
-        name: value,
+        displayNameorUsername: value,
       });
       setList(searchResult);
     }

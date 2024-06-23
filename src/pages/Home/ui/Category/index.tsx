@@ -1,4 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 export function Category() {
+  const navigate = useNavigate();
+  const handleSignUp = async () => {
+    navigate("/auth/signup");
+  }
   return (
     <>
       <div className="bg-white">
@@ -131,7 +137,7 @@ export function Category() {
       </div>
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl">
-          <div className="relative overflow-hidden rounded-lg lg:h-96">
+          <div className="relative overflow-hidden rounded-lg">
             <div className="absolute inset-0">
             </div>
             <div
@@ -141,33 +147,34 @@ export function Category() {
               aria-hidden="true"
               className="relative h-32 w-full lg:hidden"
             />
-
-            <div className="flex flex-col lg:flex-row items-center justify-center space-y-6 lg:space-y-0 lg:space-x-6">
-              <div className="relative lg:w-1/3 bg-white bg-opacity-90 p-8 backdrop-blur-lg backdrop-filter rounded-bl-lg rounded-br-lg lg:rounded-br-none lg:rounded-tl-lg shadow-2xl flex flex-col items-center justify-center overflow-hidden">
-                <div className="flex flex-col items-center justify-center py-10 px-6 bg-gray-50 rounded-lg shadow-lg">
-                  <div className="relative">
-                    <h2 className="relative font-extrabold font-handwriting text-2xl text-purple-700 z-10 ">
-                      Start as Learner!
-                    </h2>
-                    <div className="top-1/2 left-0 transform -translate-y-1/2 w-full h-10 bg-yellow-400 rotate-3 -z-10 rounded-md"></div>
+            <div className="flex">
+              <div className="flex flex-col lg:flex-row items-center justify-center space-y-6 lg:space-y-0 lg:space-x-6">
+                <div className="relative lg:w-1/3 bg-white bg-opacity-90 p-8 backdrop-blur-lg backdrop-filter rounded-bl-lg rounded-br-lg lg:rounded-br-none lg:rounded-tl-lg shadow-2xl flex flex-col items-center justify-center overflow-hidden">
+                  <div className="flex flex-col items-center justify-center py-10 px-6 bg-gray-50 rounded-lg shadow-lg">
+                    <div className="relative">
+                      <h2 className="relative font-extrabold font-handwriting text-2xl text-purple-700 z-10 ">
+                        Start as Learner!
+                      </h2>
+                      <div className="top-1/2 left-0 transform -translate-y-1/2 w-full h-10 bg-yellow-400 rotate-3 -z-10 rounded-md"></div>
+                    </div>
+                    <p className="mt-6 text-lg text-gray-800 text-center">
+                      Get a free tutoring session for yourself to see how other tutors use the site. Not only will you get homework help, but you'll also gain the confidence to see if tutoring is right for you!
+                    </p>
                   </div>
-                  <p className="mt-6 text-lg text-gray-800 text-center">
-                    Get a free tutoring session for yourself to see how other tutors use the site. Not only will you get homework help, but you'll also gain the confidence to see if tutoring is right for you!
-                  </p>
+                  <a href="#" className="mt-6 flex items-center justify-center rounded-full border border-transparent bg-gradient-to-r from-sky-500 to-indigo-700 px-6 py-3 text-base font-semibold text-white shadow-lg transition-transform transform hover:scale-105 w-full"
+                    onClick={handleSignUp}>
+                    Sign Up as Learner
+                  </a>
                 </div>
-                <a href="#" className="mt-6 flex items-center justify-center rounded-full border border-transparent bg-gradient-to-r from-sky-500 to-indigo-700 px-6 py-3 text-base font-semibold text-white shadow-lg transition-transform transform hover:scale-105 w-full">
-                  Sign Up as Learner
-                </a>
-              </div>
 
-              <div className="relative flex overflow-hidden lg:w-2/3">
-                <video className="w-70 h-70 object-cover border-2 rounded-md border-indigo-300" controls>
-                  <source src="src/assets/intro.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <div className="relative flex overflow-hidden lg:w-2/3">
+                  <video className="w-70 h-100 object-cover border-2 rounded-md border-indigo-300" controls>
+                    <source src="src/assets/intro.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               </div>
             </div>
-
           </div>
 
         </div>

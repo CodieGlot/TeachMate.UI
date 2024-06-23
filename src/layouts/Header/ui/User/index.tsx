@@ -3,7 +3,11 @@ import { InboundMessage } from "ably";
 import { ably } from "../../../../config";
 import { AuthService, NotificationService } from "../../../../services";
 import { PushNotification } from "../../../../interfaces";
-import { differenceInMinutes, differenceInHours } from "date-fns";
+import {
+  differenceInMinutes,
+  differenceInHours,
+  differenceInDays,
+} from "date-fns";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../dropdown";
 
@@ -65,14 +69,18 @@ export function User() {
       return `${minutes} minutes ago`;
     } else {
       const hours = differenceInHours(now, date);
-      return `${hours} hours ago`;
+      if (hours < 24) {
+        return `${hours} hours ago`;
+      } else {
+        const days = differenceInDays(now, date);
+        return `${days} days ago`;
+      }
     }
   };
 
   const handleLogout = () => {
     AuthService.logout();
-    navigate("/")
-
+    navigate("/");
   };
   return (
     <>

@@ -1,4 +1,5 @@
 import { ModuleType, Subject } from "../../common/enums";
+import { Tutor } from "../AppUser";
 import { LearningSession } from "./LearningSession";
 
 export interface LearningModule {
@@ -14,5 +15,7 @@ export interface LearningModule {
   maximumLearners: number
   schedule: LearningSession[],
   moduleType: ModuleType,
-  numOfWeeks: number
+  numOfWeeks: number,
+  tutor: Tutor,
+  tutorId: string
 }
