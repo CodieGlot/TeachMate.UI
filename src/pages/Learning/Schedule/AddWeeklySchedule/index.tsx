@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ScheduleService } from "../../../../services/ScheduleService";
 import { LearningModule } from "../../../../interfaces";
 import { WeeklySlotDto } from "../../../../common/dtos/Schedule/WeeklySlotDto";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 export function AddWeeklySchedule() {
     const [slots, setSlots] = useState<{ key: string, day: DayOfWeek, startTime: string, endTime: string }[]>([]);
@@ -18,8 +20,8 @@ export function AddWeeklySchedule() {
           return <div>No state available</div>;
         }
 
-        const { learningModule } = state as { learningModule: LearningModule };
-        const learningModuleId = learningModule.id;
+        const id = state as number;
+        const learningModuleId = id;
 
         try {
           await ScheduleService.addWeeklySchedule({
@@ -27,9 +29,31 @@ export function AddWeeklySchedule() {
             weeklySlots
           });
 
-          navigate("/");
-        } catch (error) {
-          console.error("Add weekly schedule detail failed:", error);
+          navigate("/schedule");
+        } catch (err) {
+          console.error("Add weekly schedule detail failed:", err);
+
+          if (axios.isAxiosError(err)) {
+            const axiosError = err as AxiosError<any>;
+            if (axiosError.response) {
+                const { data } = axiosError.response;
+                if (data) {
+                    if (data.errors) {
+                        Object.values(data.errors).forEach((errMsgList) => {
+                            (errMsgList as string[]).forEach((errMsg: string) => {
+                                toast.error(errMsg);
+                            });
+                        });
+                    } else if (data.message) {
+                        toast.error(data.message);
+                    }
+                } else {
+                    toast.error("An unknown error occurred.");
+                }
+            }
+        } else {
+            toast.error("An unexpected error occurred.");
+        }
         }
     };
 
@@ -83,14 +107,14 @@ export function AddWeeklySchedule() {
                 <form>
                     <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-600 dark:bg-gray-700 mb-6">
                         <div className="flex justify-between items-center mb-3">
-                            <span className="text-gray-900 dark:text-white text-base font-medium">Business hours</span>
+                            <span className="text-gray-900 dark:text-white text-base font-medium">Your schedule</span>
                             <label className="inline-flex items-center cursor-pointer">
                                 <input type="checkbox" value="" name="business-hours" className="sr-only peer" />
                                 <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span className="sr-only">Business hours</span>
                             </label>
                         </div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 font-normal">Enable or disable business working hours for all weekly working days</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 font-normal">Don't teach too much because you will be overwhelmed</p>
                     </div>
                     <div className="mb-6 leading-normal text-indigo-400 font-semibold">
                         <div className="flex items-center justify-between">

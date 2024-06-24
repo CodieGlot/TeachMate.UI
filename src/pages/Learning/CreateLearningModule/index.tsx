@@ -51,7 +51,7 @@ export function CreateLearningModule() {
         moduleType,
         numOfWeeks
       });
-      if (moduleType == ModuleType.Weekly) navigate("/add-weekly-schedule", { state: { learningModule } })
+      if (moduleType == ModuleType.Weekly) navigate("/")
       else navigate("/learning");
     } catch (error) {
       console.error("Add learning module failed:", error);

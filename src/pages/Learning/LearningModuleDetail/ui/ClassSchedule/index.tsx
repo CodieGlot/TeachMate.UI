@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { LearningModule, LearningSession } from '../../../../../interfaces';
 import { ScheduleService } from '../../../../../services/ScheduleService';
 import { AddCustomScheduleModal, AddFreeCustomSessionModal } from '../../../Schedule';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../../../../services';
 import { LearningModuleService } from '../../../../../services/LearningModuleService';
 import { ModuleType, UserRole } from '../../../../../common/enums';
-
+import { Button} from "flowbite-react";
 
 export function ViewClassSchedule() {
     const [learningSessions, setLearningSessions] = useState<LearningSession[]>([]);
-
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const learningModuleId = Number.parseInt(id || "0");
@@ -143,6 +143,11 @@ export function ViewClassSchedule() {
         setCurrentWeekIndex(0); // Reset current week index when changing month
     };
 
+    const handleWeeklySchedule = () => {
+        console.log(learningModuleId)
+        navigate("/add-weekly-schedule", {state: learningModuleId})
+    }
+
     // Effect to set current week index on initial load based on current date
     useEffect(() => {
         const currentDate = new Date();
@@ -178,7 +183,7 @@ export function ViewClassSchedule() {
                 <div className="flex gap-2">
                 {user?.userRole == UserRole.TUTOR && (<AddFreeCustomSessionModal learningModuleId={learningModuleId} />)}
                 {(user?.userRole == UserRole.TUTOR && learningModule?.moduleType == ModuleType.Custom)  && (<AddCustomScheduleModal learningModuleId={learningModuleId} />)}
-
+                {(user?.userRole == UserRole.TUTOR && learningModule?.moduleType == ModuleType.Weekly)  && (<Button color="gray" onClick={handleWeeklySchedule}>Add weekly schedule</Button>)}
                 </div>
                 
                 <div className="mt-10 py-2 mb-5">
