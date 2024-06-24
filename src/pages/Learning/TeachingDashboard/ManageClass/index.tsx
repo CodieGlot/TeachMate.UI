@@ -6,6 +6,7 @@ import { LearningModuleDetail } from '../../LearningModuleDetail';
 import { ViewClassSchedule } from '../../LearningModuleDetail/ui/ClassSchedule';
 import { ListRequestsForClass } from '../../LearningModuleRequest';
 import { LearnersInClass } from '../ListLearners';
+import { ReceiveFeedback } from '../../../Feedback';
 
 export function ManageClass() {
     // Tạo state để lưu trữ tab đang được chọn
@@ -106,7 +107,7 @@ export function ManageClass() {
                             <ListRequestsForClass />
                         )}
                         {selectedTab === 'contact' && (
-                             <p>List Feedback</p>
+                             <ReceiveFeedback/>
                         )}
                         {selectedTab === 'learner' && (
                              <LearnersInClass/>
