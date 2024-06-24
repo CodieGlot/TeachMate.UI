@@ -12,7 +12,7 @@ export const AdminService = {
       `${import.meta.env.VITE_SERVER_URL}/api/Admin/GetAllUser`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer `+token, 
         },
       }
     );
@@ -24,7 +24,7 @@ export const AdminService = {
       `${import.meta.env.VITE_SERVER_URL}/api/Admin/SearchUser`, dto,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer `+token,
         }
       }
     );
@@ -39,7 +39,7 @@ export const AdminService = {
         // Correctly pass the data in the request body
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer `+token,
           },
         }
       );
