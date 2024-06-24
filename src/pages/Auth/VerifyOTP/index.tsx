@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { AuthService } from "../../../services";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
-export interface VerifyOTPProps {
+import axios, { AxiosError } from "axios";
+import { toast } from "react-hot-toast";
 
-
-}
 export function VerifyOTP() {
     const [otP1, setOTP1] = useState('');
     const [otP2, setOTP2] = useState('');
@@ -47,29 +45,40 @@ export function VerifyOTP() {
 
         } catch (err) {
             console.error("verify failed:", err);
-            const error = err as AxiosError;
-            setError(error);
-            if (otP1 == '') {
-                setMessage("Please Enter OTP");
-            }
-            if (otP2 == '') {
-                setMessage("Please Enter OTP");
-            }
-            if (otP3 == '') {
-                setMessage("Please Enter OTP");
-            }
-            if (otP4 == '') {
-                setMessage("Please Enter OTP");
-            }
-            else if (error.response && error.response.data && (error.response.data as any).message) {
-                setMessage((error.response.data as any).message);
+            
+            
+            
+
+
+
+            if (axios.isAxiosError(err)) {
+              const axiosError = err as AxiosError<any>; // Use any for generic AxiosError
+      
+              if (axiosError.response) {
+                const { data } = axiosError.response;
+                if (otP1 == ''||otP2 == '' ||otP3 == ''|| otP4 == '' ) {
+                  toast.error("Please Enter OTP");
+              }
+                if (data) {
+                  if (data.errors) {
+                    // Handle validation errors
+                    Object.values(data.errors).forEach((errMsgList) => {
+                      (errMsgList as string[]).forEach((errMsg: string) => {
+                        toast.error(errMsg);
+                      });
+                    });
+                  } else if (data.message) {
+                    // Handle API exceptions
+                    toast.error(data.message);
+                  }
+                } else {
+                  toast.error("An unknown error occurred.");
+                }
+              }
             } else {
-                setMessage("An unexpected error occurred during log in.");
+              toast.error("An unexpected error occurred.");
             }
-
-
-
-        }
+          } 
 
 
     }

@@ -1,22 +1,43 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { SendOTPservice } from "../../../services/SendOTPservice";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
+import axios, { AxiosError } from "axios";
 
 
+import {
+    Formik,
+    Form,
+    Field,
+    ErrorMessage,
+    FormikValues,
+    FormikHelpers,
+} from "formik";
+import * as Yup from "yup";
+import AOS from "aos";
+import "aos/dist/aos.css";
+interface SendOTPFormValues {
+    email: string;
+
+}
+const validationSchema = Yup.object().shape({
+    email: Yup.string().required('Email is required')
+
+});
 export function SendOTP() {
+    const initialFormValues: SendOTPFormValues = {
+        email: ""
+
+    };
     const navigate = useNavigate();
     const location = useLocation();
     const { state } = location;
-    const [error, setError] = useState<AxiosError | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
-    const [email, setEmail] = useState('');
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-    };
-    const handleSaveClick = async () => {
 
+    const handleSaveClick = async (values: FormikValues,
+        { setSubmitting }: FormikHelpers<SendOTPFormValues>) => {
+        const { email } = values;
         try {
 
             await SendOTPservice.SendOTP({ email }
@@ -27,15 +48,30 @@ export function SendOTP() {
 
             console.error("Send Fail", err)
             const error = err as AxiosError;
-            setError(error);
-            if (email == '') {
-                setMessage("Please Enter your email");
+            if (axios.isAxiosError(err)) {
+                const axiosError = err as AxiosError<any>; // Use any for generic AxiosError
 
+                if (axiosError.response) {
+                    const { data } = axiosError.response;
 
-            } else if (error.response && error.response.data && (error.response.data as any).message) {
-                setMessage((error.response.data as any).message);
+                    if (data) {
+                        if (data.errors) {
+                            // Handle validation errors
+                            Object.values(data.errors).forEach((errMsgList) => {
+                                (errMsgList as string[]).forEach((errMsg: string) => {
+                                    toast.error(errMsg);
+                                });
+                            });
+                        } else if (data.message) {
+                            // Handle API exceptions
+                            toast.error(data.message);
+                        }
+                    } else {
+                        toast.error("An unknown error occurred.");
+                    }
+                }
             } else {
-                setMessage("An unexpected error occurred during log in.");
+                toast.error("An unexpected error occurred.");
             }
 
 
@@ -59,23 +95,35 @@ export function SendOTP() {
                     </div>
 
                     <div className="mt-5">
-                        <form>
-                            <div className="grid gap-y-4">
-                                <div>
-                                    <label htmlFor="email" className="block text-sm font-bold ml-1 mb-2 dark:text-white">Email address</label>
-                                    <div className="relative" >
-                                        <input value={email}  // Bind input value to state variable
-                                            onChange={handleInputChange}
-                                            type="email" id="email" name="email" className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" required aria-describedby="email-error" />
+                        <Formik
+                            initialValues={initialFormValues}
+                            validationSchema={validationSchema}
+                            onSubmit={handleSaveClick}
+                        >
+                            {({ isSubmitting }) => (
+                                <Form>
+                                    <div className="grid gap-y-4">
+                                        <div>
+                                            <label htmlFor="email" className="block text-sm font-bold ml-1 mb-2 dark:text-white">Email address</label>
+                                            <div className="relative" >
+                                                <Field  // Bind input value to state variable
+                                                    type="email" id="email" name="email" className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" required aria-describedby="email-error" />
+                                                <ErrorMessage
+                                                    className="text-red-500 p-5 bg-white font-medium text-xs"
+                                                    
+                                                    name="email"
+                                                    component="div"
+                                                />
+                                            </div>
+
+                                            <p className="hidden text-xs text-red-600 mt-2" id="email-error">Please include a valid email address so we can get back to you</p>
+                                        </div>
+                                        <button disabled={isSubmitting} type="submit" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Send OTP</button>
                                     </div>
-                                    <p className="text-sm text-red-500 p-4 text-center">
-                                        {message}
-                                    </p>
-                                    <p className="hidden text-xs text-red-600 mt-2" id="email-error">Please include a valid email address so we can get back to you</p>
-                                </div>
-                                <button onClick={handleSaveClick} type="button" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Send OTP</button>
-                            </div>
-                        </form>
+                                </Form>
+                            )}
+                        </Formik>
+
                     </div>
                 </div>
             </div>
