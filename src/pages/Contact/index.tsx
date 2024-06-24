@@ -1,6 +1,7 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from "react";
+import { Header } from '../../layouts';
 
 export const Contact = () => {
     useEffect(() => {
@@ -8,6 +9,7 @@ export const Contact = () => {
     }, []);
     return (
         <>
+            <Header />
             <div data-aos="zoom-in-left" data-aos-duration="1000">
                 <section>
                     <div className="relative w-full h-96"><img className="absolute h-full w-full object-cover object-center" src="https://bucket.material-tailwind.com/magic-ai/bbe71871de8b4d6f23bb0f17a6d5aa342f3dea72677ba7238b18defa3741244d.jpg" alt="nature image" />
