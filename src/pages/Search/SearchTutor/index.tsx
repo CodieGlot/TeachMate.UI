@@ -4,6 +4,7 @@ import { AppUser } from "../../../interfaces";
 import { SearchService } from "../../../services";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+
 interface SearchTutorProps {
   searchQuery: string | undefined; // Allow undefined in case it's not provided
 }

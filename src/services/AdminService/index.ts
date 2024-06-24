@@ -12,7 +12,7 @@ export const AdminService = {
       `${import.meta.env.VITE_SERVER_URL}/api/Admin/GetAllUser`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer '${token}'`,
         },
       }
     );
@@ -35,7 +35,7 @@ export const AdminService = {
   updateStatus: async (dto: DisableDto): Promise<AppUser[]> => {
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_SERVER_URL}/api/Admin/UpdateStatus`,dto, 
+        `${import.meta.env.VITE_SERVER_URL}/api/Admin/UpdateStatus`, dto,
         // Correctly pass the data in the request body
         {
           headers: {
@@ -49,5 +49,5 @@ export const AdminService = {
       console.error('Error updating status:', error);
       throw error;
     }
-  },  
+  },
 };
