@@ -51,8 +51,10 @@ export function Login() {
   ) => {
     const { username, password } = values;
     try {
+      
       await AuthService.login({ username, password });
-      navigate("/");
+      if (AuthService.getCurrentUser()?.userRole == UserRole.ADMIN) navigate("/admin");
+      else navigate("/");
     } catch (err) {
       console.error("Login failed:", err);
 

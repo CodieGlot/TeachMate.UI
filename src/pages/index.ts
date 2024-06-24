@@ -5,6 +5,7 @@ export * from "./Learning";
 export * from "./Profile";
 export * from "./Feedback";
 export * from "./Search";
+export * from "./Admin";
 export * from "./Contact";
 export * from "./Forum";
 

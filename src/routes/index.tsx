@@ -7,6 +7,7 @@ import profileRoutes from "./Profile";
 import scheduleRoutes from "./Schedule";
 import searchRoutes from "./Search";
 import feedbackRoutes from "./Feedback"
+import adminRoutes from "./Admin"
 import contactRoutes from "./Contact";
 import forumRoutes from "./Forum";
 
@@ -24,6 +25,7 @@ const Route = () => {
     ...scheduleRoutes,
     ...searchRoutes,
     ...feedbackRoutes,
+    ...adminRoutes,
     ...contactRoutes,
     ...forumRoutes,
 
