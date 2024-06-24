@@ -10,7 +10,7 @@ export function FAQs() {
     fontFamily: 'Arial, sans-serif',
   };
   return (
-    <div className="max-w-screen-xl mx-auto px-5 bg-white min-h-sceen">
+    <div className="max-w-screen-xl mx-auto px-5 bg-white min-h-sceen m-20">
       <div className="flex flex-col items-center">
         <h1 className="mb-5 text-3xl font-semibold text-white md:text-center md:text-5xl">
           <span style={highlightStyle}>FAQs</span>

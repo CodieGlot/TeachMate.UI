@@ -1,13 +1,17 @@
 import axios from "axios";
-import { ChangePassworddto, CreateUserDto, UserCredentialDto, VerifyOTPDto } from "../../common/dtos";
+import {
+  ChangePassworddto,
+  CreateUserDto,
+  UserCredentialDto,
+  VerifyOTPDto,
+} from "../../common/dtos";
 import { jwtDecode } from "jwt-decode";
 import { UserRole } from "../../common/enums";
 import { AppUser } from "../../interfaces";
 import { ForgetPasswordDto } from "../../common/dtos/ForgetPassword/ForgetPasswordDto";
+import { fbAuth } from "../../config";
 
 export const AuthService = {
-  
-
   isLogin: (): boolean => {
     return localStorage.getItem("accessToken") ? true : false;
   },
@@ -60,35 +64,38 @@ export const AuthService = {
     );
     localStorage.setItem("accessToken", response.data.accessToken.accessToken);
     localStorage.setItem("user", JSON.stringify(response.data.appUser));
-    return { accessToken: response.data.accessToken.accessToken, user: response.data.appUser};
+    return {
+      accessToken: response.data.accessToken.accessToken,
+      user: response.data.appUser,
+    };
   },
   logout: () => {
-
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
-    
+
+    fbAuth.signOut();
   },
-  ForgetPassword : async (dto :ForgetPasswordDto)=>{
+  ForgetPassword: async (dto: ForgetPasswordDto) => {
     const response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/api/Auth/ForgetPassWord`,
       dto
     );
-
   },
-  ChangePassword : async (dto :ChangePassworddto, accessToken: string)=>{
+  ChangePassword: async (dto: ChangePassworddto, accessToken: string) => {
     const response = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/api/Auth/ChangePassWord`,
-      dto,{
+      dto,
+      {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }
     );
-    
-  }, VerifyOTP: async (dto: VerifyOTPDto) => {
+  },
+  VerifyOTP: async (dto: VerifyOTPDto) => {
     await axios.post(
-     `${import.meta.env.VITE_SERVER_URL}/api/Auth/VerifyOTP`,
-     dto
-   );
-  }
+      `${import.meta.env.VITE_SERVER_URL}/api/Auth/VerifyOTP`,
+      dto
+    );
+  },
 };

@@ -77,4 +77,15 @@ export const ScheduleService = {
       const learningSession: LearningSession = response.data;
       return learningSession;
     },
+
+    createCustomLearningSession: async (dto: CreateCustomLearningSessionDto): Promise<LearningSession> => {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/Schedule/CreateCustomLearning`,dto,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+        const learningSession: LearningSession = response.data;
+        return learningSession;
+      },
 };

@@ -82,6 +82,19 @@ export const LearningModuleService = {
         return learningModuleRequests;
       },
 
+      getAllCreatedLearningModuleRequest: async () : Promise<LearningModuleRequest[]> => {
+        const response = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/Request/Learner/GetAll`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const learningModuleRequests: LearningModuleRequest[] = response.data;
+        return learningModuleRequests;
+      },
+
       updateRequestStatus: async (dto: UpdateStatusDto) : Promise<LearningModuleRequest> => {
         const response = await axios.put(
           `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/Request/UpdateStatus`,
@@ -108,5 +121,7 @@ export const LearningModuleService = {
         const learners: Learner[] = response.data;
         return learners;
       },
+
+
       
 };
