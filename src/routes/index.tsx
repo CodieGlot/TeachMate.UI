@@ -31,6 +31,7 @@ const Route = () => {
       path: "*",
       element: <NotFound />,
     },
+
   ]);
 
   return routes;
