@@ -5,7 +5,9 @@ import { toast } from "react-hot-toast";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
 import axios, { AxiosError } from "axios";
-import styles from "./login.module.css"
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import styles from "./login.module.css";
 import {
   Formik,
   Form,
@@ -17,6 +19,7 @@ import {
 import * as Yup from "yup";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { fbAuth } from "../../../config";
 
 interface LoginFormValues {
   username: string;
@@ -52,9 +55,9 @@ export function Login() {
   ) => {
     const { username, password } = values;
     try {
-      
       await AuthService.login({ username, password });
-      if (AuthService.getCurrentUser()?.userRole == UserRole.ADMIN) navigate("/admin");
+      if (AuthService.getCurrentUser()?.userRole == UserRole.ADMIN)
+        navigate("/admin");
       else navigate("/");
     } catch (err) {
       console.error("Login failed:", err);
@@ -92,12 +95,18 @@ export function Login() {
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
     const { credential } = credentialResponse;
     if (credential) {
-      await AuthService.googleLogin(credential, UserRole.LEARNER);
-      navigate("/");
+      try {
+        const fbAuthCredential =
+          firebase.auth.GoogleAuthProvider.credential(credential);
+        fbAuth.signInWithCredential(fbAuthCredential);
+
+        await AuthService.googleLogin(credential, UserRole.LEARNER);
+        navigate("/");
+      } catch (err) {
+        console.error("Google authentication failed:", err);
+      }
     }
   };
-
-  
 
   return (
     <div data-aos="zoom-in-left" data-aos-duration="1000">
@@ -114,7 +123,9 @@ export function Login() {
                   <Form>
                     {/* Form elements here */}
                     <div className="mb-12">
-                      <h3 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600">Sign in</h3>
+                      <h3 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600">
+                        Sign in
+                      </h3>
                       <p className="text-sm mt-4 ">
                         Don't have an account{" "}
                         <a
@@ -164,7 +175,7 @@ export function Login() {
                         className="w-full text-sm border-b border-gray-300 focus:border-[#333] px-2 py-3 outline-none"
                       />
                       <ErrorMessage
-                      className={styles.error}
+                        className={styles.error}
                         // "text-red-500 p-5 bg-white font-medium text-xs"
                         name="password"
                         component="div"
