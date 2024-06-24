@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import { LearningModuleService } from "../../../../services/LearningModuleService";
-import { AxiosError, LearningModule } from "../../../../interfaces";
+import { LearningModule } from "../../../../interfaces";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { AxiosError } from "axios";
 
 export function RequestJoinLearningModule() {
     const [title, setTitle] = useState<string>("");
@@ -32,6 +35,8 @@ export function RequestJoinLearningModule() {
                
                 
                 console.error('Error fetching learning module:', err);
+
+             
             }
         };
 
@@ -48,12 +53,30 @@ export function RequestJoinLearningModule() {
           });
          navigate('/learning');
         } catch (err) {
-            const error = err as AxiosError;
-            if (error.response && error.response.data && error.response.data.message) {
-                setMessage(error.response.data.message);
-          console.error("Add learning module failed:", error);
+          
+            if (axios.isAxiosError(err)) {
+                const axiosError = err as AxiosError<any>;
+                if (axiosError.response) {
+                    const { data } = axiosError.response;
+                    if (data) {
+                        if (data.errors) {
+                            Object.values(data.errors).forEach((errMsgList) => {
+                                (errMsgList as string[]).forEach((errMsg: string) => {
+                                    toast.error(errMsg);
+                                });
+                            });
+                        } else if (data.message) {
+                            toast.error(data.message);
+                        }
+                    } else {
+                        toast.error("An unknown error occurred.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred.");
+            }
         }
-      } };
+      };
     
 
 

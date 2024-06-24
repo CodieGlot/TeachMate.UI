@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
 import * as Yup from "yup"; //buoc1
+import styles from './signup.module.css'
+
 //buoc2
 import {
   Formik,
@@ -64,7 +66,7 @@ export function Signup() {
     setUserRole(selectedRole);
     console.log(selectedRole);
   };
-//Show password
+  //Show password
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -137,9 +139,9 @@ export function Signup() {
   };
 
   return (
-    
+
     <div data-aos="zoom-in-left" data-aos-duration="1000">
-      
+
       <div className="font-[sans-serif] bg-white text-white">
         <div className="grid md:grid-cols-2 items-center gap-8 h-full">
           <div className="max-md:order-1 p-4">
@@ -191,7 +193,7 @@ export function Signup() {
                         </svg>
                       </div>
                       <ErrorMessage
-                        className="text-red-500 p-5 bg-white font-medium text-xs"
+                        className={styles.error}
                         name="username"
                         component="div"
                       />
@@ -226,7 +228,7 @@ export function Signup() {
                       </div>
 
                       <ErrorMessage
-                        className="text-red-500 p-5 bg-white font-medium text-xs"
+                        className={styles.error}
                         name="password"
                         component="div"
                       />
@@ -261,7 +263,7 @@ export function Signup() {
                         </svg>
                       </div>
                       <ErrorMessage
-                        className="text-red-500 p-5 bg-white font-medium text-xs"
+                        className={styles.error}
                         name="confirmPassword"
                         component="div"
                       />
@@ -281,7 +283,7 @@ export function Signup() {
 
                       </div>
                       <ErrorMessage
-                        className="text-red-500 p-5 bg-white font-medium text-xs"
+                        className={styles.error}
                         name="email"
                         component="div"
                       />
@@ -326,7 +328,7 @@ export function Signup() {
                           </label>
                         </div>
                         <ErrorMessage
-                          className="text-red-500 p-5 bg-white font-medium text-xs"
+                          className={styles.error}
                           name="userRole"
                           component="div"
                         />

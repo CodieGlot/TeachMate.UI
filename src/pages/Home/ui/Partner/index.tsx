@@ -1,6 +1,6 @@
 export function Partner() {
   return (
-    <div className="font-[sans-serif] text-[#333]">
+    <div className="font-[sans-serif] text-[#333] mt-10">
       <div className="max-w-5xl mx-auto">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-extrabold bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent">

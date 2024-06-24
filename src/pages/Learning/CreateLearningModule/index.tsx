@@ -101,6 +101,7 @@ export function CreateLearningModule() {
         moduleType,
         numOfWeeks
       });
+
       if (moduleType == ModuleType.Weekly) navigate("/add-weekly-schedule", { state: { learningModule } })
       else navigate("/manage-class?id="+learningModule.id);
     } catch (err) {
@@ -132,6 +133,7 @@ export function CreateLearningModule() {
       }
     } finally {
       setSubmitting(false);
+
     }
   };
   useEffect(() => {
