@@ -5,11 +5,11 @@ import { LearningModuleService } from "../../../../services/LearningModuleServic
 import { useSearchParams } from "react-router-dom";
 import { Learner } from "../../../../interfaces";
 export function LearnersInClass() {
-  
+
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
   const [learners, setLearners] = useState<Learner[]>([])
- 
+
 
   useEffect(() => {
     const fetchLearners = async () => {
@@ -38,7 +38,7 @@ export function LearnersInClass() {
   //     console.error('Error fetching accept requests:', err);
 
   //   }
-   
+
   // }
   // const handleReject = async (moduleId: number, requestId: number) => {
   //   try {
@@ -125,7 +125,7 @@ export function LearnersInClass() {
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <p className="text-gray-900 whitespace-no-wrap"></p>
                         </td>
-                        
+
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           {/* <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusClasses(request.status)}`}>
                             <span
@@ -136,7 +136,7 @@ export function LearnersInClass() {
                           </span> */}
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-  {/* <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
+                          {/* <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
     {request.status === RequestStatus.Waiting && (
       <>
         <button onClick={() => handleAccept(request.learningModuleId, request.id)}>
@@ -168,7 +168,7 @@ export function LearnersInClass() {
       </>
     )}
   </p> */}
-</td>
+                        </td>
 
                       </tr>
                     ))}

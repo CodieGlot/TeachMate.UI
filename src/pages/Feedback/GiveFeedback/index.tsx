@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { FeedbackService } from '../../../services';
 import { useSearchParams } from 'react-router-dom'; //useSearchParams cho phép bạn dễ dàng lấy và cập nhật các tham số truy vấn 
 //(query parameters) từ URL của trang web
+// import axios, { AxiosError } from "axios";
+import toast from 'react-hot-toast';
+
+
+
 export const GiveFeedback = () => {
     const [comment, setComment] = useState('');
     const [star, setStar] = useState(0);
@@ -25,6 +30,7 @@ export const GiveFeedback = () => {
             setIsAnonymous(true);
 
             console.log('Feedback submitted successfully!');
+            toast.success('Send feedback successfully');
         } catch (error) {
             console.error('Failed to submit feedback', error);
         }
@@ -112,6 +118,8 @@ export const GiveFeedback = () => {
                 </div>
             </form>
         </div>
+
+
 
     );
 };

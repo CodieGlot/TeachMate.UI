@@ -7,7 +7,7 @@ import { LearningModuleRequest } from "../../../../interfaces/Learning/LearningM
 import { useSearchParams } from "react-router-dom";
 import { AuthService } from "../../../../services";
 export function ListRequestsForClass() {
-  const user= AuthService.getCurrentUser();
+  const user = AuthService.getCurrentUser();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
@@ -164,7 +164,7 @@ export function ListRequestsForClass() {
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <p className="text-gray-900 whitespace-no-wrap">{request.createdAt}</p>
                         </td>
-                        
+
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusClasses(request.status)}`}>
                             <span
@@ -175,39 +175,39 @@ export function ListRequestsForClass() {
                           </span>
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-  <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
-    {request.status === RequestStatus.Waiting && (
-      <>
-        <button onClick={() => handleAccept(request.learningModuleId, request.id)}>
-          <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-800">
-            <span className="absolute inset-0 opacity-50 rounded-full bg-green-200" aria-hidden="true"></span>
-            <span className="relative">
-              <img
-                width="20"
-                height="20"
-                src="https://img.icons8.com/?size=100&id=21068&format=png&color=000000"
-                alt="unfriend-female"
-              />
-            </span>
-          </span>
-        </button>
-        <button onClick={() => handleReject(request.learningModuleId, request.id)}>
-          <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-red-800">
-            <span className="absolute inset-0 opacity-50 rounded-full bg-red-200" aria-hidden="true"></span>
-            <span className="relative">
-              <img
-                width="19"
-                height="19"
-                src="https://img.icons8.com/?size=100&id=21066&format=png&color=000000"
-                alt="unfriend-female"
-              />
-            </span>
-          </span>
-        </button>
-      </>
-    )}
-  </p>
-</td>
+                          <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
+                            {request.status === RequestStatus.Waiting && (
+                              <>
+                                <button onClick={() => handleAccept(request.learningModuleId, request.id)}>
+                                  <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-800">
+                                    <span className="absolute inset-0 opacity-50 rounded-full bg-green-200" aria-hidden="true"></span>
+                                    <span className="relative">
+                                      <img
+                                        width="20"
+                                        height="20"
+                                        src="https://img.icons8.com/?size=100&id=21068&format=png&color=000000"
+                                        alt="unfriend-female"
+                                      />
+                                    </span>
+                                  </span>
+                                </button>
+                                <button onClick={() => handleReject(request.learningModuleId, request.id)}>
+                                  <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-red-800">
+                                    <span className="absolute inset-0 opacity-50 rounded-full bg-red-200" aria-hidden="true"></span>
+                                    <span className="relative">
+                                      <img
+                                        width="19"
+                                        height="19"
+                                        src="https://img.icons8.com/?size=100&id=21066&format=png&color=000000"
+                                        alt="unfriend-female"
+                                      />
+                                    </span>
+                                  </span>
+                                </button>
+                              </>
+                            )}
+                          </p>
+                        </td>
 
                       </tr>
                     ))}
