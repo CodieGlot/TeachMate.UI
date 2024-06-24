@@ -39,13 +39,13 @@ export function UserSchedule() {
     const getColor = (date: Date): string => {
         const dayOfWeek = date.getDay();
         switch (dayOfWeek) {
-            case 0: return "#fef2f2";
-            case 1: return "#fffbeb";
-            case 2: return "#f0fdf4";
-            case 3: return "#ecfeff";
-            case 4: return "#f5f3ff";
-            case 5: return "#fdf4ff";
-            case 6: return "#fff1f2";
+            case 0: return "#22d3ee";
+            case 1: return "#38bdf8";
+            case 2: return "#60a5fa";
+            case 3: return "#818cf8";
+            case 4: return "#a78bfa";
+            case 5: return "#c084fc";
+            case 6: return "#e879f9";
             default: return "";
         }
     };
@@ -101,18 +101,18 @@ export function UserSchedule() {
                 <a href={`session?id=${session.id}`} className='inline-block'>
                     <div
                         key={index}
-                        className="flex items-center justify-center absolute w-[110px] shadow-md"
+                        className="text-white flex items-center justify-center absolute w-[110px] shadow-md"
                         style={{
                             left: `${leftPosition}px`,
                             top: `${topPosition}px`,
                             height: `${height}px`,
                             backgroundColor: color,
                             borderColor: color,
-                            boxShadow: `0 0 10px ${color}`,
+                            // boxShadow: `0 0 10px ${color}`,
 
                         }}
                     >
-                         <div className='text-center'> {/* Sử dụng `div` thay vì `p` */}
+                         <div className='text-center font-sans'> {/* Sử dụng `div` thay vì `p` */}
             <p>{session.learningModuleName}</p>
             <p>{session.startTime.substring(0, 5)}-{session.endTime.substring(0, 5)}</p>
         </div>
@@ -145,7 +145,7 @@ export function UserSchedule() {
         const currentDate = new Date();
         const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         const diffDays = Math.floor((currentDate.getTime() - startOfMonth.getTime()) / (1000 * 3600 * 24));
-        const currentWeekIndex = Math.floor(diffDays / 7);
+        const currentWeekIndex = Math.floor(diffDays / 7) + 1;
         setCurrentWeekIndex(currentWeekIndex);
     }, []);
 

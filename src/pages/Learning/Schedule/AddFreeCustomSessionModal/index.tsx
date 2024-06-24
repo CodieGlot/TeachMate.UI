@@ -6,20 +6,18 @@ import { AuthService } from "../../../../services";
 import { ScheduleService } from "../../../../services/ScheduleService";
 import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
-import { useRef } from "react";
 
-interface AddCustomScheduleModalProps {
+interface AddFreeCustomSessionModalProps {
     learningModuleId: number | undefined;
 }
 
-export function AddCustomScheduleModal({ learningModuleId }: AddCustomScheduleModalProps) {
+export function AddFreeCustomSessionModal({ learningModuleId }: AddFreeCustomSessionModalProps) {
     const user = AuthService.getCurrentUser();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [title, setTitle] = useState<string>("");
     const [startTime, setStartTime] = useState<string>("07:00");
     const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
     const [linkMeet, setLinkMeet] = useState<string>("");
-    const titleRef = useRef<HTMLInputElement>(null);
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
@@ -38,7 +36,7 @@ export function AddCustomScheduleModal({ learningModuleId }: AddCustomScheduleMo
             if (typeof learningModuleId === 'undefined') {
                 throw new Error("learningModuleId is required");
             }
-            await ScheduleService.createCustomLearningSession({
+            await ScheduleService.createFreeLearningSession({
                 title,
                 learningModuleId,
                 startTime,
@@ -73,17 +71,16 @@ export function AddCustomScheduleModal({ learningModuleId }: AddCustomScheduleMo
 
     return (
         <>
-        
             {user?.tutor !== null && (
-                <Button color="gray" onClick={toggleModal}>Add custom session</Button>
+                <Button color="gray" onClick={toggleModal}>Add free session</Button>
             )}
 
-            <Modal position="center" color="gray" show={isModalOpen} size="md" onClose={onCloseModal} popup initialFocus={titleRef}>
+            <Modal color="gray" show={isModalOpen} size="md" onClose={onCloseModal} popup>
                 <Modal.Header />
                 <Modal.Body>
                     <div className="space-y-6">
-                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add custom session</h3>
-                        <p className="text-sm text-gray-400">Custom session can only be added during current week</p>
+                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add free session</h3>
+                        <p className="text-sm text-gray-400">Free session must be add before start date of the learning module</p>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="title" value="Title" />
@@ -94,7 +91,6 @@ export function AddCustomScheduleModal({ learningModuleId }: AddCustomScheduleMo
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 required
-                                ref={titleRef}
                             />
                         </div>
                         <div>
@@ -147,7 +143,6 @@ export function AddCustomScheduleModal({ learningModuleId }: AddCustomScheduleMo
                     </div>
                 </Modal.Body>
             </Modal>
-            
         </>
     );
 }

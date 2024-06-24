@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
 import axios, { AxiosError } from "axios";
+import styles from "./login.module.css"
 import {
   Formik,
   Form,
@@ -141,7 +142,8 @@ export function Login() {
                         className="w-full text-sm border-b border-gray-300 focus:border-[#333] px-2 py-3 outline-none"
                       />
                       <ErrorMessage
-                        className="text-red-500 p-5 bg-white font-medium text-xs"
+                        className={styles.error}
+                        // "text-red-500 p-5 bg-white font-medium text-xs"
                         name="username"
                         component="div"
                       />
@@ -162,7 +164,8 @@ export function Login() {
                         className="w-full text-sm border-b border-gray-300 focus:border-[#333] px-2 py-3 outline-none"
                       />
                       <ErrorMessage
-                        className="text-red-500 p-5 bg-white font-medium text-xs"
+                      className={styles.error}
+                        // "text-red-500 p-5 bg-white font-medium text-xs"
                         name="password"
                         component="div"
                       />
