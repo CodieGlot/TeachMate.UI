@@ -13,5 +13,4 @@ export interface AppUser {
   avatar: string;
   tutor: Tutor | null;
   learner: Learner | null;
-
 }

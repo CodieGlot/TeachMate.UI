@@ -32,4 +32,21 @@ export const SearchService = {
     return tutors;
   },
 
+  // getAverageRatingByStar: async (id: string | null): Promise<number> => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${import.meta.env.VITE_SERVER_URL}/api/Feedback/GetAverageRatingByStar/` + id,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         }
+  //       }
+  //     );
+  //     const averageRating: number = response.data;
+  //     return averageRating;
+  //   } catch (error) {
+  //     console.error("Error fetching average rating:", error);
+  //     throw error;
+  //   }
+  // },
 };
