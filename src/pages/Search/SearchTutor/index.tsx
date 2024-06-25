@@ -4,17 +4,23 @@ import { AppUser } from "../../../interfaces";
 import { SearchService } from "../../../services";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useNavigate } from "react-router-dom";
+
+
 interface SearchTutorProps {
   searchQuery: string | undefined; // Allow undefined in case it's not provided
 }
 
 export function SearchTutor({ searchQuery }: SearchTutorProps) {
+  const navigate = useNavigate();
+  const handletutordetail = async () => {
+    navigate("/tutordetail");
+  }
   const [message, setMessage] = useState<string | null>("");
 
   const [displayName, setDisplayName] = useState<string>(searchQuery || "");
   const [tutors, setTutors] = useState<AppUser[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [expandedTutor, setExpandedTutor] = useState<number | null>(null); // State to manage expanded tutor details
   const sectionsPerPage = 3;
   const totalPages = Math.ceil(tutors.length / sectionsPerPage);
   useEffect(() => {  // hàm này luôn chạy khi điều kiện dưới thay đổi
@@ -49,13 +55,77 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  const toggleDetails = (index: number) => {
-    setExpandedTutor(expandedTutor === index ? null : index); // Toggle expanded view
-  };
 
   useEffect(() => {
     AOS.init();
   }, []);
+
+  const TutorRating: React.FC<{ tutor: AppUser }> = ({ tutor }) => {
+    const rating = tutor.tutor?.rating || 0;
+    const filledStars = Math.floor(rating);
+    const hasHalfStar = rating - filledStars >= 0.5;
+
+    return (
+      <div className="flex items-center">
+        {[...Array(5)].map((_, starIndex) => {
+          if (starIndex < filledStars) {
+            // Filled star
+            return (
+              <svg
+                key={starIndex}
+                className="w-6 h-6 inline text-yellow-300 dark:text-yellow-300 fill-current"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 14.328l-4.112 2.238.786-4.595L2 7.875l4.597-.67L10 2l1.403 5.206 4.597.67-3.674 3.996.786 4.595z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            );
+          } else if (hasHalfStar && starIndex === filledStars) {
+            // Half star
+            return (
+              <svg
+                key={starIndex}
+                className="w-6 h-6 inline text-yellow-300 dark:text-yellow-300 fill-current"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 14.328l-4.112 2.238.786-4.595L2 7.875l4.597-.67L10 2l1.403 5.206 4.597.67-3.674 3.996.786 4.595z"
+                  clipRule="evenodd"
+                />
+                <path
+                  d="M10 2v12.328l-4.112 2.238.786-4.595L2 7.875l4.597-.67L10 2z"
+                  className="text-gray-300 dark:text-gray-300 fill-current"
+                />
+              </svg>
+            );
+          } else {
+            // Empty star
+            return (
+              <svg
+                key={starIndex}
+                className="w-6 h-6 inline text-gray-300 dark:text-gray-300 fill-current"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 14.328l-4.112 2.238.786-4.595L2 7.875l4.597-.67L10 2l1.403 5.206 4.597.67-3.674 3.996.786 4.595z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            );
+          }
+        })}
+      </div>
+    );
+  };
+
 
   return (
     <>
@@ -131,81 +201,16 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
                     </div>
                     <div className="w-full text-center">
                       <div className="flex justify-center pt-8 pb-0 lg:pt-4">
-                        <div className="flex space-x-2">
-                          {/* Social Media Links */}
-                          <a
-                            className="p-1 -m-1 text-gray-400 hover:text-amber-500 focus:outline-none focus-visible:ring-2 ring-primary"
-                            href={"sdfjsdfj"}
-                            rel="noopener"
-                            aria-label={`${tutor.displayName} on Twitter`}
-                            target="_blank"
-                          >
-                            <svg
-                              className="w-6 h-6 overflow-visible fill-current"
-                              aria-hidden="true"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"
-                              ></path>
-                            </svg>
-                          </a>
-                          <a
-                            className="p-1 -m-1 text-gray-400 hover:text-amber-500 focus:outline-none focus-visible:ring-2 ring-primary"
-                            href={"dsfjsfhudh"}
-                            rel="noopener"
-                            aria-label={`${tutor.displayName} on LinkedIn`}
-                            target="_blank"
-                          >
-                            <svg
-                              className="w-6 h-6 overflow-visible fill-current"
-                              aria-hidden="true"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.024-3.037-1.852-3.037-1.853 0-2.137 1.45-2.137 2.945v5.661H9.35V9.003h3.415v1.561h.049c.476-.9 1.637-1.852 3.368-1.852 3.6 0 4.268 2.369 4.268 5.455v6.285zM5.337 7.433c-1.144 0-2.07-.928-2.07-2.073 0-1.144.926-2.071 2.07-2.071 1.144 0 2.071.927 2.071 2.071 0 1.145-.927 2.073-2.071 2.073zm1.778 13.019H3.559V9.003h3.556v11.449zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.226.792 24 1.771 24h20.451c.979 0 1.778-.774 1.778-1.729V1.729C24 .774 23.204 0 22.225 0z"
-                              ></path>
-                            </svg>
-                          </a>
-                          <a
-                            className="p-1 -m-1 text-gray-400 hover:text-amber-500 focus:outline-none focus-visible:ring-2 ring-primary"
-                            href={"hfhsd"}
-                            rel="noopener"
-                            aria-label={`${tutor.displayName} on GitHub`}
-                            target="_blank"
-                          >
-                            <svg
-                              className="w-6 h-6 overflow-visible fill-current"
-                              aria-hidden="true"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M12.026 2c-5.509 0-9.974 4.49-9.974 10.045 0 4.436 2.865 8.195 6.839 9.527.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.109-1.465-1.109-1.465-.908-.624.069-.612.069-.612 1.003.073 1.531 1.051 1.531 1.051.892 1.54 2.341 1.095 2.91.838.092-.651.35-1.095.635-1.347-2.221-.256-4.555-1.117-4.555-4.977 0-1.1.388-1.998 1.026-2.702-.103-.257-.446-1.288.098-2.687 0 0 .84-.272 2.75 1.025A9.564 9.564 0 0112 6.818a9.54 9.54 0 012.504.34c1.91-1.297 2.749-1.025 2.749-1.025.545 1.399.202 2.43.1 2.687.639.704 1.025 1.602 1.025 2.702 0 3.87-2.337 4.718-4.566 4.97.36.311.68.926.68 1.866 0 1.347-.012 2.433-.012 2.765 0 .268.18.58.688.482A10.013 10.013 0 0022 12.045C22 6.49 17.535 2 12.026 2z"
-                              ></path>
-                            </svg>
-                          </a>
-                        </div>
+                        <TutorRating tutor={tutor} />
                       </div>
                     </div>
                     {/* Toggle Details Button */}
                     <button
-                      onClick={() => toggleDetails(index)}
+                      onClick={handletutordetail}
                       className="mt-4 px-4 py-2 text-sm text-violet-500 bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300"
                     >
-                      {expandedTutor === index ? "Hide Details" : "Show Details"}
+                      Show Deatail
                     </button>
-                    {/* Details Section */}
-                    {expandedTutor === index && (
-                      <div className="mt-4 text-gray-600 dark:text-gray-300">
-                        <p><strong>Description:</strong> {tutor.tutor?.description}</p>
-                        {/* <p><strong>Qualifications:</strong> {tutor.displayName}</p>
-                      <p><strong>Subjects:</strong> {tutor.displayName.join(", ")}</p> */}
-                        {/* Add any other fields you want to show */}
-                      </div>
-
-                    )}
                   </div>
                 </div>
               </div>

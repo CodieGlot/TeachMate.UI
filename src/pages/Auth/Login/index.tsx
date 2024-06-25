@@ -108,6 +108,11 @@ export function Login() {
     }
   };
 
+  const labelCharStyles = (index: number) => ({
+    '--index': index.toString(),
+  } as React.CSSProperties);
+
+
   return (
     <div data-aos="zoom-in-left" data-aos-duration="1000">
       <div className="font-[sans-serif] text-[#333] bg-white">
@@ -159,6 +164,20 @@ export function Login() {
                         component="div"
                       />
                     </div>
+                    {/* <div className={styles['wave-group']}>
+                      <input required type="text" className={styles.input} />
+                      <span className={styles.bar}></span>
+                      <label className={styles.label}>
+                        <span className={styles['label-char']} style={labelCharStyles(0)}>U</span>
+                        <span className={styles['label-char']} style={labelCharStyles(1)}>s</span>
+                        <span className={styles['label-char']} style={labelCharStyles(2)}>e</span>
+                        <span className={styles['label-char']} style={labelCharStyles(3)}>r</span>
+                        <span className={styles['label-char']} style={labelCharStyles(0)}>n</span>
+                        <span className={styles['label-char']} style={labelCharStyles(1)}>a</span>
+                        <span className={styles['label-char']} style={labelCharStyles(2)}>m</span>
+                        <span className={styles['label-char']} style={labelCharStyles(3)}>e</span>
+                      </label>
+                    </div> */}
 
                     {/* Password field */}
                     <div className="mt-8">
@@ -246,9 +265,9 @@ export function Login() {
                 alt="login-image"
               />
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </div >
+        </div >
+      </div >
+    </div >
   );
 }
