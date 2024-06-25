@@ -20,6 +20,7 @@ interface UpdateFormValues {
   phoneNumber: string
 }
 import { StorageService } from "../../../services";
+import { Stepper } from "../Stepper";
 export function AddLearnerDetail() {
   const user = AuthService.getCurrentUser();
 
@@ -74,7 +75,12 @@ export function AddLearnerDetail() {
     { setSubmitting }: FormikHelpers<UpdateFormValues>) => {
 
     try {
-      const { displayName, email, phoneNumber } = values;
+      // if (selectedFile) {
+      //   const img = await StorageService.uploadFile(selectedFile)
+      //   setAvatar(img)
+      // }
+
+      const { displayName, phoneNumber } = values;
       await UserDetailService.addLearnerDetail({
 
         phoneNumber,
@@ -120,7 +126,7 @@ export function AddLearnerDetail() {
   };
   return (
     <>
-
+      <Stepper />
       <section className="bg-white dark:bg-gray-900">
         <div className="py-4 px-4 mx-auto max-w-2xl lg:py-8">
           <div className=" mx-auto py-3 mb-5">
@@ -194,20 +200,29 @@ export function AddLearnerDetail() {
                   </div>
 
 
-                  <label className="block pt-7 pl-7 ">
-                    <span className="sr-only">Choose profile photo</span>
-                    <input
-                      type="file"
-                      onChange={loadFile}
-                      className="block w-full text-sm text-slate-500
+                  <div className="flex items-center space-x-6">
+                    <div className="shrink-0">
+                      <img
+                        id="preview_img"
+                        className="h-16 w-16 object-cover rounded-full"
+                        src={imageSrc}
+                        alt="Current profile photo"
+                      />
+                    </div>
+                    <label className="block ">
+                      <span className="sr-only">Choose profile photo</span>
+                      <input
+                        type="file"
+                        onChange={loadFile}
+                        className="block w-full text-sm text-slate-500
                      file:mr-4 file:py-2 file:px-4
                      file:rounded-full file:border-0
                      file:text-sm file:font-semibold
                      file:bg-violet-50 file:text-violet-700
                      hover:file:bg-violet-100"
-                    />
-                  </label>
-
+                      />
+                    </label>
+                  </div>
                   <div>
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Grade Level</label>
                     <input
@@ -236,7 +251,7 @@ export function AddLearnerDetail() {
                       </ul>
                     </div>
                   </div>
-                  
+
                 </div>
 
                 <div className="mt-8">
