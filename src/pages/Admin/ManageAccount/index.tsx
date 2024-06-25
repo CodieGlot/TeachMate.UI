@@ -101,7 +101,7 @@ export function ManageAccount() {
 
       //console.log('Selected user details:', selectedUserDetails);
       // Toggle the isDisabled status for each selected user
-      await Promise.all(selectedUserDetails.map(user => AdminService.updateStatus({id : user.id})));
+      await Promise.all(selectedUserDetails.map(user => AdminService.updateStatus({ id: user.id })));
 
       // Refresh the user list after updating status
       await fetchAllAppUsers();
@@ -126,8 +126,10 @@ export function ManageAccount() {
 
   return (
     <body>
-      <div ref={mainContentRef} className="ml-16 bg-gray-100 h-screen fixed w-full lg:w-4/5 transition-all duration-200 ease-in-out">
-        <div className="flex flex-wrap -mx-3 mb-5">
+      <div ref={mainContentRef}
+        className="z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out
+    ">
+        <div className="flex flex-wrap mx-3 mb-5">
           <div className="w-full max-w-full px-3 mb-6  mx-auto">
             <div className="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
               <div className="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
