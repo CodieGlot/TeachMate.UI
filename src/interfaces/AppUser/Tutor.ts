@@ -3,4 +3,5 @@ export interface Tutor {
   displayName: string;
   description: string;
   gradeLevel: Int32Array;
+  rating: number | null;
 }
