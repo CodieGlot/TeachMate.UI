@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { LearningModuleService } from "../../../../services/LearningModuleService";
 import { useSearchParams } from "react-router-dom";
 import { Learner } from "../../../../interfaces";
+import style from "../ListLearners/kickButton.css"
 export function LearnersInClass() {
 
   const [searchParams] = useSearchParams();
@@ -122,11 +123,9 @@ export function LearnersInClass() {
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <p className="text-gray-900 whitespace-no-wrap font-semibold">{learner.gradeLevel}</p>
                         </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap"></p>
-                        </td>
+                       
 
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        
                           {/* <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusClasses(request.status)}`}>
                             <span
                               className={`absolute inset-0 opacity-50 rounded-full ${getStatusBackgroundClasses(request.status)}`}
@@ -134,8 +133,11 @@ export function LearnersInClass() {
                             ></span>
                             <span className="relative">{getStatusString(request.status)}</span>
                           </span> */}
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <button role="button" className="button-name">Kick</button>
                         </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                       
+                        
                           {/* <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
     {request.status === RequestStatus.Waiting && (
       <>
@@ -168,7 +170,7 @@ export function LearnersInClass() {
       </>
     )}
   </p> */}
-                        </td>
+                      
 
                       </tr>
                     ))}

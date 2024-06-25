@@ -19,6 +19,7 @@ interface UpdateFormValues {
   email: string
   phoneNumber: string
 }
+import { Stepper } from "../Stepper";
 export function UpdateTutorDetail() {
   const user = AuthService.getCurrentUser();
 
@@ -105,7 +106,6 @@ export function UpdateTutorDetail() {
   };
   return (
     <>
-
       <section className="bg-white dark:bg-gray-900">
         <div className="py-4 px-4 mx-auto max-w-2xl lg:py-8">
           <div className=" mx-auto py-3 mb-5">
