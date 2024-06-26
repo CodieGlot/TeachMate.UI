@@ -70,4 +70,10 @@ export const StorageService = {
       );
     });
   },
+  getFileNameFromUrl : (url: string): string => {
+    const parts = url.split('/');
+    return parts[parts.length - 1].split('?')[0];
+  },
+  
+  
 };
