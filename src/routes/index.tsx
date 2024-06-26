@@ -10,6 +10,7 @@ import feedbackRoutes from "./Feedback"
 import adminRoutes from "./Admin"
 import contactRoutes from "./Contact";
 import forumRoutes from "./Forum";
+import materialRoutes from "./Material";
 
 const Route = () => {
   const routes = useRoutes([
@@ -28,7 +29,7 @@ const Route = () => {
     ...adminRoutes,
     ...contactRoutes,
     ...forumRoutes,
-
+    ...materialRoutes,
     {
       path: "*",
       element: <NotFound />,

@@ -8,3 +8,4 @@ export * from "./Search";
 export * from "./Admin";
 export * from "./Contact";
 export * from "./Forum";
+export * from "./StudyMaterial"
