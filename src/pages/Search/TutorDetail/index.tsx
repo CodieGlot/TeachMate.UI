@@ -1,233 +1,176 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '../../../layouts';
-
+import { useLocation } from "react-router-dom";
+import { UserDetailService } from '../../../services';
+import { AppUser } from '../../../interfaces';
 
 export function TutorDetail() {
-    const [menu1Open, setMenu1Open] = useState(false);
-    const [menu2Open, setMenu2Open] = useState(false);
-    const [menu3Open, setMenu3Open] = useState(false);
+    const [userData, setUserData] = useState<AppUser>();
+    const location = useLocation();
+    const { state } = location;
+    const id = state;
 
-    const toggleMenu1 = () => {
-        setMenu1Open(!menu1Open);
-    };
+    useEffect(() => {
+        const handleGetUserById = async () => {
+            try {
+                const data = await UserDetailService.getUserById(id);
+                setUserData(data);
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
+            }
+        };
 
-    const toggleMenu2 = () => {
-        setMenu2Open(!menu2Open);
-    };
-
-    const toggleMenu3 = () => {
-        setMenu3Open(!menu3Open);
-    };
+        handleGetUserById();
+    }, [id]);
 
     return (
         <>
             <Header />
-            <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-r from-sky-400/20 to-indigo-600/20">
-                <div className="max-w-4xl bg-white w-full rounded-lg shadow-xl">
-                    <div className="p-4 border-b">
-                        <h2 className="Block bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent font-bold">Profile Information</h2>
+            <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+                {userData ? (
+                    <div className="max-w-4xl bg-white w-full rounded-lg shadow-xl overflow-hidden">
+                        <div className="p-6 bg-gradient-to-r from-blue-500/50 to-purple-600/50 text-white text-center">
+                            <h2 className="text-2xl font-bold">Profile Information</h2>
+                            <img
+                                width={200}
+                                height={200}
+                                className="mx-auto my-4 rounded-full shadow-lg"
+                                src="src/assets/ava.jpg"
+                                alt=""
+                            />
+                        </div>
+                        <div className="p-6">
+                            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-4 p-4 border-b">
+                                <p className="text-gray-500 font-semibold">Full Name</p>
+                                <p className="text-gray-700">{userData.displayName}</p>
+                            </div>
+                            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-4 p-4 border-b">
+                                <p className="text-gray-500 font-semibold">Phone Number</p>
+                                <p className="text-gray-700">{userData.phoneNumber}</p>
+                            </div>
+                            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-4 p-4 border-b">
+                                <p className="text-gray-500 font-semibold">Email Address</p>
+                                <p className="text-gray-700">{userData.email}</p>
+                            </div>
+                            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-4 p-4">
+                                <p className="text-gray-500 font-semibold">About</p>
+                                <p className="text-gray-700">{userData.tutor?.description}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border-b">
-                            <p className="text-gray-600">Full name</p>
-                            <p>Jane Doe</p>
-                        </div>
-                        <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border-b">
-                            <p className="text-gray-600">Rating</p>
-                            <p>Product Manager</p>
-                        </div>
-                        <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border-b">
-                            <p className="text-gray-600">Email Address</p>
-                            <p>Janedoe@gmail.com</p>
-                        </div>
-                        <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border-b">
-                            <p className="text-gray-600">About</p>
-                            <p>
-                                Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.
-                            </p>
-                        </div>
+                ) : (
+                    <p className="text-gray-500">Loading...</p>
+                )}
+            </div>
+            <a
+                href="src/assets/donate.jpg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-purple-600 p-4 rounded-full text-white fixed right-4 bottom-4 shadow-lg hover:bg-purple-700 transition duration-300"
+            >
+                Support me by buying a coffee
+            </a>
+
+            {/* Class Cards Section */}
+            <div className="container mx-auto my-5 px-4">
+                <form className="relative w-full flex max-w-md mx-auto lg:mx-0 lg:max-w-none mb-8">
+                    <div className="relative w-full flex items-center justify-center rounded-lg overflow-hidden bg-gradient-to-r from-blue-500/50 to-purple-600/50 p-0.5 shadow-lg h-24">
+                        <h2 className="text-2xl font-bold text-white">Class Available</h2>
                     </div>
+                </form>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                    {[1, 2, 3].map((_, index) => (
+                        <div
+                            key={index}
+                            className="relative w-full max-w-md min-w-0 mx-auto break-words bg-white dark:bg-gray-800 border dark:border-gray-700 shadow-lg rounded-xl transition-transform transform hover:scale-105 hover:shadow-2xl"
+                        >
+                            <div className="p-6">
+                                <h3 className="text-lg text-indigo-500 font-bold mb-2">
+                                    Class Title
+                                </h3>
+                                <p className="text-sm font-semibold text-gray-500">Description</p>
+                                <p className="mt-2 text-4xl font-bold text-black">$0</p>
+                                <p className="text-sm font-semibold text-gray-500">Per month</p>
+
+                                <hr className="my-4" />
+
+                                <div className="flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                    </svg>
+                                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                        <span className="block">Grade Level: <span className="font-semibold text-gray-900 dark:text-gray-100">Beginner</span></span>
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                    </svg>
+                                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                        <span className="block">Start Date: <span className="font-semibold text-gray-900 dark:text-gray-100">2023-07-01</span></span>
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                    </svg>
+                                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                        <span className="block">End Date: <span className="font-semibold text-gray-900 dark:text-gray-100">2023-12-31</span></span>
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                    </svg>
+                                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                        <span className="block">Max Learners: <span className="font-semibold text-gray-900 dark:text-gray-100">30</span></span>
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                    </svg>
+                                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                        <span className="block">Module Type: <span className="font-semibold text-gray-900 dark:text-gray-100">Online</span></span>
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                    </svg>
+                                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                        <span className="block">Number of Weeks: <span className="font-semibold text-gray-900 dark:text-gray-100">12</span></span>
+                                    </p>
+                                </div>
+                                <button
+                                    className="mt-4 w-full rounded-lg border-2 border-indigo-400 px-10 py-2 text-sm text-indigo-500 font-semibold hover:bg-indigo-400 hover:text-white transition duration-300"
+                                >
+                                    Join
+                                </button>
+                            </div>
+                        </div>
+                    ))}
                 </div>
 
-                <a
-                    href="src/assets/donate.jpg"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-purple-600 p-2 rounded-lg text-white fixed right-0 bottom-0"
-                >
-                    Support me by buying a coffee
-                </a>
-            </div>
-            <div className="mx-auto container px-4 md:px-6 2xl:px-0 py-12 flex justify-center items-center">
-                <div className="flex flex-col justify-start items-start">
-                    <div className="mt-3">
-                        <h1 className="text-3xl lg:text-4xl tracking-tight font-semibold leading-8 lg:leading-9 text-gray-800 dark:text-white">Class</h1>
-                    </div>
-                    <div className="mt-4">
-                        <p className="text-2xl tracking-tight leading-6 text-gray-600 dark:text-white">03 items</p>
-                    </div>
-                    <div className="mt-10 lg:mt-12 grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-10 lg:gap-y-0">
-                        {/* Product 1 */}
-                        <div className="flex flex-col">
-                            <div className="relative">
-                                <img className="hidden lg:block" src="https://i.ibb.co/SsmkhPq/Rectangle-23.png" alt="bag" />
-                                <img className="hidden sm:block lg:hidden" src="https://i.ibb.co/ZH9FmZL/Rectangle-23-1.png" alt="bag" />
-                                <img className="sm:hidden" src="https://i.ibb.co/cyN26yn/Rectangle-23.png" alt="bag" />
-                                <button aria-label="close" className="top-4 right-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 absolute p-1.5 bg-gray-800 dark:bg-white dark:text-gray-800 text-white hover:text-gray-400">
-                                    <svg className="fil-current" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M13 1L1 13" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M1 1L13 13" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="mt-6 flex justify-between items-center">
-                                <div className="flex justify-center items-center">
-                                    <p className="tracking-tight text-2xl font-semibold leading-6 text-gray-800 dark:text-white">New York Streak</p>
-                                </div>
-                                <div className="flex justify-center items-center">
-                                    <button aria-label="show menu" onClick={toggleMenu1} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-2.5 px-2 bg-gray-800 dark:bg-white dark:text-gray-800 text-white hover:text-gray-400 hover:bg-gray-200">
-                                        <svg className={menu1Open ? 'hidden' : 'fill-stroke'} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 5L5 1L1 5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        <svg className={menu1Open ? 'fill-stroke' : 'hidden'} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div className={menu1Open ? 'flex flex-col justify-start items-start mt-12' : 'hidden'}>
-                                <div>
-                                    <p className="tracking-tight text-xs leading-3 text-gray-800 dark:text-white">MK617</p>
-                                </div>
-                                <div className="mt-2">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">Beige brown</p>
-                                </div>
-                                <div className="mt-6">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">42 size</p>
-                                </div>
-                                <div className="mt-6">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">$1,000</p>
-                                </div>
-                                <div className="flex justify-between flex-col lg:flex-row items-center mt-10 w-full space-y-4 lg:space-y-0 lg:space-x-4 xl:space-x-8">
-                                    <div className="w-full">
-                                        <button className="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-gray-800 dark:text-white text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-gray-300 hover:text-gray-800 dark:text-white bg-white border border-gray-800 dark:border-white dark:hover:bg-gray-800 dark:hover:text-white">More information</button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white">Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Product 2 */}
-                        <div className="flex flex-col">
-                            <div className="relative">
-                                <img className="hidden lg:block" src="https://i.ibb.co/WVySXBL/Rectangle-24.png" alt="watch" />
-                                <img className="hidden sm:block lg:hidden" src="https://i.ibb.co/9sqGrR6/Rectangle-24-1.png" alt="watch" />
-                                <img className="sm:hidden" src="https://i.ibb.co/wCGrdFt/Rectangle-24.png" alt="watch" />
-                                <button aria-label="close" className="top-4 right-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 absolute p-1.5 bg-gray-800 text-white hover:text-gray-400">
-                                    <svg className="fil-current" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M13 1L1 13" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M1 1L13 13" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="mt-6 flex justify-between items-center">
-                                <div className="flex justify-center items-center">
-                                    <p className="tracking-tight text-2xl font-semibold leading-6 text-gray-800 dark:text-white">Luxe 3 series</p>
-                                </div>
-                                <div className="flex justify-center items-center">
-                                    <button aria-label="show menu" onClick={toggleMenu2} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-2.5 px-2 bg-gray-800 dark:bg-white dark:text-gray-800 text-white hover:text-gray-400 hover:bg-gray-200">
-                                        <svg className={menu2Open ? 'hidden' : 'fill-stroke'} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 5L5 1L1 5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        <svg className={menu2Open ? 'fill-stroke' : 'hidden'} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div className={menu2Open ? 'flex flex-col justify-start items-start mt-12' : 'hidden'}>
-                                <div>
-                                    <p className="tracking-tight text-xs leading-3 text-gray-800 dark:text-white">MK617</p>
-                                </div>
-                                <div className="mt-2">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">Beige brown</p>
-                                </div>
-                                <div className="mt-6">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">42 size</p>
-                                </div>
-                                <div className="mt-6">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">$1,000</p>
-                                </div>
-                                <div className="flex justify-between flex-col lg:flex-row items-center mt-10 w-full space-y-4 lg:space-y-0 lg:space-x-4 xl:space-x-8">
-                                    <div className="w-full">
-                                        <button className="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-gray-800 dark:text-white text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-gray-300 hover:text-gray-800 dark:text-white bg-white border border-gray-800 dark:border-white dark:text-white dark:bg-transparent dark:border-white dark:hover:bg-gray-800 dark:hover:text-white">More information</button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white">Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Product 3 */}
-                        <div className="flex flex-col">
-                            <div className="relative">
-                                <img className="hidden lg:block" src="https://i.ibb.co/JqD4MwR/Rectangle-5.png" alt="shoes" />
-                                <img className="hidden sm:block lg:hidden" src="https://i.ibb.co/MG7JYJ4/Rectangle-5-1.png" alt="shoes" />
-                                <img className="sm:hidden" src="https://i.ibb.co/89gMng3/Rectangle-5.png" alt="shoes" />
-                                <button aria-label="close" className="top-4 right-4 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:bg-white dark:text-gray-800 focus:ring-gray-800 absolute p-1.5 bg-gray-800 text-white hover:text-gray-400">
-                                    <svg className="fil-current" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M13 1L1 13" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M1 1L13 13" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="mt-6 flex justify-between items-center">
-                                <div className="flex justify-center items-center">
-                                    <p className="tracking-tight text-2xl font-semibold leading-6 text-gray-800 dark:text-white">EZ sneakers</p>
-                                </div>
-                                <div className="flex justify-center items-center">
-                                    <button aria-label="show menu" onClick={toggleMenu3} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-2.5 px-2 bg-gray-800 text-white hover:text-gray-400 dark:bg-gray-50 dark:text-gray-900 hover:bg-gray-200">
-                                        <svg className={menu3Open ? 'hidden' : 'fill-stroke'} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 5L5 1L1 5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        <svg className={menu3Open ? 'fill-stroke' : 'hidden'} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div className={menu3Open ? 'flex flex-col justify-start items-start mt-12' : 'hidden'}>
-                                <div>
-                                    <p className="tracking-tight text-xs leading-3 text-gray-800 dark:text-white">MK617</p>
-                                </div>
-                                <div className="mt-2">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">Beige brown</p>
-                                </div>
-                                <div className="mt-6">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">42 size</p>
-                                </div>
-                                <div className="mt-6">
-                                    <p className="tracking-tight text-base font-medium leading-4 text-gray-800 dark:text-white">$1,000</p>
-                                </div>
-                                <div className="flex justify-between flex-col lg:flex-row items-center mt-10 w-full space-y-4 lg:space-y-0 lg:space-x-4 xl:space-x-8">
-                                    <div className="w-full">
-                                        <button className="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-gray-800 dark:text-white text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-gray-300 hover:text-gray-800 dark:text-white bg-white border border-gray-800 dark:border-white dark:text-white dark:bg-transparent dark:border-white dark:hover:bg-gray-800 dark:hover:text-white">More information</button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                {/* Pagination */}
+                <div className="flex justify-center items-center gap-4 mt-8">
+                    <button
+                        className="px-3 py-1 bg-gray-200 text-gray-600 rounded hover:bg-gray-300 disabled:opacity-50"
+                        disabled={false} // Replace with your actual pagination state
+                    >
+                        Previous
+                    </button>
+                    <p className="text-gray-600">
+                        Page 1 of 10
+                    </p>
+                    <button
+                        className="px-3 py-1 bg-gray-200 text-gray-600 rounded hover:bg-gray-300 disabled:opacity-50"
+                        disabled={false} // Replace with your actual pagination state
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
         </>
     );
 }
-
-

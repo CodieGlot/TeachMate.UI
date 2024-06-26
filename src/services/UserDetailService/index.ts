@@ -8,7 +8,7 @@ import { UpdateLearnerDetailDto } from '../../common/dtos/UserDetail/UpdateLearn
 const accessToken = AuthService.getAccessToken();
 export const UserDetailService = {
   getUserById: async (id: string | null): Promise<AppUser> => {
-    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/UserDetail/GetUserById` + id,
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/UserDetail/GetUserById/` + id,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
