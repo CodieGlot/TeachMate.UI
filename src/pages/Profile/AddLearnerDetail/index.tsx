@@ -21,7 +21,6 @@ interface UpdateFormValues {
   phoneNumber: string
 }
 import { StorageService } from "../../../services";
-import { Stepper } from "../Stepper";
 export function AddLearnerDetail() {
   const user = AuthService.getCurrentUser();
 
@@ -159,21 +158,7 @@ export function AddLearnerDetail() {
                       component="div"
                     />
                   </div>
-                  <div className="sm:col-span-2">
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                    <Field
-                      type="text"
-                      name="email"
-                      id="email"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Your email"
-                    />
-                    <ErrorMessage
-                      className="text-red-500 p-5 bg-white font-medium text-xs"
-                      name="email"
-                      component="div"
-                    />
-                  </div>
+                  
                   <div className="w-full">
                     <label htmlFor="phoneNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number:</label>
                     <div className="relative">

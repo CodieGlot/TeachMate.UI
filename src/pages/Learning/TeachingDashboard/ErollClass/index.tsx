@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { Header } from "../../../../layouts";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -16,6 +17,18 @@ export function EnrollClass() {
     const handleTabClick = (tab: string) => {
         setSelectedTab(tab);
     };
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const LearningModuleID = Number.parseInt(id || "0");
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { state } = location;
+    ; // Rename to stateLearningModuleID
+
+    const handlePayment = () => {
+        navigate("/learnerpayment", { state: { LearningModuleID } })
+    }
+
     return (
         <>
             <Header />
@@ -71,13 +84,16 @@ export function EnrollClass() {
                             </a>
                         </li>
                         <li>
-                            <a
-                                className="inline-flex items-center px-4 py-3 text-gray-400 rounded-lg cursor-not-allowed bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300"
+                            <button
+                                onClick={() => handlePayment}
+                                className={`inline-flex items-center px-4 py-3 ${selectedTab === 'payment' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
                             >
-                                <svg className="w-4 h-4 me-2 text-gray-400 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
+                                <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor">
+                                    <path d="M0 96C0 60.7 28.7 32 64 32H512c35.3 0 64 28.7 64 64V192H0V96zM0 320V224H576V320H0zm0 32H576v64c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V352z" />
                                 </svg>
-                                Disabled</a>
+
+                                Payment
+                            </button>
                         </li>
                     </ul>
                     <div className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">

@@ -25,8 +25,6 @@ export function VerifyOTP() {
     const location = useLocation();
     const { state } = location;
     const { email } = state;
-    const otp = otP1 + otP2 + otP3 + otP4
-    console.log(email)
     const [error, setError] = useState<AxiosError | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const handleSaveClick = async () => {
