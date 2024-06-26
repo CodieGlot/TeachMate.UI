@@ -1,9 +1,10 @@
 import React, { useRef, useState } from "react";
 import { AdminDashboard } from "./AdminDashboard";
 import { ManageAccount } from "./ManageAccount";
+import { useNavigate } from "react-router-dom";
 
 export function Manage() {
-
+  const navigate = useNavigate()
   const sidebarRef = useRef<HTMLDivElement>(null); // Specify HTMLDivElement type
   const mainContentRef = useRef<HTMLDivElement>(null); // Specify HTMLDivElement type
   const [selectedTab, setSelectedTab] = useState<string>('dashboard');
@@ -85,7 +86,8 @@ export function Manage() {
                 <i className="fas fa-bell text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
               </button>
               <button className="p-2">
-                <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
+                <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"
+                onClick={(e) => navigate("/auth/login")}></i>
               </button>
             </div>
           </div>
