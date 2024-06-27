@@ -18,4 +18,5 @@ export interface LearningModule {
   numOfWeeks: number,
   tutor: Tutor,
   tutorId: string
+  price: number;
 }

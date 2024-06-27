@@ -93,18 +93,6 @@ export const GiveFeedback = () => {
                             </label>
                         </div>
                     </div>
-
-                    {/* <div className="mb-4">
-                        <input
-                            type="number"
-                            id="learningModuleId"
-                            name="learningModuleId"
-                            value={learningModuleId}
-                            onChange={(e) => setLearningModuleId(e.target.value)}
-                            className="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed"
-                            placeholder="Learning Module ID"
-                        />
-                    </div> */}
                 </div>
 
                 <div className="flex justify-end">
