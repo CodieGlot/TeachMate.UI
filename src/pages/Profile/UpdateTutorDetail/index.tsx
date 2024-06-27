@@ -37,8 +37,8 @@ export function UpdateTutorDetail() {
     displayName: Yup.string()
       .matches(/^[a-zA-Z0-9\s]*$/, "display name not have special symbols"),
     email: Yup.string()
-      .email('Invalid email format')
-      .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
+      .email('Invalid email format'),
+      // .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
     phoneNumber: Yup.string()
       .matches(/^0\d{9}$/, 'Phone number must begin with 0 and be digits only, up to 10 characters'),
     description: Yup.string()
@@ -65,7 +65,7 @@ export function UpdateTutorDetail() {
 
     }
   };
-  const [imageSrc, setImageSrc] = useState<string>("https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg");
+  const [imageSrc, setImageSrc] = useState<string>(user?.avatar || "");
   const [selectedFile, setSelectedFile] = useState<File>();
 
   useEffect(() => {
@@ -75,20 +75,39 @@ export function UpdateTutorDetail() {
 
   const handleSaveClick = async (values: FormikValues,
     { setSubmitting }: FormikHelpers<UpdateFormValues>) => {
+    let avatarUrl = avatar; // use the existing avatar as the default
+
+    let toastId: any = null;
+
+    let fileName = StorageService.getFileNameFromUrl(avatarUrl);
+    console.log(fileName)
+
     if (selectedFile) {
-      const img = await StorageService.uploadFile(selectedFile)
-      setAvatar(img)
+      toastId = toast.loading("Uploading avatar...");
+      try {
+        avatarUrl = await StorageService.replaceFile(fileName,selectedFile);
+        toast.dismiss(toastId);
+        toast.success("Avatar uploaded successfully!");
+      } catch (err) {
+        toast.dismiss(toastId);
+        toast.error("Failed to upload avatar!");
+        setSubmitting(false);
+        return;
+      }
     }
+
+
     try {
       const { displayName, email, phoneNumber } = values;
       await UserDetailService.updateTutorDetail({
         email,
         phoneNumber,
         displayName,
-        avatar,
+        avatar: avatarUrl,
         description,
         gradeLevel
       }, accessToken);
+
       navigate("/Profile")
       window.location.reload();
     } catch (err) {

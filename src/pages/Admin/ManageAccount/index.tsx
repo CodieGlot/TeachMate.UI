@@ -127,7 +127,7 @@ export function ManageAccount() {
   return (
     <body>
       <div ref={mainContentRef}
-        className="z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out
+        className="p-5 z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out
     ">
         <div className="flex flex-wrap mx-3 mb-5">
           <div className="w-full max-w-full px-3 mb-6  mx-auto">

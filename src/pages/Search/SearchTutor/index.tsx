@@ -172,8 +172,9 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
                       <div className="relative">
                         <img
                           src={tutor.avatar}
-                          className="dark:shadow-xl border-white dark:border-gray-800 rounded-full align-middle border-8 absolute -m-16 -ml-18 lg:-ml-16 max-w-[150px]"
+                          className="object-cover dark:shadow-xl border-white dark:border-gray-800 rounded-full align-middle border-8 absolute -m-16 -ml-18 lg:-ml-16 max-w-[150px] max-h-[150px]"
                           alt={tutor.displayName}
+                          style={{ aspectRatio: '1 / 1' }}
                         />
                       </div>
                     </div>
