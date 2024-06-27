@@ -6,6 +6,7 @@ import 'aos/dist/aos.css';
 import { LearningModuleDetail } from '../../LearningModuleDetail';
 import { ViewClassSchedule } from '../../LearningModuleDetail/ui/ClassSchedule';
 import { GiveFeedback } from '../../../Feedback';
+import { LearnerPayment } from '../../../Payment';
 
 export function EnrollClass() {
     // Tạo state để lưu trữ tab đang được chọn
@@ -17,16 +18,17 @@ export function EnrollClass() {
     const handleTabClick = (tab: string) => {
         setSelectedTab(tab);
     };
+    
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
-    const LearningModuleID = Number.parseInt(id || "0");
+    const learningModuleID = Number.parseInt(id || "0");
     const navigate = useNavigate();
     const location = useLocation();
     const { state } = location;
     ; // Rename to stateLearningModuleID
-
+    console.log(learningModuleID);
     const handlePayment = () => {
-        navigate("/learnerpayment", { state: { LearningModuleID } })
+        navigate("/learnerpayment", { state: { learningModuleID } })
     }
 
     return (
@@ -85,7 +87,7 @@ export function EnrollClass() {
                         </li>
                         <li>
                             <button
-                                onClick={() => handlePayment}
+                                onClick={() => handleTabClick('payment')}
                                 className={`inline-flex items-center px-4 py-3 ${selectedTab === 'payment' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
                             >
                                 <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor">
@@ -113,6 +115,10 @@ export function EnrollClass() {
                         {selectedTab === 'contact' && (
                             <GiveFeedback />
                         )}
+                        {selectedTab === 'payment' && (
+                            <LearnerPayment />
+                        )}
+                        
                     </div>
                 </div>
             </div>

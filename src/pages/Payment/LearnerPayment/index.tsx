@@ -1,101 +1,62 @@
-import React from 'react';
-
+import { useEffect, useState, } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { LearningModule } from "../../../interfaces/Learning/LearningModule";
+import { LearningModuleService } from "../../../services/LearningModuleService";
+import { AuthService } from "../../../services";
 export function LearnerPayment() {
+    const location = useLocation();
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id")
+    const user = AuthService.getCurrentUser();
+    const [learningModule, setLearningModule] = useState<LearningModule>();
+
+    useEffect(() => {
+        const viewLearningModuleDetail = async () => {
+            try {
+                const data = await LearningModuleService.getLearningModuleById(id);
+                setLearningModule(data)
+
+            } catch (error) {
+                console.error("Error fetching learning module:", error);
+
+            }
+        };
+        viewLearningModuleDetail(); // Gọi hàm để lấy dữ liệu khi component được render
+    }, []); // [] đảm bảo hàm chỉ chạy một lần sau khi component được render
+
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-center font-bold text-xl uppercase">Confirm payment</h1>
+            <h1 className="text-center font-bold text-xl uppercase">Payment</h1>
+            <div className="bg-white border rounded-lg shadow-lg px-6 py-8 max-w-md mx-auto mt-8">
+                <h1 className="font-bold text-2xl my-4 text-center text-blue-600">TeachMate System</h1>
+                <hr className="mb-2" />
+                <div className="flex justify-between mb-6">
+                    <h1 className="text-lg font-bold">Invoice</h1>
+                    <div className="text-gray-700">
+                        <div>Date: 01/05/2023</div>
+                    </div>
+                </div>
+                <div className="mb-8">
+                    <h2 className="text-lg font-bold mb-2">Bill To:</h2>
+                    <div className="text-gray-700 mb-2">{user?.displayName}</div>
+                    <h2 className="text-lg font-bold mb-2"><strong>Class:</strong> </h2>
+                    <div className="text-gray-700 mb-2">{learningModule?.title}</div>
+                    <h2 className="text-lg font-bold mb-2">Tutor:</h2>
+                    <div className="text-gray-700 mb-2">{learningModule?.tutor?.displayName}</div>
+                    <h2 className="text-lg font-bold mb-2">Schedule:</h2>
+                    <div className="text-gray-700 mb-2">{learningModule?.moduleType != 0 && ("Custom")} : Every</div>
+                    <div className="flex justify-center items-center">
+                        <h2 className="text-lg font-bold mb-2 mr-2">Cost:</h2>
+                        <div className="text-gray-700 mb-2"> {learningModule?.price} $</div>
+                    </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-                <h3 className="text-lg font-semibold mb-4 text-gray-800">Class Summary</h3>
-                <div className="border-t-2 border-gray-200 pt-4">
-                    <p className="text-sm text-gray-700 mb-2"><strong>Class:</strong> Advanced Mathematics</p>
-                    <p className="text-sm text-gray-700 mb-2"><strong>Tutor:</strong> John Doe</p>
-                    <p className="text-sm text-gray-700 mb-2"><strong>Schedule:</strong> Every Monday and Wednesday, 3-4 PM</p>
-                    <p className="text-sm text-gray-700 mb-2"><strong>Total Cost:</strong> $200</p>
-                </div>
-            </div>
 
+                </div>
+                <table className="w-full mb-8">
 
-            <div className="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700" style={{ maxWidth: '600px' }}>
-                <div className="mb-10">
-                    <h1 className="text-center font-bold text-xl uppercase">Secure payment info</h1>
-                </div>
-                <div className="mb-3 flex -mx-2">
-                    <div className="px-2">
-                        <label htmlFor="type1" className="flex items-center cursor-pointer">
-                            <input type="radio" className="form-radio h-5 w-5 text-indigo-500" name="type" id="type1" defaultChecked />
-                            <img src="https://leadershipmemphis.org/wp-content/uploads/2020/08/780370.png" className="h-8 ml-3" alt="Type 1" />
-                        </label>
-                    </div>
-                    <div className="px-2">
-                        <label htmlFor="type2" className="flex items-center cursor-pointer">
-                            <input type="radio" className="form-radio h-5 w-5 text-indigo-500" name="type" id="type2" />
-                            <img src="https://www.sketchappsources.com/resources/source-image/PayPalCard.png" className="h-8 ml-3" alt="Type 2" />
-                        </label>
-                    </div>
-                    <div className="px-2">
-                        <label htmlFor="type2" className="flex items-center cursor-pointer">
-                            <input type="radio" className="form-radio h-5 w-5 text-indigo-500" name="type" id="type2" />
-                            <img src="https://www.sketchappsources.com/resources/source-image/PayPalCard.png" className="h-8 ml-3" alt="Type 2" />
-                        </label>
-                    </div>
-                </div>
-                <div className="mb-3">
-                    <label className="font-bold text-sm mb-2 ml-1">Name on card</label>
-                    <div>
-                        <input className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="John Smith" type="text" />
-                    </div>
-                </div>
-                <div className="mb-3">
-                    <label className="font-bold text-sm mb-2 ml-1">Card number</label>
-                    <div>
-                        <input className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="0000 0000 0000 0000" type="text" />
-                    </div>
-                </div>
-                <div className="mb-3 -mx-2 flex items-end">
-                    <div className="px-2 w-1/2">
-                        <label className="font-bold text-sm mb-2 ml-1">Expiration date</label>
-                        <div>
-                            <select className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
-                                <option value="01">01 - January</option>
-                                <option value="02">02 - February</option>
-                                <option value="03">03 - March</option>
-                                <option value="04">04 - April</option>
-                                <option value="05">05 - May</option>
-                                <option value="06">06 - June</option>
-                                <option value="07">07 - July</option>
-                                <option value="08">08 - August</option>
-                                <option value="09">09 - September</option>
-                                <option value="10">10 - October</option>
-                                <option value="11">11 - November</option>
-                                <option value="12">12 - December</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="px-2 w-1/2">
-                        <select className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026">2026</option>
-                            <option value="2027">2027</option>
-                            <option value="2028">2028</option>
-                            <option value="2029">2029</option>
-                        </select>
-                    </div>
-                </div>
-                <div className="mb-10">
-                    <label className="font-bold text-sm mb-2 ml-1">Security code</label>
-                    <div>
-                        <input className="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="000" type="text" />
-                    </div>
-                </div>
-                <div>
-                    <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"><i className="mdi mdi-lock-outline mr-1"></i> PAY NOW</button>
-                </div>
+                </table>
+                <div className="text-gray-700 mb-2">Thank you for your business!</div>
+                <div className="text-gray-700 text-sm">Please remit payment within 30 days.</div>
             </div>
 
         </div>
