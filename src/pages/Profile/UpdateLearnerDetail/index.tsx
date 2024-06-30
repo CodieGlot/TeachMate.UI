@@ -25,19 +25,16 @@ export function UpdateLearnerDetail() {
   const [gradeLevel, setGradeLevel] = useState(user?.learner?.gradeLevel ?? 0);
 
 
-  const [avatar, setAvatar] = useState(user?.avatar ?? ''); // Assuming the initial value is null
+  const [avatar] = useState(user?.avatar ?? ''); // Assuming the initial value is null
   const accessToken = AuthService.getAccessToken();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { state } = location;
-  const [error, setError] = useState<AxiosError | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
+
+ 
   const validationSchema = Yup.object().shape({
     displayName: Yup.string()
       .matches(/^[a-zA-Z0-9\s]*$/, "display name not have special symbols"),
     email: Yup.string()
       .email('Invalid email format'),
-      // .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
     phoneNumber: Yup.string()
       .matches(/^0\d{9}$/, 'Phone number must begin with 0 and be digits only, up to 10 characters')
   });
@@ -53,7 +50,6 @@ export function UpdateLearnerDetail() {
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // If you need to handle the file type
       const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
       if (validTypes.includes(file.type)) {
         setImageSrc(URL.createObjectURL(file));
@@ -69,7 +65,7 @@ export function UpdateLearnerDetail() {
   const [selectedFile, setSelectedFile] = useState<File>();
   const handleSaveClick = async (values: FormikValues,
     { setSubmitting }: FormikHelpers<UpdateFormValues>) => {
-    let avatarUrl = avatar; // use the existing avatar as the default
+    let avatarUrl = avatar; 
 
     let toastId: any = null;
 
@@ -106,21 +102,19 @@ export function UpdateLearnerDetail() {
     } catch (err) {
       console.error("Update Fail", err)
       if (axios.isAxiosError(err)) {
-        const axiosError = err as AxiosError<any>; // Use any for generic AxiosError
+        const axiosError = err as AxiosError<any>; 
 
         if (axiosError.response) {
           const { data } = axiosError.response;
 
           if (data) {
             if (data.errors) {
-              // Handle validation errors
               Object.values(data.errors).forEach((errMsgList) => {
                 (errMsgList as string[]).forEach((errMsg: string) => {
                   toast.error(errMsg);
                 });
               });
             } else if (data.message) {
-              // Handle API exceptions
               toast.error(data.message);
             }
           } else {
@@ -135,7 +129,6 @@ export function UpdateLearnerDetail() {
     }
 
 
-    // You can add additional logic here to save the edited email if needed
   };
   return (
     <>

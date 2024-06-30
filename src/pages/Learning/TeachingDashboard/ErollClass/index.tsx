@@ -6,7 +6,9 @@ import 'aos/dist/aos.css';
 import { LearningModuleDetail } from '../../LearningModuleDetail';
 import { ViewClassSchedule } from '../../LearningModuleDetail/ui/ClassSchedule';
 import { GiveFeedback } from '../../../Feedback';
+
 import { LearnerPayment } from '../../../Payment';
+
 
 export function EnrollClass() {
     // Tạo state để lưu trữ tab đang được chọn
@@ -18,6 +20,7 @@ export function EnrollClass() {
     const handleTabClick = (tab: string) => {
         setSelectedTab(tab);
     };
+
     
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
@@ -30,6 +33,7 @@ export function EnrollClass() {
     const handlePayment = () => {
         navigate("/learnerpayment", { state: { learningModuleID } })
     }
+
 
     return (
         <>
@@ -58,6 +62,15 @@ export function EnrollClass() {
                             >
                                 <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18"><path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" /></svg>
                                 Schedule
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href={"/material?id="+id}
+                                className={`inline-flex items-center px-4 py-3 ${selectedTab === 'material' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
+                            >
+                                <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.5 0h-11c-1.104 0-2 0.895-2 2v28c0 1.105 0.896 2 2 2h19c1.105 0 2-0.895 2-2v-20zM25.5 10.829v0.171h-9v-9h0.172zM6.5 30v-28h8v11h11v17h-19z"></path> </g></svg>
+                                Material
                             </a>
                         </li>
                         <li>

@@ -9,3 +9,5 @@ export * from "./ForgetPassword"
 export * from "./Feedback"
 export * from "./VerifyOTP"
 export * from "./RemoveLearner"
+export * from "./LearningMaterial"
+
