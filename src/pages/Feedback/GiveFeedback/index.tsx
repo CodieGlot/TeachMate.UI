@@ -43,6 +43,7 @@ export const GiveFeedback = () => {
     return (
 
         <div className="max-w-7xl dark:bg-gray-950 dark:text-white">
+            
             <form className="w-full p-4 rounded shadow-md" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                 <h2 className="text-xl mb-4 tracking-wider font-lighter text-gray-900 dark:text-gray-200">
                     <span className="bg-gradient-to-r to-indigo-600 from-sky-400 bg-clip-text text-transparent font-bold">

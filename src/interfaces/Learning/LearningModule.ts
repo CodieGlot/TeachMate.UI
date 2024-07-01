@@ -19,4 +19,5 @@ export interface LearningModule {
   tutor: Tutor,
   tutorId: string
   price: number;
+
 }
