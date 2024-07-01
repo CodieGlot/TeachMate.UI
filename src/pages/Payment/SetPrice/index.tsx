@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { PaymentService } from '../../../services';
 import toast from 'react-hot-toast';
+import { PaymentType } from '../../../common/enums/Payment';
+import { useSearchParams } from 'react-router-dom';
 
 
 
 export function SetPrice() {
     const [price, setPrice] = useState<number>(0);
-    const [paymentType, setPaymentType] = useState<number | null>(null);
-
+    const [paymentType, setPaymentType] = useState<PaymentType>(0);
+    const [searchParams] = useSearchParams();
+    const learningModuleId = searchParams.get("id")
     const handleSetPrice = async () => {
         try {
-            await PaymentService.setPriceForLearningModule({ price, paymentType });
+            console.log('Attempting to set price with values:', { price, paymentType, learningModuleId });
+            await PaymentService.setPriceForLearningModule({ price, paymentType, learningModuleId: Number.parseInt(learningModuleId || "") });
             console.log('Set price successfully!');
             toast.success('Set price successfully');
         } catch (error) {
@@ -26,7 +30,7 @@ export function SetPrice() {
                     <div className="text-center">
                         <h2 className="text-3xl text-gray-600 font-semibold mb-6">Set Your Pricing</h2>
                     </div>
-                    <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleSetPrice(); }}>
+                    <form className="space-y-4" >
                         <div>
                             <label htmlFor="pricing_model" className="block text-sm font-medium text-gray-700">
                                 Pricing Model
@@ -35,14 +39,13 @@ export function SetPrice() {
                                 id="pricing_model"
                                 name="pricing_model"
                                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                                value={paymentType ?? ""}
-                                onChange={(e) => setPaymentType(Number(e.target.value))}
+                                value={paymentType}
+                                onChange={(e) => setPaymentType(Number.parseInt(e.target.value))}
                                 required
                             >
-                                <option value="">Select option</option>
-                                <option value="per_session">Per Session</option>
-                                <option value="per_weekly">Per Weekly</option>
-                                <option value="per_monthly">Per Monthly</option>
+                                <option value={PaymentType.Session} selected>Per Session</option>
+                                <option value={PaymentType.Weekly} selected>Per Weekly</option>
+                                <option value={PaymentType.Monthly} selected>Per Monthly</option>
                             </select>
                         </div>
 
@@ -57,7 +60,7 @@ export function SetPrice() {
                                 className="mt-1 block w-full px-3 py-2 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                                 placeholder="$"
                                 value={price}
-                                onChange={(e) => setPrice(parseFloat(e.target.value))}
+                                onChange={(e) => setPrice(Number(e.target.value))}
                                 required
                             />
                         </div>
@@ -75,40 +78,19 @@ export function SetPrice() {
                             />
                         </div>
 
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <label htmlFor="availability" className="block text-sm font-medium text-gray-700">
-                                    Availability
-                                </label>
-                                <div className="mt-1 grid grid-cols-2 gap-4">
-                                    <label className="flex items-center space-x-2">
-                                        <input type="radio" name="availability" value="online" className="text-indigo-500 focus:ring-indigo-500 h-4 w-4" />
-                                        <span>Online</span>
-                                    </label>
-                                    <label className="flex items-center space-x-2">
-                                        <input type="radio" name="availability" value="offline" className="text-indigo-500 focus:ring-indigo-500 h-4 w-4" />
-                                        <span>Offline</span>
-                                    </label>
-                                </div>
+                        <div className="flex items-start">
+                            <div className="flex items-center h-5">
+                                <input id="newsletter" aria-describedby="newsletter" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required />
                             </div>
-
-                            <div>
-                                <label htmlFor="session_duration" className="block text-sm font-medium text-gray-700">
-                                    Session Duration (minutes)
-                                </label>
-                                <input
-                                    type="number"
-                                    id="session_duration"
-                                    name="session_duration"
-                                    className="mt-1 block w-full px-3 py-2 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                                    placeholder="0"
-                                />
+                            <div className="ml-3 text-sm">
+                                <label htmlFor="newsletter" className="text-gray-500 dark:text-gray-300">I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
                             </div>
                         </div>
 
                         <div>
                             <button
-                                type="submit"
+                                onClick={handleSetPrice}
+                                type="button"
                                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                             >
                                 Save Settings

@@ -168,7 +168,7 @@ export function Category() {
                 </div>
 
                 <div className="relative flex overflow-hidden lg:w-2/3">
-                  <video className="w-70 h-100 object-cover border-2 rounded-md border-indigo-300" controls>
+                  <video className="w-70 h-100 object-cover border-2 rounded-md border-indigo-300" autoPlay muted>
                     <source src="src/assets/intro.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>

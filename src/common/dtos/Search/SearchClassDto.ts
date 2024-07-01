@@ -8,4 +8,5 @@ export interface SearchClassDto {
   maximumLearners: number;
   moduleType: number;
   numOfWeeks: number;
+  price: number;
 }
