@@ -8,8 +8,8 @@ const token = AuthService.getAccessToken()
 
 export const PaymentService = {
 
-  setPriceForLearningModule: async (dto: SetPriceDto): Promise<LearningModule[]> => {
-    const response = await axios.post(
+  setPriceForLearningModule: async (dto: SetPriceDto): Promise<LearningModule> => {
+    const response = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/api/Payment/SetPriceForLearningModule`, dto,
       {
         headers: {
@@ -17,7 +17,7 @@ export const PaymentService = {
         }
       }
     );
-    const prices: LearningModule[] = response.data;
+    const prices: LearningModule = response.data;
     return prices;
   },
 };
