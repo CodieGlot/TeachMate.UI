@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AuthService } from "../AuthService";
-import { SetPriceDto } from "../../common/dtos/Payment";
+import { OrderUrlResponseDto, SetPriceDto } from "../../common/dtos/Payment";
 import { LearningModule, PaymentOrder } from "../../interfaces";
 
 
@@ -49,5 +49,38 @@ export const PaymentService = {
       });
       const order : PaymentOrder[] = response.data
       return order
-  }
+  },
+
+  createZaloPayOrder : async (amount: Number) : Promise<OrderUrlResponseDto> => {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/Payment/zalopay?amount=`+amount, amount,
+      {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    const url : OrderUrlResponseDto = response.data
+    return url
+  },
+
+  createVnPayOrder : async (amount: Number) : Promise<OrderUrlResponseDto> => {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/Payment/vnpay?amount=`+amount, amount,
+      {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    const url : OrderUrlResponseDto = response.data
+    return url
+  },
+
+  createMomoPayOrder : async (amount: Number) : Promise<OrderUrlResponseDto> => {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/Payment/momo?amount=`+amount, amount,
+      {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    const url : OrderUrlResponseDto = response.data
+    return url
+  },
 };

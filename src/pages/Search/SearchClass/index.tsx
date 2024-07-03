@@ -69,6 +69,7 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     return ModuleType[moduleTypeCode];
   };  
 
+  
   useEffect(() => {
     if (searchQuery) {
       setSearchParams((prevParams) => ({
