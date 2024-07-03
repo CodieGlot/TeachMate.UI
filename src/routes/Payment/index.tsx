@@ -10,6 +10,7 @@ const paymentRoutes = [
     path: "/learnerpayment",
     element: <LearnerPayment />,
   },
+  
 ];
 
 export default paymentRoutes;
