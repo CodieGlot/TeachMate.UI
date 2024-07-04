@@ -33,7 +33,7 @@ export function LearningModuleDetail() {
   };
 
   const handleListRequestsInLearningModule = () => {
-    navigate('/list-request-class?id='+{id});
+    navigate('/list-request-class?id=' + { id });
   };
 
 
@@ -54,7 +54,7 @@ export function LearningModuleDetail() {
   return (
     <>
       <div data-aos="zoom-in-left" data-aos-duration="1000">
-       
+
         <div className="py-3 px-4 mx-auto max-w-4xl lg:py-5">
           <div className=" mx-auto py-2 mb-5 text-center">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
@@ -70,6 +70,10 @@ export function LearningModuleDetail() {
                   <div style={{ width: '300px' }} className="bg-transparent hover:bg-sky-400 text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
                     Subject: {getSubjectString(learningModule?.subject)}  - Grade Level: {learningModule?.gradeLevel}
                   </div>
+                </div>
+                <div><div style={{ width: '300px' }} className="bg-transparent hover:bg-sky-400  text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
+                  Price: {learningModule?.price} VND
+                </div>
                 </div>
                 <div><div style={{ width: '300px' }} className="bg-transparent hover:bg-sky-400  text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
                   Learners: {number}/{learningModule?.maximumLearners}
@@ -97,7 +101,7 @@ export function LearningModuleDetail() {
               </div>
             </div>
             <div style={{ flex: '2 1 0' }}>
-              <video className="w-full border-2 rounded-md border-indigo-300	" controls style={{ height: '75%' }}>
+              <video className="w-full border-2 rounded-md border-indigo-300	" autoPlay muted controls style={{ height: '75%' }}>
                 <source src="src/assets/video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -128,7 +132,7 @@ export function LearningModuleDetail() {
                     >
                       Update Information
                     </button>
-                    
+
                   </>
                 )}
 
@@ -137,12 +141,12 @@ export function LearningModuleDetail() {
           </div>
 
 
-          
+
 
 
 
         </div>
-        </div>
-      </>
-      );
+      </div>
+    </>
+  );
 }
