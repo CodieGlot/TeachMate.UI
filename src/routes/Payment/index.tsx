@@ -1,4 +1,5 @@
 import { LearnerPayment, SetPrice } from "../../pages/Payment";
+import PaymentNavigate from "../../pages/Payment/PaymentResult";
 
 
 const paymentRoutes = [
@@ -9,6 +10,10 @@ const paymentRoutes = [
   {
     path: "/learnerpayment",
     element: <LearnerPayment />,
+  },
+  {
+    path: "/payment/success",
+    element: <PaymentNavigate />,
   },
   
 ];

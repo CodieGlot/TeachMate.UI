@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AuthService } from "../AuthService";
-import { OrderUrlResponseDto, SetPriceDto } from "../../common/dtos/Payment";
-import { LearningModule, PaymentOrder } from "../../interfaces";
+import { OrderUrlResponseDto, SetPriceDto, UpdateTransactionDto, CreateTransactionDto } from "../../common/dtos/Payment";
+import { LearningModule, PaymentOrder, Transaction } from "../../interfaces";
 
 
 const token = AuthService.getAccessToken()
@@ -83,4 +83,28 @@ export const PaymentService = {
     const url : OrderUrlResponseDto = response.data
     return url
   },
+
+  createNewTransaction : async (dto: CreateTransactionDto) : Promise<OrderUrlResponseDto> => {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/Payment/CreateNewTransaction`,
+      dto,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      const url : OrderUrlResponseDto = response.data
+      return url
+  },
+
+  updateTransactionAsync : async (dto: UpdateTransactionDto) : Promise<Transaction> => {
+    const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/Payment/UpdateTransactionAsync`,
+      dto,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      const data : Transaction = response.data
+      return data
+  }
 };
