@@ -1,3 +1,3 @@
-export * from "./Status"
-export * from "./TypeErrorSystem"
-export * from "./TypeErrorUser"
+export * from "./ReportStatus"
+export * from "./SystemReportType"
+export * from "./UserReportType"

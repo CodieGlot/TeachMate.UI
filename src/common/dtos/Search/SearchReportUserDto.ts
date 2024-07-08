@@ -1,6 +1,6 @@
-import { Status, TypeErrorUser} from "../../enums";
+import { ReportStatus, UserReportType} from "../../enums";
 
 export interface SearchReportUserDto {
-  typeErrorUser: TypeErrorUser | null;
-  status : Status | null;
+  userReportType: UserReportType | null;
+  reportStatus : ReportStatus | null;
 }

@@ -10,6 +10,8 @@ import feedbackRoutes from "./Feedback"
 import adminRoutes from "./Admin"
 import contactRoutes from "./Contact";
 import forumRoutes from "./Forum";
+import materialRoutes from "./Material";
+import paymentRoutes from "./Payment";
 
 const Route = () => {
   const routes = useRoutes([
@@ -28,6 +30,8 @@ const Route = () => {
     ...adminRoutes,
     ...contactRoutes,
     ...forumRoutes,
+    ...materialRoutes,
+    ...paymentRoutes,
 
     {
       path: "*",

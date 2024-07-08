@@ -1,3 +1,3 @@
 export * from "./Report";
-export * from "./ReportSystem";
-export * from "./ReportUser";
+export * from "./SystemReport";
+export * from "./UserReport";

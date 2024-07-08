@@ -1,7 +1,7 @@
-import { Status } from "../../enums";
+import { ReportStatus } from "../../enums";
 
 export interface UpdateReportStatusDto {
     id: number;
-    status: Status;
+    reportStatus: ReportStatus;
   }
   

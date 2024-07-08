@@ -1,4 +1,4 @@
-import { SearchTutor, SearchClass, SearchCategory } from "../../pages";
+import { SearchTutor, SearchClass, SearchCategory, TutorDetail } from "../../pages";
 
 const searchRoutes = [
   {
@@ -12,6 +12,10 @@ const searchRoutes = [
   {
     path: "/search",
     element: <SearchCategory />
+  },
+  {
+    path: "/tutordetail",
+    element: <TutorDetail />
   },
 
 

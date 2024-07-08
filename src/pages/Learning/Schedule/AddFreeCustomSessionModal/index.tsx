@@ -87,7 +87,7 @@ export function AddFreeCustomSessionModal({ learningModuleId }: AddFreeCustomSes
                             </div>
                             <TextInput
                                 id="title"
-                                placeholder="Type class title"
+                                placeholder="Type session title"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 required

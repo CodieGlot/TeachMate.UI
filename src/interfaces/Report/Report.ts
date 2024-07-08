@@ -1,13 +1,15 @@
-import { Status } from "../../common/enums";
-import { ReportSystem } from "./ReportSystem";
-import { ReportUser } from "./ReportUser";
+import { ReportStatus } from "../../common/enums";
+import { AppUser } from "../AppUser";
+import { SystemReport } from "./SystemReport";
+import { UserReport } from "./UserReport";
 
 export interface Report {
     id: number;
     userId: string;
-    reportSystem: ReportSystem | null;
-    reportUser: ReportUser | null;
+    user : AppUser;
+    systemReport: SystemReport | null;
+    userReport: UserReport | null;
     title: string;
     description: string;
-    status: Status.Pending;
+    status: ReportStatus.Pending;
 }

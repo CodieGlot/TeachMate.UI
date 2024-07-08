@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { AuthService, UserDetailService } from "../../../services";
+import { AuthService, StorageService, UserDetailService } from "../../../services";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import axios, { AxiosError } from "axios";
@@ -36,8 +36,8 @@ export function UpdateTutorDetail() {
     displayName: Yup.string()
       .matches(/^[a-zA-Z0-9\s]*$/, "display name not have special symbols"),
     email: Yup.string()
-      .email('Invalid email format')
-      .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
+      .email('Invalid email format'),
+      // .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
     phoneNumber: Yup.string()
       .matches(/^0\d{9}$/, 'Phone number must begin with 0 and be digits only, up to 10 characters'),
     description: Yup.string()
@@ -49,6 +49,24 @@ export function UpdateTutorDetail() {
     phoneNumber: user?.phoneNumber || "",
   };
 
+  const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // If you need to handle the file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      if (validTypes.includes(file.type)) {
+        setImageSrc(URL.createObjectURL(file));
+        setSelectedFile(file);
+
+      } else {
+        toast.error('Please upload a valid image file (JPEG, PNG, GIF)');
+      }
+
+    }
+  };
+  const [imageSrc, setImageSrc] = useState<string>(user?.avatar || "");
+  const [selectedFile, setSelectedFile] = useState<File>();
+
   useEffect(() => {
     AOS.init();
   }, []);
@@ -56,6 +74,27 @@ export function UpdateTutorDetail() {
 
   const handleSaveClick = async (values: FormikValues,
     { setSubmitting }: FormikHelpers<UpdateFormValues>) => {
+    let avatarUrl = avatar; // use the existing avatar as the default
+
+    let toastId: any = null;
+
+    let fileName = StorageService.getFileNameFromUrl(avatarUrl);
+    console.log(fileName)
+
+    if (selectedFile) {
+      toastId = toast.loading("Uploading avatar...");
+      try {
+        avatarUrl = await StorageService.replaceFile(fileName,selectedFile);
+        toast.dismiss(toastId);
+        toast.success("Avatar uploaded successfully!");
+      } catch (err) {
+        toast.dismiss(toastId);
+        toast.error("Failed to upload avatar!");
+        setSubmitting(false);
+        return;
+      }
+    }
+
 
     try {
       const { displayName, email, phoneNumber } = values;
@@ -63,10 +102,11 @@ export function UpdateTutorDetail() {
         email,
         phoneNumber,
         displayName,
-        avatar,
+        avatar: avatarUrl,
         description,
         gradeLevel
       }, accessToken);
+
       navigate("/Profile")
       window.location.reload();
     } catch (err) {
@@ -179,12 +219,28 @@ export function UpdateTutorDetail() {
                   </div>
 
 
-                  <div >
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
-                    <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file"
-                    />
-                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
-
+                  <div className="flex items-center space-x-6">
+                    <div className="shrink-0">
+                      <img
+                        id="preview_img"
+                        className="h-16 w-16 object-cover rounded-full"
+                        src={imageSrc}
+                        alt="Current profile photo"
+                      />
+                    </div>
+                    <label className="block ">
+                      <span className="sr-only">Choose profile photo</span>
+                      <input
+                        type="file"
+                        onChange={loadFile}
+                        className="block w-full text-sm text-slate-500
+                     file:mr-4 file:py-2 file:px-4
+                     file:rounded-full file:border-0
+                     file:text-sm file:font-semibold
+                     file:bg-violet-50 file:text-violet-700
+                     hover:file:bg-violet-100"
+                      />
+                    </label>
                   </div>
                   <div className="sm:col-span-2">
                     <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -202,7 +258,7 @@ export function UpdateTutorDetail() {
                       component="div"
                     />
                   </div>
-                  
+
                   <br />
                   <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     <span className="mr-1">You don't want to update anymore?</span>
@@ -212,6 +268,19 @@ export function UpdateTutorDetail() {
                     >
                       <span className="ml-1">Click here</span>
                     </a>
+                  </div>
+                </div>
+                <div className="mt-10 flex p-4 text-sm text-gray-400 rounded-lg bg-gradient-to-r from-sky-400/20 to-indigo-600/20 h-full lg:w-full lg:ml-auto" role="alert">
+                  <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                  </svg>
+                  <span className="sr-only">Info</span>
+                  <div>
+                    <span className="font-medium">Ensure that these requirements are met:</span>
+                    <ul className="mt-1.5 list-disc list-inside">
+                      <li>You can only upload PNG, JPG, JPEG file</li>
+
+                    </ul>
                   </div>
                 </div>
 

@@ -1,6 +1,6 @@
-import { Status, TypeErrorSystem} from "../../enums";
+import { ReportStatus, SystemReportType} from "../../enums";
 
 export interface SearchReportSystemDto {
-  typeErrorSystem: TypeErrorSystem | null;
-  status : Status | null;
+  systemReportType: SystemReportType | null;
+  reportStatus : ReportStatus | null;
 }

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { AuthService, UserDetailService } from "../../../services";
+import { AuthService, StorageService, UserDetailService } from "../../../services";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import axios, { AxiosError } from "axios";
@@ -36,24 +36,60 @@ export function UpdateLearnerDetail() {
     displayName: Yup.string()
       .matches(/^[a-zA-Z0-9\s]*$/, "display name not have special symbols"),
     email: Yup.string()
-      .email('Invalid email format')
-      .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
+      .email('Invalid email format'),
+      // .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
     phoneNumber: Yup.string()
       .matches(/^0\d{9}$/, 'Phone number must begin with 0 and be digits only, up to 10 characters')
   });
   const initialFormValues: UpdateFormValues = {
     displayName: user?.displayName || "",
-    email:user?.email|| "",
-    phoneNumber: user?.phoneNumber|| "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
   };
 
   useEffect(() => {
     AOS.init();
   }, []);
+  const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // If you need to handle the file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      if (validTypes.includes(file.type)) {
+        setImageSrc(URL.createObjectURL(file));
+        setSelectedFile(file);
 
+      } else {
+        toast.error('Please upload a valid image file (JPEG, PNG, GIF)');
+      }
 
+    }
+  };
+  const [imageSrc, setImageSrc] = useState<string>(user?.avatar || "");
+  const [selectedFile, setSelectedFile] = useState<File>();
   const handleSaveClick = async (values: FormikValues,
     { setSubmitting }: FormikHelpers<UpdateFormValues>) => {
+    let avatarUrl = avatar; // use the existing avatar as the default
+
+    let toastId: any = null;
+
+    let fileName = StorageService.getFileNameFromUrl(avatarUrl);
+    console.log(fileName)
+
+    if (selectedFile) {
+      toastId = toast.loading("Uploading avatar...");
+      try {
+        avatarUrl = await StorageService.replaceFile(fileName,selectedFile);
+        toast.dismiss(toastId);
+        toast.success("Avatar uploaded successfully!");
+      } catch (err) {
+        toast.dismiss(toastId);
+        toast.error("Failed to upload avatar!");
+        setSubmitting(false);
+        return;
+      }
+    }
+
 
     try {
       const { displayName, email, phoneNumber } = values;
@@ -61,9 +97,10 @@ export function UpdateLearnerDetail() {
         email,
         phoneNumber,
         displayName,
-        avatar,
+        avatar: avatarUrl,
         gradeLevel
       }, accessToken);
+
       navigate("/Profile")
       window.location.reload();
     } catch (err) {
@@ -126,7 +163,7 @@ export function UpdateLearnerDetail() {
                       id="displayName"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Enter display name"
-                      
+
                     />
                     <ErrorMessage
                       className="text-red-500 p-5 bg-white font-medium text-xs"
@@ -198,6 +235,31 @@ export function UpdateLearnerDetail() {
                       value={gradeLevel}
                       onChange={(e) => setGradeLevel(Number.parseInt(e.target.value))}
                     />
+                  </div>
+
+                  
+                  <div className="flex items-center space-x-6">
+                    <div className="shrink-0">
+                      <img
+                        id="preview_img"
+                        className="h-16 w-16 object-cover rounded-full"
+                        src={imageSrc}
+                        alt="Current profile photo"
+                      />
+                    </div>
+                    <label className="block ">
+                      <span className="sr-only">Choose profile photo</span>
+                      <input
+                        type="file"
+                        onChange={loadFile}
+                        className="block w-full text-sm text-slate-500
+                     file:mr-4 file:py-2 file:px-4
+                     file:rounded-full file:border-0
+                     file:text-sm file:font-semibold
+                     file:bg-violet-50 file:text-violet-700
+                     hover:file:bg-violet-100"
+                      />
+                    </label>
                   </div>
                   <br />
                   <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">

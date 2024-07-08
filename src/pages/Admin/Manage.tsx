@@ -2,9 +2,11 @@ import React, { useRef, useState } from "react";
 import { AdminDashboard } from "./AdminDashboard";
 import { ManageAccount } from "./ManageAccount";
 import { ReportSystem } from "./ReportSystem";
+import { UserSystem } from "./UserSystem";
+import { useNavigate } from "react-router-dom";
 
 export function Manage() {
-
+  const navigate = useNavigate()
   const sidebarRef = useRef<HTMLDivElement>(null); // Specify HTMLDivElement type
   const mainContentRef = useRef<HTMLDivElement>(null); // Specify HTMLDivElement type
   const [selectedTab, setSelectedTab] = useState<string>('dashboard');
@@ -51,7 +53,7 @@ export function Manage() {
     const icon = element.querySelector("i");
     if (icon) {
       icon.classList.add("text-white");
-    }
+    } 
   };
 
 
@@ -86,7 +88,8 @@ export function Manage() {
                 <i className="fas fa-bell text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
               </button>
               <button className="p-2">
-                <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
+                <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"
+                onClick={() => navigate("/auth/login")}></i>
               </button>
             </div>
           </div>
@@ -155,7 +158,7 @@ export function Manage() {
             {/* Reported User Issues */}
             <button
               className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
-              onClick={(e) => highlightSidebarItem(e.currentTarget)}
+              onClick={(e) => handleTabClick(e, 'userSystem')}
             >
               <i className="fas fa-user-cog"></i>
               <span className="font-medium transition-all duration-200 opacity-0">Reported User</span>
@@ -176,7 +179,9 @@ export function Manage() {
         {selectedTab === 'reportSystem' && (
           <ReportSystem />
         )}
-
+        {selectedTab === 'userSystem' && (
+          <UserSystem />
+        )}
       </div>
     </body>
   );

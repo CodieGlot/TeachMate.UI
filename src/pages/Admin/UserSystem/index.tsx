@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AdminService } from "../../../services";
-import { ReportStatus, SystemReportType } from '../../../common/enums';
-import { SearchReportSystemDto } from '../../../common/dtos/Search/SearchReportSystemDto';
-import { UpdateReportStatusDto } from '../../../common/dtos/Report/UpdateReportStatusDto';
+import { ReportStatus, UserReportType } from '../../../common/enums';
+import { SearchReportUserDto, UpdateReportStatusDto } from '../../../common/dtos';
+//import { UpdateReportStatusDto } from '../../../common/dtos/Report/UpdateReportStatusDto';
 import { Report } from '../../../interfaces';
 
-export function ReportSystem() {
+export function UserSystem() {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<Report[]>([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -13,8 +13,9 @@ export function ReportSystem() {
   //const [selectedReportId, setSelectedReportId] = useState<number | null>(null);
   const [selectedTab, setSelectedTab] = useState<'list' | 'detail'>('list');
   const [selectedReportDetail, setSelectedReportDetail] = useState<Report | null>(null);
-  const [searchQuery, setSearchQuery] = useState<SearchReportSystemDto>({
-    systemReportType: null,
+
+  const [searchQuery, setSearchQuery] = useState<SearchReportUserDto>({
+    userReportType: null,
     reportStatus: null,
   });
 
@@ -23,24 +24,21 @@ export function ReportSystem() {
   };
 
   const getTypeErrorSystemName = (num: number | undefined): string => {
-    return num !== undefined ? SystemReportType[num] : 'Unknown';
+    return num !== undefined ? UserReportType[num] : 'Unknown';
   };
 
-  const fetchSystemReport = async (query: SearchReportSystemDto) => {
+  const fetchUserReport = async (query: SearchReportUserDto) => {
     try {
-      const data = await AdminService.searchReportSystem(query);
+      const data = await AdminService.searchReportUser(query);
       setList(data);
     } catch (error) {
       console.error('Error fetching system reports:', error);
     }
   };
-  useEffect(() => {
-    fetchSystemReport(searchQuery);
-  }, [searchQuery]);
 
-  const fetchAllSystemReport = async () => {
+  const fetchAllUserReport = async () => {
     try {
-      const data = await AdminService.getAllReportSystem();
+      const data = await AdminService.getAllReportUser();
       setList(data);
     } catch (error) {
       console.error('Error fetching all system reports:', error);
@@ -48,29 +46,27 @@ export function ReportSystem() {
   };
 
   useEffect(() => {
-    fetchAllSystemReport();
+    fetchAllUserReport();
   }, []);
 
   const handleTypeError = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const  value  = event.target.value;
-    const updatedQuery: SearchReportSystemDto = {
+    const { value } = event.target;
+    const updatedQuery: SearchReportUserDto = {
       ...searchQuery,
-      systemReportType: value === "All" ? null : parseInt(value),
+      userReportType: value === "All" ? null : parseInt(value),
     };
     setSearchQuery(updatedQuery);
-    console.log(searchQuery);
-    //await fetchSystemReport(updatedQuery);
+    await fetchUserReport(updatedQuery);
   };
 
   const handleStatusChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value  = event.target.value;
-    const updatedQuery: SearchReportSystemDto = {
+    const { value } = event.target;
+    const updatedQuery: SearchReportUserDto = {
       ...searchQuery,
       reportStatus: value === "All" ? null : parseInt(value),
     };
     setSearchQuery(updatedQuery);
-    console.log(searchQuery);
-    //await fetchSystemReport(updatedQuery);
+    await fetchUserReport(updatedQuery);
   };
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,7 +126,7 @@ export function ReportSystem() {
       }
     }
     handleCloseTab(); // Close the tab after confirmation
-    await fetchSystemReport(searchQuery);
+    await fetchUserReport(searchQuery);
   };
 
   return (
@@ -142,7 +138,7 @@ export function ReportSystem() {
               {/* card header */}
               <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
                 <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
-                  <span className="mr-3 font-semibold text-dark">Manage Report System</span>
+                  <span className="mr-3 font-semibold text-dark">Manage User System</span>
                 </h3>
                 <div className="flex items-center space-x-3">
                   <select
@@ -151,11 +147,11 @@ export function ReportSystem() {
                     onChange={handleTypeError}
                   >
                     <option value="All">All Type</option>
-                    {Object.keys(SystemReportType)
+                    {Object.keys(UserReportType)
                       .filter(key => isNaN(Number(key)))
                       .map((key) => (
-                        <option key={key} value={SystemReportType[key as keyof typeof SystemReportType]}>
-                          {getTypeErrorSystemName(SystemReportType[key as keyof typeof SystemReportType])}
+                        <option key={key} value={UserReportType[key as keyof typeof UserReportType]}>
+                          {getTypeErrorSystemName(UserReportType[key as keyof typeof UserReportType])}
                         </option>
                       ))}
                   </select>
@@ -192,7 +188,7 @@ export function ReportSystem() {
                         </th>
                         <th className="pb-3 text-start min-w-[100px]">USERNAME</th>
                         <th className="pb-3 text-end min-w-[100px]">TYPE ERROR</th>
-                        <th className="pb-3 text-end min-w-[100px]">TITLE</th>
+                        <th className="pb-3 text-end min-w-[100px]">REPORTED USER</th>
                         <th className="pb-3 text-end min-w-[75px]">STATUS</th>
                       </tr>
                     </thead>
@@ -212,19 +208,19 @@ export function ReportSystem() {
                             <div className="flex items-center">
                               <div className="flex flex-col justify-start">
                                 <a className="mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-primary">
-                                  {report.user?.displayName || 'Unknown User'}
+                                  {report.user?.displayName}
                                 </a>
                               </div>
                             </div>
                           </td>
                           <td className="p-3 pr-0 text-end">
                             <span className="font-semibold text-light-inverse text-md/normal">
-                              {getTypeErrorSystemName(report.systemReport?.systemReportType)}
+                              {getTypeErrorSystemName(report.userReport?.userReportType)}
                             </span>
                           </td>
                           <td className="p-3 pr-0 text-end">
                             <span className="font-semibold text-light-inverse text-md/normal">
-                              {report.title}
+                              {report.userReport?.reportedUser?.displayName}
                             </span>
                           </td>
                           <td className="p-3 pr-0 text-end">

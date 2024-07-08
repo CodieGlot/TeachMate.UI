@@ -1,4 +1,4 @@
-export enum TypeErrorUser {
+export enum UserReportType {
   ImpersonatingSomeoneElse,
   PostingInappropriateContent,
   HarassingOrBullying,

@@ -1,4 +1,4 @@
-export enum Status {
+export enum ReportStatus {
   Pending,
   Processing,
   Done
