@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { LearningModuleService } from "../../../../services/LearningModuleService";
 import { useSearchParams } from "react-router-dom";
 import { Learner } from "../../../../interfaces";
+import styles from "../ListLearners/kickButton.module.css"
+import ConfirmModal from "../../../Modal";
 export function LearnersInClass() {
 
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
   const [learners, setLearners] = useState<Learner[]>([])
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchLearners = async () => {
@@ -24,6 +26,21 @@ export function LearnersInClass() {
     };
     fetchLearners();
   }, []);
+  const handleRemoveLearner = async (learnerID: string) => {
+    try {
+
+      await LearningModuleService.removeLearner({
+        learnerID,
+        moduleID: Number.parseInt(id || ""),
+      })
+      window.location.reload();
+      setIsModalOpen(false);
+      
+    } catch (error) {
+      console.error(error)
+    }
+
+  }
 
   // const handleAccept = async (moduleId: number, requestId: number) => {
   //   try {
@@ -93,13 +110,9 @@ export function LearnersInClass() {
                       </th>
                       <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         {/* Created at */}
+                        Remove
                       </th>
-                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        {/* Status */}
-                      </th>
-                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        {/* Action */}
-                      </th>
+
                     </tr>
                   </thead>
                   <tbody>
@@ -122,21 +135,30 @@ export function LearnersInClass() {
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <p className="text-gray-900 whitespace-no-wrap font-semibold">{learner.gradeLevel}</p>
                         </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap"></p>
-                        </td>
 
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          {/* <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusClasses(request.status)}`}>
+
+
+                        {/* <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusClasses(request.status)}`}>
                             <span
                               className={`absolute inset-0 opacity-50 rounded-full ${getStatusBackgroundClasses(request.status)}`}
                               aria-hidden="true"
                             ></span>
                             <span className="relative">{getStatusString(request.status)}</span>
                           </span> */}
-                        </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          {/* <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
+                          <button
+                            onClick={() => setIsModalOpen(true)}
+                            role="button" className={styles["button-name"]}>X</button>
+                        </td>
+                        <ConfirmModal
+                          title="Remove learner"
+                          message="Do you actually remove this learner ?"
+                          open={isModalOpen}
+                          onClose={() => setIsModalOpen(false)}
+                          onConfirm={() => handleRemoveLearner(learner.id)}
+                        />
+
+                        {/* <p className="flex gap-1 text-gray-900 whitespace-no-wrap">
     {request.status === RequestStatus.Waiting && (
       <>
         <button onClick={() => handleAccept(request.learningModuleId, request.id)}>
@@ -168,7 +190,7 @@ export function LearnersInClass() {
       </>
     )}
   </p> */}
-                        </td>
+
 
                       </tr>
                     ))}

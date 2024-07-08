@@ -32,6 +32,18 @@ export const SearchService = {
     return tutors;
   },
 
+  getAllLearningModuleOfOneTutor: async (tutorId: string | null): Promise<LearningModule[]> => {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/LearningModule/LearningModuleOfOneTutor/` + tutorId,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    const learningModules: LearningModule[] = response.data;
+    return learningModules;
+  },
+
+
   // getAverageRatingByStar: async (id: string | null): Promise<number> => {
   //   try {
   //     const response = await axios.get(

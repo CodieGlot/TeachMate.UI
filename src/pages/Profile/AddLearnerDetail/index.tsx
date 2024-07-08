@@ -11,6 +11,7 @@ import {
   FormikValues,
   FormikHelpers,
 } from "formik";
+import { Stepper } from "../Stepper";
 import * as Yup from "yup";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -20,7 +21,6 @@ interface UpdateFormValues {
   phoneNumber: string
 }
 import { StorageService } from "../../../services";
-import { Stepper } from "../Stepper";
 export function AddLearnerDetail() {
   const user = AuthService.getCurrentUser();
 
@@ -131,8 +131,8 @@ export function AddLearnerDetail() {
         <div className="py-4 px-4 mx-auto max-w-2xl lg:py-8">
           <div className=" mx-auto py-3 mb-5">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Update your details</span></h1>
-            <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Update your details so anyone can know you</p>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Add your details</span></h1>
+            <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Add your details so anyone can know you</p>
           </div>
           <Formik
             initialValues={initialFormValues}
@@ -158,21 +158,7 @@ export function AddLearnerDetail() {
                       component="div"
                     />
                   </div>
-                  <div className="sm:col-span-2">
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                    <Field
-                      type="text"
-                      name="email"
-                      id="email"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Your email"
-                    />
-                    <ErrorMessage
-                      className="text-red-500 p-5 bg-white font-medium text-xs"
-                      name="email"
-                      component="div"
-                    />
-                  </div>
+                  
                   <div className="w-full">
                     <label htmlFor="phoneNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number:</label>
                     <div className="relative">
@@ -232,7 +218,7 @@ export function AddLearnerDetail() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Your grade level"
                       required
-                      min={1}
+                      min={10}
                       max={12}
                       value={gradeLevel}
                       onChange={(e) => setGradeLevel(Number.parseInt(e.target.value))}

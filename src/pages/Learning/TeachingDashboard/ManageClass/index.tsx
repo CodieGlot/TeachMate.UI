@@ -7,21 +7,24 @@ import { ViewClassSchedule } from '../../LearningModuleDetail/ui/ClassSchedule';
 import { ListRequestsForClass } from '../../LearningModuleRequest';
 import { LearnersInClass } from '../ListLearners';
 import { ReceiveFeedback } from '../../../Feedback';
+import { useSearchParams } from 'react-router-dom';
+import { Step } from '../../../Payment/Step';
 
 export function ManageClass() {
-    // Tạo state để lưu trữ tab đang được chọn
     const [selectedTab, setSelectedTab] = useState<string>('tutor');
     useEffect(() => {
         AOS.init();
     }, []);
-    // Hàm để cập nhật tab đang được chọn
     const handleTabClick = (tab: string) => {
         setSelectedTab(tab);
     };
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id")
     return (
         <>
-            <Header />
             <div data-aos="zoom-in-left" data-aos-duration="1000">
+                <Header />
+                <Step />
                 <div className="md:flex w-5/6 mx-auto mt-5">
                     <ul className="flex-column space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
                         <li>
@@ -49,6 +52,15 @@ export function ManageClass() {
                         </li>
                         <li>
                             <a
+                                href={"/material?id=" + id}
+                                className={`inline-flex items-center px-4 py-3 ${selectedTab === 'material' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
+                            >
+                                <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.5 0h-11c-1.104 0-2 0.895-2 2v28c0 1.105 0.896 2 2 2h19c1.105 0 2-0.895 2-2v-20zM25.5 10.829v0.171h-9v-9h0.172zM6.5 30v-28h8v11h11v17h-19z"></path> </g></svg>
+                                Material
+                            </a>
+                        </li>
+                        <li>
+                            <a
                                 href="#"
                                 onClick={() => handleTabClick('settings')}
                                 className={`inline-flex items-center px-4 py-3 ${selectedTab === 'settings' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
@@ -65,10 +77,8 @@ export function ManageClass() {
                                 onClick={() => handleTabClick('contact')}
                                 className={`inline-flex items-center px-4 py-3 ${selectedTab === 'contact' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
                             >
-                                <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M7.824 5.937a1 1 0 0 0 .726-.312 2.042 2.042 0 0 1 2.835-.065 1 1 0 0 0 1.388-1.441 3.994 3.994 0 0 0-5.674.13 1 1 0 0 0 .725 1.688Z" />
-                                    <path d="M17 7A7 7 0 1 0 3 7a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V7a5 5 0 1 1 10 0v7.083A2.92 2.92 0 0 1 12.083 17H12a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a1.993 1.993 0 0 0 1.722-1h.361a4.92 4.92 0 0 0 4.824-4H17a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3Z" />
-                                </svg>
+
+                                <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> </style> <g> <path d="M473.61,63.16L276.16,2.927C269.788,0.986,263.004,0,256.001,0c-7.005,0-13.789,0.986-20.161,2.927 L38.386,63.16c-3.457,1.064-5.689,3.509-5.689,6.25c0,2.74,2.232,5.186,5.691,6.25l91.401,27.88v77.228 c0.023,39.93,13.598,78.284,38.224,107.981c11.834,14.254,25.454,25.574,40.483,33.633c15.941,8.564,32.469,12.904,49.124,12.904 c16.646,0,33.176-4.34,49.126-12.904c22.597-12.143,42.04-31.646,56.226-56.39c14.699-25.683,22.471-55.155,22.478-85.224v-78.214 l45.244-13.804v64.192c-6.2,0.784-11.007,6.095-11.007,12.5c0,5.574,3.649,10.404,8.872,12.011l-9.596,63.315 c-0.235,1.576,0.223,3.168,1.262,4.386c1.042,1.204,2.554,1.902,4.148,1.902h36.273c1.592,0,3.104-0.699,4.148-1.91 c1.036-1.203,1.496-2.803,1.262-4.386l-9.596-63.307c5.223-1.607,8.872-6.436,8.872-12.011c0-6.405-4.81-11.716-11.011-12.5V81.544 l19.292-5.885c3.457-1.064,5.691-3.517,5.691-6.25C479.303,66.677,477.069,64.223,473.61,63.16z M257.62,297.871 c-10.413,0-20.994-2.842-31.448-8.455c-16.194-8.649-30.908-23.564-41.438-42.011c-4.854-8.478-8.796-17.702-11.729-27.445 c60.877-10.776,98.51-49.379,119.739-80.97c10.242,20.776,27.661,46.754,54.227,58.648c-3.121,24.984-13.228,48.812-28.532,67.212 c-8.616,10.404-18.773,18.898-29.375,24.573C278.606,295.029,268.025,297.871,257.62,297.871z"></path> <path d="M373.786,314.23l-1.004-0.629l-110.533,97.274L151.714,313.6l-1.004,0.629 c-36.853,23.036-76.02,85.652-76.02,156.326v0.955l0.846,0.45C76.291,472.365,152.428,512,262.249,512 c109.819,0,185.958-39.635,186.712-40.038l0.846-0.45v-0.955C449.808,399.881,410.639,337.265,373.786,314.23z"></path> </g> </g></svg>
                                 Feedback
                             </a>
                         </li>
@@ -85,15 +95,18 @@ export function ManageClass() {
                                 Learners
                             </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <a
-                                className="inline-flex items-center px-4 py-3 text-gray-400 rounded-lg cursor-not-allowed bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300"
+                                href="#"
+                                onClick={() => handleTabClick('payment')}
+                                className={`inline-flex items-center px-4 py-3 ${selectedTab === 'payment' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
                             >
-                                <svg className="w-4 h-4 me-2 text-gray-400 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
+                                <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor">
+                                    <path d="M0 96C0 60.7 28.7 32 64 32H512c35.3 0 64 28.7 64 64V192H0V96zM0 320V224H576V320H0zm0 32H576v64c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V352z" />
                                 </svg>
-                                Disabled</a>
-                        </li>
+                                Payment
+                            </a>
+                        </li> */}
                     </ul>
                     <div className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
 
@@ -107,11 +120,14 @@ export function ManageClass() {
                             <ListRequestsForClass />
                         )}
                         {selectedTab === 'contact' && (
-                             <ReceiveFeedback/>
+                            <ReceiveFeedback />
                         )}
                         {selectedTab === 'learner' && (
-                             <LearnersInClass/>
+                            <LearnersInClass />
                         )}
+                        {/* {selectedTab === 'payment' && (
+                            <SetPrice />
+                        )} */}
                     </div>
                 </div>
             </div>

@@ -43,6 +43,7 @@ export const GiveFeedback = () => {
     return (
 
         <div className="max-w-7xl dark:bg-gray-950 dark:text-white">
+            
             <form className="w-full p-4 rounded shadow-md" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                 <h2 className="text-xl mb-4 tracking-wider font-lighter text-gray-900 dark:text-gray-200">
                     <span className="bg-gradient-to-r to-indigo-600 from-sky-400 bg-clip-text text-transparent font-bold">
@@ -93,18 +94,6 @@ export const GiveFeedback = () => {
                             </label>
                         </div>
                     </div>
-
-                    {/* <div className="mb-4">
-                        <input
-                            type="number"
-                            id="learningModuleId"
-                            name="learningModuleId"
-                            value={learningModuleId}
-                            onChange={(e) => setLearningModuleId(e.target.value)}
-                            className="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed"
-                            placeholder="Learning Module ID"
-                        />
-                    </div> */}
                 </div>
 
                 <div className="flex justify-end">

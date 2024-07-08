@@ -6,3 +6,5 @@ export * from "./SearchService";
 export * from "./SendOTPservice";
 export * from "./FeedbackService";
 export * from "./AdminService";
+export * from "./LearningMaterialService"
+export * from "./PaymentService";

@@ -1,3 +1,34 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes errorPopup {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(1.0rem);
+  }
+}
+
+.fade-in-new {
+  /* animation: errorPopup 0.5s ease-in-out;
+  transform: translateY(1.0rem); */
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+
+}
+
 .cssbuttons-io-button {
     display: flex;
     align-items: center;

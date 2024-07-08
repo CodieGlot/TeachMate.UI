@@ -122,7 +122,7 @@ export function AddTutorDetail() {
           <div className=" mx-auto py-3 mb-5">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
               <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Add your details</span></h1>
-            <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Update your details so anyone can know you</p>
+            <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Add your details so anyone can know you</p>
           </div>
           <Formik
             initialValues={initialFormValues}
