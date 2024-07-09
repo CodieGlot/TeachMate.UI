@@ -8,7 +8,7 @@ export * from "./ChangePassword"
 export * from "./ForgetPassword"
 export * from "./Feedback"
 export * from "./VerifyOTP"
+export * from "./Report"
 export * from "./RemoveLearner"
 export * from "./LearningMaterial"
 export * from "./Payment"
-
