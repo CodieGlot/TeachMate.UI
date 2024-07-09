@@ -8,6 +8,7 @@ import { ViewClassSchedule } from '../../LearningModuleDetail/ui/ClassSchedule';
 import { GiveFeedback } from '../../../Feedback';
 
 import { LearnerPayment } from '../../../Payment';
+import { ListMaterial } from '../../../StudyMaterial';
 
 
 export function EnrollClass() {
@@ -15,15 +16,7 @@ export function EnrollClass() {
     const [selectedTab, setSelectedTab] = useState<string>('info');
     useEffect(() => {
         AOS.init();
-        handleTabClick(section || 'info')
     }, []);
-    // Hàm để cập nhật tab đang được chọn
-    const handleTabClick = (tab: string) => {
-        setSelectedTab(tab);
-    };
-
-    
-    
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const section = searchParams.get("section")
@@ -31,8 +24,21 @@ export function EnrollClass() {
     const navigate = useNavigate();
     const location = useLocation();
     const { state } = location;
-    ; // Rename to stateLearningModuleID
-    console.log(learningModuleID);
+    useEffect(() => {
+        
+        handleTabClick(section || 'info')
+    }, [section])
+    // Hàm để cập nhật tab đang được chọn
+    const handleTabClick = (tab: string) => {
+        navigate('/enroll-class?id='+learningModuleID+'&section='+tab)
+        setSelectedTab(tab);
+
+    };
+
+    
+    
+   
+  
     const handlePayment = () => {
         navigate("/learnerpayment", { state: { learningModuleID } })
     }
@@ -69,7 +75,7 @@ export function EnrollClass() {
                         </li>
                         <li>
                             <a
-                                href={"/material?id="+id}
+                                onClick={() => handleTabClick('material')}
                                 className={`inline-flex items-center px-4 py-3 ${selectedTab === 'material' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
                             >
                                 <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.5 0h-11c-1.104 0-2 0.895-2 2v28c0 1.105 0.896 2 2 2h19c1.105 0 2-0.895 2-2v-20zM25.5 10.829v0.171h-9v-9h0.172zM6.5 30v-28h8v11h11v17h-19z"></path> </g></svg>
@@ -133,6 +139,9 @@ export function EnrollClass() {
                         )}
                         {selectedTab === 'payment' && (
                             <LearnerPayment />
+                        )}
+                          {selectedTab === 'material' && (
+                            <ListMaterial />
                         )}
                         
                     </div>

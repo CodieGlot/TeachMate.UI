@@ -9,17 +9,20 @@ import { LearnersInClass } from '../ListLearners';
 import { ReceiveFeedback } from '../../../Feedback';
 import { useSearchParams } from 'react-router-dom';
 import { Step } from '../../../Payment/Step';
+import { ListMaterial } from '../../../StudyMaterial';
 
 export function ManageClass() {
     const [selectedTab, setSelectedTab] = useState<string>('tutor');
     useEffect(() => {
         AOS.init();
+        handleTabClick(section || 'info')
     }, []);
     const handleTabClick = (tab: string) => {
         setSelectedTab(tab);
     };
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id")
+    const section = searchParams.get("section")
     return (
         <>
             <div data-aos="zoom-in-left" data-aos-duration="1000">
@@ -52,7 +55,9 @@ export function ManageClass() {
                         </li>
                         <li>
                             <a
-                                href={"/material?id=" + id}
+                                // href={"/material?id=" + id}
+                                onClick={() => handleTabClick('material')}
+                                
                                 className={`inline-flex items-center px-4 py-3 ${selectedTab === 'material' ? 'text-white bg-blue-700' : 'bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300'} rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
                             >
                                 <svg className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.5 0h-11c-1.104 0-2 0.895-2 2v28c0 1.105 0.896 2 2 2h19c1.105 0 2-0.895 2-2v-20zM25.5 10.829v0.171h-9v-9h0.172zM6.5 30v-28h8v11h11v17h-19z"></path> </g></svg>
@@ -125,9 +130,9 @@ export function ManageClass() {
                         {selectedTab === 'learner' && (
                             <LearnersInClass />
                         )}
-                        {/* {selectedTab === 'payment' && (
-                            <SetPrice />
-                        )} */}
+                        {selectedTab === 'material' && (
+                            <ListMaterial />
+                        )}
                     </div>
                 </div>
             </div>
