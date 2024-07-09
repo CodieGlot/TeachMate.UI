@@ -106,5 +106,16 @@ export const PaymentService = {
       });
       const data : Transaction = response.data
       return data
+  },
+
+  checkPermissionToViewLearningModule: async (id: string) : Promise<boolean> => {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/Payment/CheckPermissionToViewLearningModule?learningModuleId=`+id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      const data : boolean = response.data
+      return data
   }
 };
