@@ -80,8 +80,9 @@ export function TutorDetail() {
                             <img
                                 width={200}
                                 height={200}
-                                className="mx-auto my-7 rounded-full shadow-lg"
+                                className="w-200 h-200 mx-auto my-7 object-cover rounded-full shadow-lg aspect-w-1 aspect-h-1"
                                 src={userData.avatar}
+                                style={{ aspectRatio: '1 / 1' }}
                                 alt="User Avatar"
                             />
                         </div>

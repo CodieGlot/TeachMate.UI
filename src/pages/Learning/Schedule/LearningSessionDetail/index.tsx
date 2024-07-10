@@ -2,9 +2,11 @@ import { LearningModule, LearningSession } from "../../../../interfaces";
 import { Header } from "../../../../layouts";
 import { AuthService } from "../../../../services";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ScheduleService } from "../../../../services/ScheduleService";
 import { Subject } from "../../../../common/enums";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 export function LearningSessionDetail() {
     const user = AuthService.getCurrentUser();
@@ -24,13 +26,79 @@ export function LearningSessionDetail() {
                 setLearningSession(data);
             }
             catch (err) {
-                console.error("Error fetching learning module:", err);
+                console.error("viewLearningSessionDetail failed:", err);
+
+                if (axios.isAxiosError(err)) {
+                  const axiosError = err as AxiosError<any>; // Use any for generic AxiosError
+          
+                  if (axiosError.response) {
+                    const { data } = axiosError.response;
+          
+                    if (data) {
+                      if (data.errors) {
+                        // Handle validation errors
+                        Object.values(data.errors).forEach((errMsgList) => {
+                          (errMsgList as string[]).forEach((errMsg: string) => {
+                            toast.error(errMsg);
+                          });
+                        });
+                      } else if (data.message) {
+                        // Handle API exceptions
+                        toast.error(data.message);
+                      }
+                    } else {
+                      toast.error("An unknown error occurred.");
+                    }
+                  }
+                } else {
+                  toast.error("An unexpected error occurred.");
+                }
 
             }
         };
+
         viewLearningSessionDetail(), []
     })
 
+    const handleParticipateLearningSession = async () => {
+        try {
+            if (id != null) {
+                const data = await ScheduleService.participateLearningSession(id);
+                window.open(data, '_blank');
+            }
+            
+        }
+        catch (err) {
+            console.error("Error participating learning session:", err);
+
+            if (axios.isAxiosError(err)) {
+              const axiosError = err as AxiosError<any>; 
+      
+              if (axiosError.response) {
+                const { data } = axiosError.response;
+      
+                if (data) {
+                  if (data.errors) {
+                    // Handle validation errors
+                    Object.values(data.errors).forEach((errMsgList) => {
+                      (errMsgList as string[]).forEach((errMsg: string) => {
+                        toast.error(errMsg);
+                      });
+                    });
+                  } else if (data.message) {
+                    // Handle API exceptions
+                    toast.error(data.message);
+                  }
+                } else {
+                  toast.error("An unknown error occurred.");
+                }
+              }
+            } else {
+              toast.error("An unexpected error occurred.");
+            }
+
+        }
+    }
 
     return (
         <>
@@ -120,9 +188,9 @@ export function LearningSessionDetail() {
 
 
                     </div>
-                    <a href={learningSession?.linkMeet}>
                         <div className="flex justify-end">
-                            <button type="button" className="flex  mt-5 text-white bg-sky-500 hover:bg-white hover:border hover:border-sky-500 hover:text-sky-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <button type="button" className="flex  mt-5 text-white bg-sky-500 hover:bg-white hover:border hover:border-sky-500 hover:text-sky-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            onClick={handleParticipateLearningSession}>
                                 <svg fill="currentColor" stroke="currentColor" className="w-5 mr-3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" >
                                     <style>{`.st0{stroke:#ffffff;stroke-width:0.05;stroke-miterlimit:10;}`}</style>
                                     <g id="grid_system"></g>
@@ -132,7 +200,6 @@ export function LearningSessionDetail() {
                                 </svg>
                                 Join the session</button>
                         </div>
-                    </a>
                 </div>
                 <div className="bg-white border border-gray-100 w-2/3 mx-auto my-5 p-5 rounded-md">
                     <h2 className="font-semibold font-sans text-lg">Question after this learning session:
