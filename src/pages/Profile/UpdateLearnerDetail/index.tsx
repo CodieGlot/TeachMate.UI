@@ -209,14 +209,20 @@ export function UpdateLearnerDetail() {
                     <p id="helper-text-explanation" className="mt-2 text-sm text-gray-500 dark:text-gray-400">Select a phone number that matches the format.</p>
                   </div>
 
-
-                  <div >
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
-                    <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file"
-                    />
-                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
-
-                  </div>
+                  <label className="block pt-7 ">
+                      <span className="sr-only">Choose profile photo</span>
+                      <input
+                        type="file"
+                        onChange={loadFile}
+                        className="block w-full text-sm text-slate-500
+                     file:mr-4 file:py-2 file:px-4
+                     file:rounded-full file:border-0
+                     file:text-sm file:font-semibold
+                     file:bg-violet-50 file:text-violet-700
+                     hover:file:bg-violet-100"
+                      />
+                    </label>
+               
 
                   <div>
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Grade Level</label>
@@ -244,19 +250,7 @@ export function UpdateLearnerDetail() {
                         alt="Current profile photo"
                       />
                     </div>
-                    <label className="block ">
-                      <span className="sr-only">Choose profile photo</span>
-                      <input
-                        type="file"
-                        onChange={loadFile}
-                        className="block w-full text-sm text-slate-500
-                     file:mr-4 file:py-2 file:px-4
-                     file:rounded-full file:border-0
-                     file:text-sm file:font-semibold
-                     file:bg-violet-50 file:text-violet-700
-                     hover:file:bg-violet-100"
-                      />
-                    </label>
+                    
                   </div>
                   <br />
                   <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
