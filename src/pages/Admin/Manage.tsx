@@ -1,6 +1,9 @@
 import React, { useRef, useState } from "react";
 import { AdminDashboard } from "./AdminDashboard";
 import { ManageAccount } from "./ManageAccount";
+import { ReportSystem } from "./ReportSystem";
+import { UserSystem } from "./UserSystem";
+import { useNavigate } from "react-router-dom";
 
 export function Manage() {
 
@@ -50,7 +53,7 @@ export function Manage() {
     const icon = element.querySelector("i");
     if (icon) {
       icon.classList.add("text-white");
-    }
+    } 
   };
 
 
@@ -85,6 +88,8 @@ export function Manage() {
                 <i className="fas fa-bell text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
               </button>
               <button className="p-2">
+                {/* <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"
+                onClick={() => navigate("/auth/login")}></i> */}
                 <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
               </button>
             </div>
@@ -145,18 +150,18 @@ export function Manage() {
             {/* Reported System Issues */}
             <button
               className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
-              onClick={(e) => highlightSidebarItem(e.currentTarget)}
+              onClick={(e) => handleTabClick(e, 'reportSystem')}
             >
-              <i className="fas fa-exclamation-triangle"></i>
+              <i className="fas fa-exclamation-circle"></i>
               <span className="font-medium transition-all duration-200 opacity-0">Reported System</span>
             </button>
 
             {/* Reported User Issues */}
             <button
               className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
-              onClick={(e) => highlightSidebarItem(e.currentTarget)}
+              onClick={(e) => handleTabClick(e, 'userSystem')}
             >
-              <i className="fas fa-sign-out-alt"></i>
+              <i className="fas fa-user-cog"></i>
               <span className="font-medium transition-all duration-200 opacity-0">Reported User</span>
             </button>
           </div>
@@ -172,7 +177,12 @@ export function Manage() {
         {selectedTab === 'account' && (
           <ManageAccount />
         )}
-
+        {selectedTab === 'reportSystem' && (
+          <ReportSystem />
+        )}
+        {selectedTab === 'userSystem' && (
+          <UserSystem />
+        )}
       </div>
     </body>
   );

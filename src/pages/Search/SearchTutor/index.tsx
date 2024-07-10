@@ -189,7 +189,7 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
                       onClick={() => handletutordetail(tutor.id)}
                       className="mt-4 px-4 py-2 text-sm text-violet-500 bg-gradient-to-r to-indigo-600/20 from-sky-400/20 rounded hover:bg-violet-300"
                     >
-                      Show Deatail
+                      Show Detail
                     </button>
                   </div>
                 </div>

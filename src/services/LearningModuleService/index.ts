@@ -132,6 +132,18 @@ export const LearningModuleService = {
         );
         
       },
+      getLearnerInAClass: async (id : string) : Promise<number> => {
+        const response = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}/api/LearningModule/NumberOfLearner?learningModule=`+id,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data: number = response.data;
+        return data;
+      }
 
 
       
