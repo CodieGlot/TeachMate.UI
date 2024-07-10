@@ -38,7 +38,7 @@ export function UpdateTutorDetail() {
       .matches(/^[a-zA-Z0-9\s]*$/, "display name not have special symbols"),
     email: Yup.string()
       .email('Invalid email format'),
-      // .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
+    // .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
     phoneNumber: Yup.string()
       .matches(/^0\d{9}$/, 'Phone number must begin with 0 and be digits only, up to 10 characters'),
     description: Yup.string()
@@ -78,14 +78,18 @@ export function UpdateTutorDetail() {
     let avatarUrl = avatar; // use the existing avatar as the default
 
     let toastId: any = null;
-
+    
     let fileName = StorageService.getFileNameFromUrl(avatarUrl);
     console.log(fileName)
 
     if (selectedFile) {
       toastId = toast.loading("Uploading avatar...");
       try {
-        avatarUrl = await StorageService.replaceFile(fileName,selectedFile);
+        if (avatarUrl == "https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg") {
+          avatarUrl = await StorageService.uploadFile(selectedFile);
+        } else {
+          avatarUrl = await StorageService.replaceFile(fileName, selectedFile);
+        }
         toast.dismiss(toastId);
         toast.success("Avatar uploaded successfully!");
       } catch (err) {
