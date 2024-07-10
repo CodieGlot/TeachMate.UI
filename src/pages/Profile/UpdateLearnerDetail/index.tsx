@@ -75,7 +75,11 @@ export function UpdateLearnerDetail() {
     if (selectedFile) {
       toastId = toast.loading("Uploading avatar...");
       try {
-        avatarUrl = await StorageService.replaceFile(fileName,selectedFile);
+        if (avatarUrl == "https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg") {
+          avatarUrl = await StorageService.uploadFile(selectedFile);
+        } else {
+          avatarUrl = await StorageService.replaceFile(fileName, selectedFile);
+        }
         toast.dismiss(toastId);
         toast.success("Avatar uploaded successfully!");
       } catch (err) {
