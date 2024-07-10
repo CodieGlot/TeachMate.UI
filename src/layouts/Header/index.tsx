@@ -64,7 +64,7 @@ export function Header() {
                 placeholder="Search..."
                 onChange={handleInputChange}
                 value={searchQuery}
-                
+
               />
               <button
                 type="submit"

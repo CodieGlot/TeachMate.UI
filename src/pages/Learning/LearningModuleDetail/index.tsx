@@ -8,6 +8,7 @@ import { ViewClassSchedule } from "./ui/ClassSchedule";
 import { AuthService, UserDetailService } from "../../../services";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { AppUser } from "../../../interfaces";
 // const url = window.location.href;
 // const id = url.substring(url.lastIndexOf("/") + 1);
 // console.log(id);
@@ -22,6 +23,7 @@ export function LearningModuleDetail() {
   const id = searchParams.get("id")
   const [learningModule, setLearningModule] = useState<LearningModule>();
   const [number, setNumber] = useState(0);
+  const [tutor, setTutor] = useState<AppUser>();
 
   const navigate = useNavigate();
 
@@ -32,18 +34,21 @@ export function LearningModuleDetail() {
     return Subject[subjectCode];
   };
 
-  const handleListRequestsInLearningModule = () => {
-    navigate('/list-request-class?id='+{id});
-  };
+
 
 
   useEffect(() => {
     const viewLearningModuleDetail = async () => {
       try {
-        const data = await LearningModuleService.getLearningModuleById(id);
-        const number = (await LearningModuleService.getAllLearnersInLearningModule(id)).length;
-        setLearningModule(data)
-        setNumber(number)
+        if (id != null) {
+          const data = await LearningModuleService.getLearningModuleById(id);
+          const number = (await LearningModuleService.getLearnerInAClass(id));
+          const tutor = await UserDetailService.getUserById(data.tutorId);
+          setLearningModule(data)
+          setNumber(number)
+          setTutor(tutor)
+        }
+       
       } catch (error) {
         console.error("Error fetching learning module:", error);
 
@@ -54,7 +59,7 @@ export function LearningModuleDetail() {
   return (
     <>
       <div data-aos="zoom-in-left" data-aos-duration="1000">
-       
+
         <div className="py-3 px-4 mx-auto max-w-4xl lg:py-5">
           <div className=" mx-auto py-2 mb-5 text-center">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
@@ -72,6 +77,10 @@ export function LearningModuleDetail() {
                   </div>
                 </div>
                 <div><div style={{ width: '300px' }} className="bg-transparent hover:bg-sky-400  text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
+                  Price: {learningModule?.price} VND
+                </div>
+                </div>
+                <div><div style={{ width: '300px' }} className="bg-transparent hover:bg-sky-400  text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
                   Learners: {number}/{learningModule?.maximumLearners}
                 </div></div>
                 <div><div style={{ width: '300px' }} className="bg-transparent hover:bg-sky-400  text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
@@ -85,19 +94,23 @@ export function LearningModuleDetail() {
                 </div>
                 <div style={{ width: '300px' }} className="relative bg-transparent hover:bg-sky-400 text-sky-700 font-semibold hover:text-white py-2 px-4 border border-sky-500 hover:border-transparent rounded">
                   <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-sky-500 w-[25px] h-[25px] rounded-full text-white text-center text-sm">by</div>
+                  <button onClick={() => navigate("/tutordetail", { state: tutor?.id })}>
+
+                 
                   <div className="flex gap-5">
                     <img width={50} height={50} src="https://www.theventuretours.com/wp-content/uploads/2020/03/avatar-icon-png-1-1024x1024.png" />
                     <div>
                       <h1>{learningModule?.tutor?.displayName}</h1>
-                      <h2>Tutor</h2>
+                      <h2>{tutor?.displayName}</h2>
                     </div>
                   </div>
+                  </button>
 
                 </div>
               </div>
             </div>
             <div style={{ flex: '2 1 0' }}>
-              <video className="w-full border-2 rounded-md border-indigo-300	" controls style={{ height: '75%' }}>
+              <video className="w-full border-2 rounded-md border-indigo-300	" autoPlay muted controls style={{ height: '75%' }}>
                 <source src="src/assets/video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -128,7 +141,7 @@ export function LearningModuleDetail() {
                     >
                       Update Information
                     </button>
-                    
+
                   </>
                 )}
 
@@ -137,12 +150,12 @@ export function LearningModuleDetail() {
           </div>
 
 
-          
+
 
 
 
         </div>
-        </div>
-      </>
-      );
+      </div>
+    </>
+  );
 }

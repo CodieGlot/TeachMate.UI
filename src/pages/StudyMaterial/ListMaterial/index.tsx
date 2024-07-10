@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../../layouts";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { AuthService, LearningMaterialService } from "../../../services";
+import { AuthService, LearningMaterialService, PaymentService } from "../../../services";
 import { LearningChapter, LearningMaterial } from "../../../interfaces";
 import { UserRole } from "../../../common/enums";
-
+import styles from './material.module.css'
 export function ListMaterial(): JSX.Element {
     const [listMaterial, setListMaterial] = useState<LearningMaterial[]>([])
     const [searchParams] = useSearchParams();
@@ -36,8 +36,22 @@ export function ListMaterial(): JSX.Element {
     };
 
     useEffect(() => {
+        checkViewPermission();
         fetchLearningChapter();
     }, []);
+
+    const checkViewPermission = async () => {
+        try {
+            if (learningModuleId !== null) {
+                const data = await PaymentService.checkPermissionToViewLearningModule(learningModuleId);
+                setHavePermission(data);
+            }
+           
+        }
+        catch (error) {
+            console.error("Error check permission", error);
+        }
+    }
 
     const fetchLearningMaterials = async () => {
         try {
@@ -58,68 +72,108 @@ export function ListMaterial(): JSX.Element {
             }
             )
             window.location.reload();
+            navigate('/manage-class?id=' + learningModuleId + '&section=material')
         } catch (error) {
             console.error("Add learning chapter error:" + error);
         }
     }
 
+
+    const [close, setClose] = useState<boolean>(false)
+    const handleClosePayment = () => {
+        setClose(true);
+    }
+
+    const [havePermission, setHavePermission] = useState<boolean>(false);
+
     return (
         <>
             <div className="min-h-screen">
-                <Header />
-                <div className='min-h-[670px] flex  justify-center from-indigo-100 via-indigo-300 to-sky-500 bg-gradient-to-br'>
-                    <div className='mt-10 mb-10 min-h-[200px] w-full max-w-[70%] px-10 py-8 mx-auto bg-white rounded-lg shadow-xl'>
-                        <button onClick={() => navigate('/manage-class?id='+learningModuleId)} className="cursor-pointer duration-200 hover:scale-125 active:scale-100" title="Go Back">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 24 24" className="stroke-blue-300">
-                                <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M11 6L5 12M5 12L11 18M5 12H19"></path>
-                            </svg>
-                        </button>
-                        <div className=' mx-auto space-y-6'>
-                            <div className="text-center">
-                                <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-4xl">
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r to-indigo-600 from-sky-400">Material page</span></h1>
-                                <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Download material</p>
+                {/* <Header />
+                <div className='min-h-[670px] flex  justify-center from-indigo-100 via-indigo-300 to-sky-500 bg-gradient-to-br'> */}
+                {/* <div className='mt-10 mb-10 min-h-[200px] w-full px-10 py-8 mx-auto bg-white rounded-lg shadow-xl'> */}
+                <div className="mx-auto p-8 rounded-md w-5/6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-gray-600 font-semibold">Study material</h2>
+                            <span className="text-xs">All study materials in class</span>
+                        </div>
+                        {user?.userRole == UserRole.TUTOR && (
+                            <button
+                                className="mt-5 inline-flex items-center px-4 py-2 bg-sky-600 transition ease-in-out delay-75 hover:bg-sky-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+                                onClick={() => setIsAddNewChapter(!isAddNewChapter)}
+                            >
+
+
+                                <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle opacity="0.5" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="1.5"></circle> <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                                Add new chapter
+                            </button>)}
+
+                    </div>
+                    {isAddNewChapter && (
+                        <div className="mt-10 max-w-lg mx-auto relative flex flex-col p-4 rounded-md text-black bg-white">
+                            <div className="text-2xl font-bold mb-2 text-[#1e0e4b] text-center">Add new learning <span className="text-[#7747ff]">Chapter</span></div>
+                            <div className="text-sm font-normal mb-4 text-center text-[#1e0e4b]">Fill in these field</div>
+                            <form className="flex flex-col gap-3">
+                                <div className="block relative">
+                                    <label htmlFor="chapterName" className="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">Enter chapter name *</label>
+                                    <input
+                                        placeholder="We suggest [Chapter 01: Abc]"
+                                        required
+                                        type="text" id="chapterName" className="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+                                        value={chapterName}
+                                        onChange={(e) => setChapterName(e.target.value)} />
+
+                                </div>
+                                <div className="block relative">
+                                    <label htmlFor="chapterDescription" className="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">Enter chapter description</label>
+                                    <textarea rows={10} id="chapterDescription" className="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+                                        value={chapterDesc}
+                                        onChange={(e) => setChapterDesc(e.target.value)} />
+
+                                </div>
+                                {user?.userRole == UserRole.TUTOR && (
+                                    <button type="button" className="bg-[#7747ff] w-max m-auto px-6 py-2 rounded text-white text-sm font-normal"
+                                        onClick={handleAddChapter}
+                                    >Add</button>
+                                )}
+
+                            </form>
+                        </div>)}
+                    <div className=' mx-auto space-y-6 relative mt-5'>
+                        {(!close && !havePermission) && 
+                        (<div className={styles["payment-reminder"]}>
+                            <div
+                                className="flex flex-col items-center bg-white w-80 h-auto pt-5 pb-7 border border-gray-200 rounded-lg space-y-8"
+                            >
+                                <section className="flex flex-col text-center space-y-1">
+                                    <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+                                        Payment request
+                                    </h2>
+                                    <p className="text-slate-500 text-sm">You need to pay for this class to see learning material</p>
+                                </section>
+                                <section className="flex w-full flex-col space-y-2 px-9">
+                                    <button
+                                        className="py-3 font-medium tracking-wide capitalize transition-colors duration-300 transform bg-gray-100 rounded-md hover:bg-gray-200 text-sm text-gray-600"
+                                        onClick={() => navigate('/enroll-class?id='+learningModuleId+'&section=payment')}
+                                    >
+                                        Pay now
+                                    </button>
+                                    <button
+                                        className="py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-600"
+                                        onClick={() => handleClosePayment()}
+                                    >
+                                        Close
+                                    </button>
+                                </section>
                             </div>
-                            {user?.userRole == UserRole.TUTOR && (
-                                <button
-                                    className="mt-5 inline-flex items-center px-4 py-2 bg-sky-600 transition ease-in-out delay-75 hover:bg-sky-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-                                    onClick={() => setIsAddNewChapter(!isAddNewChapter)}
-                                >
+                        </div>
+                            )
+                        }
+                        
 
-
-                                    <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle opacity="0.5" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="1.5"></circle> <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
-                                    Add new chapter
-                                </button>)}
-                            {isAddNewChapter && (
-                                <div className="max-w-lg mx-auto relative flex flex-col p-4 rounded-md text-black bg-white">
-                                    <div className="text-2xl font-bold mb-2 text-[#1e0e4b] text-center">Add new learning <span className="text-[#7747ff]">Chapter</span></div>
-                                    <div className="text-sm font-normal mb-4 text-center text-[#1e0e4b]">Fill in these field</div>
-                                    <form className="flex flex-col gap-3">
-                                        <div className="block relative">
-                                            <label htmlFor="chapterName" className="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">Enter chapter name *</label>
-                                            <input
-                                                placeholder="We suggest [Chapter 01: Abc]"
-                                                required
-                                                type="text" id="chapterName" className="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
-                                                value={chapterName}
-                                                onChange={(e) => setChapterName(e.target.value)} />
-
-                                        </div>
-                                        <div className="block relative">
-                                            <label htmlFor="chapterDescription" className="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">Enter chapter description</label>
-                                            <textarea rows={10} id="chapterDescription" className="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
-                                                value={chapterDesc}
-                                                onChange={(e) => setChapterDesc(e.target.value)} />
-
-                                        </div>
-                                        {user?.userRole == UserRole.TUTOR && (
-                                            <button type="button" className="bg-[#7747ff] w-max m-auto px-6 py-2 rounded text-white text-sm font-normal"
-                                                onClick={handleAddChapter}
-                                            >Add</button>
-                                        )}
-
-                                    </form>
-                                </div>)}
+                        <div className={havePermission ? '' : styles["content-to-blur"]}>
+                      
                             <p className='text-gray-600'></p>
                             {list.map((item) => (
                                 <div key={item.id}>
@@ -156,7 +210,8 @@ export function ListMaterial(): JSX.Element {
                                                     {user?.userRole == UserRole.TUTOR && (
                                                         <button
                                                             className="mt-5 inline-flex items-center px-4 py-2 bg-sky-600 transition ease-in-out delay-75 hover:bg-sky-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-                                                            onClick={() => navigate('/upload-material', { state: item.id })}
+                                                            onClick={() => navigate('/upload-material', { state: { chapterId: item.id, learningModuleId: learningModuleId } })}
+
                                                         >
 
                                                             <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle opacity="0.5" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="1.5"></circle> <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
@@ -178,6 +233,7 @@ export function ListMaterial(): JSX.Element {
                     </div>
                 </div>
             </div>
+            {/* </div> */}
 
         </>
     );

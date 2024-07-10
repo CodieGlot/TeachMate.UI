@@ -20,7 +20,6 @@ import * as Yup from "yup";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { fbAuth } from "../../../config";
-
 interface LoginFormValues {
   username: string;
   password: string;
@@ -28,7 +27,7 @@ interface LoginFormValues {
 
 export function Login() {
   const navigate = useNavigate();
-
+ 
   const initialFormValues: LoginFormValues = {
     username: "",
     password: "",
@@ -92,6 +91,7 @@ export function Login() {
     }
   };
 
+  
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
     const { credential } = credentialResponse;
     if (credential) {
@@ -114,7 +114,9 @@ export function Login() {
 
 
   return (
+    
     <div data-aos="zoom-in-left" data-aos-duration="1000">
+     
       <div className="font-[sans-serif] text-[#333] bg-white">
         <div className="min-h-screen flex flex-col items-center justify-center">
           <div className="grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">

@@ -62,12 +62,14 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     maximumLearners: -1,
     moduleType: 2,
     numOfWeeks: -1,
+    price: 0,
   });
 
   const getModuleType = (moduleTypeCode: number): string => {
     return ModuleType[moduleTypeCode];
-  };
+  };  
 
+  
   useEffect(() => {
     if (searchQuery) {
       setSearchParams((prevParams) => ({
@@ -448,7 +450,7 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                               {classItem.title}
                             </h3>
                             <p className="text-sm font-semibold text-gray-500">Title</p>
-                            <p className="mt-3 text-4xl font-bold text-black ">$0</p>
+                            <p className="mt-3 text-4xl font-bold text-black ">${classItem.price}</p>
                             <p className="tesxt-sm font-semibold text-gray-500">Per month</p>
 
                             <hr className="my-4" />
@@ -550,7 +552,7 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                                 <button className="block w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" onClick={() => handleJoinClass(classItem.id)}>
                                   Join
                                 </button>
-                                <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600" onClick={() => navigate("/enroll-class?id="+classItem.id)}>
+                                <button className="block w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600" onClick={() => navigate("/enroll-class?id=" + classItem.id)}>
                                   Try Now
                                 </button>
                               </div>

@@ -6,6 +6,8 @@ import { LearningModuleService } from "../../../services/LearningModuleService";
 import { useNavigate } from "react-router-dom";
 import 'aos/dist/aos.css';
 import axios, { AxiosError } from "axios";
+import { Step } from "../../Payment/Step";
+
 import {
   Formik,
   Form,
@@ -31,6 +33,7 @@ interface LoginFormValues {
 // const learningModule: LearningModule = await LearningModuleService.getLearningModuleById(id)
 
 export function CreateLearningModule() {
+
   useEffect(() => {
     AOS.init();
   }, []);
@@ -67,7 +70,10 @@ export function CreateLearningModule() {
       .lessThan(6, "Maximum Learners must less than or equal 5"),
     gradeLevel: Yup.number()
       .required("Grade Level is required")
+
       .moreThan(9, "Grade Level must more than or equal 10")
+
+
       .lessThan(13, "Grade Level must less than or equal 12"),
   });
   const CurrendDateTime = () => {
@@ -76,9 +82,14 @@ export function CreateLearningModule() {
     const currentMonth = currentDate.getMonth() + 1; // Get current month (1-12, add +1 for human-readable format)
     const currentDay = currentDate.getDate(); // Get current day of the month (1-31)
 
+
     if ((currentMonth < 10) && (currentDay<10)) return `${currentYear}-0${currentMonth}-0${currentDay}`;
     if (currentMonth < 10)  return `${currentYear}-0${currentMonth}-${currentDay}`;
     if (currentDay<10)  return `${currentYear}-${currentMonth}-0${currentDay}`;
+
+    if (currentMonth < 10) return `${currentYear}-0${currentMonth}-${currentDay}`;
+
+
     return `${currentYear}-${currentMonth}-${currentDay}`;
   }
   const CurrentDateTimePlusOneWeek = () => {
@@ -99,6 +110,8 @@ export function CreateLearningModule() {
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEndDate(e.target.value);
   };
+
+
   const handleCreateLearningModule = async (values: FormikValues,
     { setSubmitting }: FormikHelpers<LoginFormValues>) => {
     const { title, duration, maximumLearners, gradeLevel } = values;
@@ -116,9 +129,15 @@ export function CreateLearningModule() {
         moduleType,
         numOfWeeks
       });
+
      
       if (moduleType == ModuleType.Weekly) navigate("/manage-class?id=" + learningModule.id)
       else navigate("/manage-class?id=" + learningModule.id);
+
+
+      if (moduleType == ModuleType.Weekly) navigate("/SetPrice?id=" + learningModule.id)
+      else navigate("/SetPrice?id=" + learningModule.id);
+
     } catch (err) {
       console.error("Add learning module failed:", err);
       if (axios.isAxiosError(err)) {
@@ -166,6 +185,8 @@ export function CreateLearningModule() {
     <>
       <div data-aos="zoom-in-left" data-aos-duration="1000">
         <Header />
+        <Step />
+
 
         <section className="bg-white dark:bg-gray-900">
           <div className="py-3 px-4 mx-auto max-w-2xl lg:py-5">
@@ -273,7 +294,9 @@ export function CreateLearningModule() {
                         placeholder="Select date"
                         value={(endDate)}
                         onChange={handleEndDateChange}
+
                         
+
                         readOnly />
                     </div>
                   </div>
@@ -296,8 +319,11 @@ export function CreateLearningModule() {
                   </div>
                   <div>
                     <label htmlFor="gradeLevel" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Grade Level</label>
-                    <Field
-                     type="number" name="gradeLevel" id="gradeLevel" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+
+                  
+
+                    <Field type="number" name="gradeLevel" id="gradeLevel" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+
                       placeholder="12"
                     />
                     <ErrorMessage

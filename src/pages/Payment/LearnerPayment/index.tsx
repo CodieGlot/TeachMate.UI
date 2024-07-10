@@ -1,10 +1,13 @@
 import { useEffect, useState, } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { LearningModule } from "../../../interfaces/Learning/LearningModule";
 import { LearningModuleService } from "../../../services/LearningModuleService";
 import { AuthService, PaymentService } from "../../../services";
 import { PaymentOrder } from "../../../interfaces";
 import ModalForPayment from "../../Modal/ModalForPayment";
+import styles from "./payment.module.css"
+import { PaymentProviderType } from "../../../common/enums";
+
 export function LearnerPayment() {
     const [activeTab, setActiveTab] = useState<string>('profile');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,15 +17,29 @@ export function LearnerPayment() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id")
     const user = AuthService.getCurrentUser();
+    const [selectedPayment, setSelectedPayment] = useState<PaymentProviderType>(PaymentProviderType.None);
+
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedValue = parseInt(event.target.value, 10) as PaymentProviderType;
+        setSelectedPayment(selectedValue);
+    };
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
     };
+    const navigate = useNavigate();
 
-
-    const HandldePayForClass = async () => {
+    const HandlePayForClass = async () => {
         try {
-            await PaymentService.payForClass(UnPaidPayment?.id)
-            window.location.reload();
+            // await PaymentService.payForClass(UnPaidPayment?.id)
+           
+            const response = await PaymentService.createNewTransaction({
+                amount: UnPaidPayment?.paymentAmount || 0,
+                paymentGateway: selectedPayment,
+                learningModulePaymentOrderId: UnPaidPayment?.id || 0
+            })
+            window.location.href = response.orderUrl;
+            console.log(response);
+           
         } catch (error) {
             console.error("Error Pay For class", error);
 
@@ -36,9 +53,9 @@ export function LearnerPayment() {
                 setLearningModule(data)
                 const data1 = await PaymentService.getAllUnPaidByModuleIdByLearnerId(id);
                 setUnPaidPayment(data1)
-              
+
             } catch (error) {
-                console.error("Error fetching learning module:", error);
+                console.error("Error fetching payment unpaid", error);
 
             }
         };
@@ -47,6 +64,7 @@ export function LearnerPayment() {
                 const data2 = await PaymentService.getPaymentOrderByModuleIdByLearnerId(id);
                 setPaymentList(data2)
             } catch (error) {
+                console.log(user?.id)
                 console.error("Error fetching learning module:", error);
 
             }
@@ -118,41 +136,149 @@ export function LearnerPayment() {
                     <div className="container mx-auto p-4">
                         <h1 className="text-center font-bold text-xl uppercase">Payment</h1>
                         {UnPaidPayment ? (
-                            <div className="bg-white border rounded-lg shadow-lg px-6 py-8 max-w-md mx-auto mt-8">
-                                <h1 className="font-bold text-2xl my-4 text-center text-blue-600">TeachMate System</h1>
-                                <hr className="mb-2" />
-                                <div className="flex justify-between mb-6">
-                                    <h1 className="text-lg font-bold">Invoice</h1>
-                                    <div className="text-gray-700">
-                                        <div>Date: 01/05/2023</div>
-                                        <div>Id: {UnPaidPayment?.id}</div>
+                            <div className="mt-8 flex gap-3 justify-center">
+                                <div className="w-[500px] bg-white border rounded-lg shadow-lg px-6 py-8">
+                                    <h1 className="font-bold text-2xl my-4 text-center text-blue-600">TeachMate System</h1>
+                                    <hr className="mb-2" />
+                                    <div className="flex justify-between mb-6">
+                                        <h1 className="text-lg font-bold">Invoice</h1>
+                                        <div className="text-gray-700">
+                                            <div>Date: {new Date().toLocaleDateString('vi-VN', {
+                                                day: 'numeric',
+                                                month: 'numeric',
+                                                year: 'numeric'
+                                            })}</div>
+                                            <div>Id: {UnPaidPayment?.id}</div>
+                                        </div>
                                     </div>
+                                    <div className="mb-8">
+                                        <div className="flex items-center justify-between">
+                                            <h2 className="text-lg font-bold mb-2">Bill To:</h2>
+                                            <div className="text-gray-700 mb-2">{user?.displayName}</div>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+
+                                            <h2 className="text-lg font-bold mb-2"><strong>Class:</strong></h2>
+                                            <div className="text-gray-700 mb-2">{learningModule?.title}</div>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+
+                                            <h2 className="text-lg font-bold mb-2">Tutor:</h2>
+                                            <div className="text-gray-700 mb-2">{learningModule?.tutor?.displayName}</div>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+
+                                            {/* <h2 className="text-lg font-bold mb-2">Schedule:</h2>
+                                    <div className="text-gray-700 mb-2">{learningModule?.moduleType !== 0 && "Custom"} Every</div> */}
+                                        </div>
+                                        <div className="flex justify-center items-center">
+                                            <h2 className="text-lg font-bold mb-2 mr-2">Cost:</h2>
+                                            <div className="text-gray-700 mb-2">{learningModule?.price} $</div>
+                                        </div>
+                                        {/* <button
+                                            onClick={HandlePayForClass}
+                                            type="submit"
+                                            className="mt-2 flex w-full items-center justify-center rounded-lg bg-blue-500 px-5 py-2.5 text-white text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        >
+                                            Pay now
+                                        </button> */}
+
+                                    </div>
+                                    <div className="text-gray-700 mb-2">Thank you for your business!</div>
+                                    <div className="text-gray-700 text-sm">Please remit payment within days.</div>
                                 </div>
-                                <div className="mb-8">
-                                    <h2 className="text-lg font-bold mb-2">Bill To:</h2>
-                                    <div className="text-gray-700 mb-2">{user?.displayName}</div>
-                                    <h2 className="text-lg font-bold mb-2"><strong>Class:</strong></h2>
-                                    <div className="text-gray-700 mb-2">{learningModule?.title}</div>
-                                    <h2 className="text-lg font-bold mb-2">Tutor:</h2>
-                                    <div className="text-gray-700 mb-2">{learningModule?.tutor?.displayName}</div>
-                                    <h2 className="text-lg font-bold mb-2">Schedule:</h2>
-                                    <div className="text-gray-700 mb-2">{learningModule?.moduleType !== 0 && "Custom"} : Every</div>
-                                    <div className="flex justify-center items-center">
-                                        <h2 className="text-lg font-bold mb-2 mr-2">Cost:</h2>
-                                        <div className="text-gray-700 mb-2">{learningModule?.price} $</div>
-                                    </div>
-                                    <button
-                                    onClick={ HandldePayForClass}
-                                        type="submit"
-                                        className="mt-2 flex w-full items-center justify-center rounded-lg bg-blue-500 px-5 py-2.5 text-white text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                <div className="p-10 bg-white w-[300px] h-[400px] aspect-square rounded-lg shadow flex flex-col items-center justify-center gap-2 ">
+                                    <p className="capitalize font-semibold self-start">Payment method</p>
+                                    <p className="text-[10px] self-start text-wrap text-gray-500 pb-1">
+                                        This action will take you to new page for payment
+                                    </p>
+                                    <label
+                                        className={`inline-flex justify-between w-full items-center z-10 rounded-lg p-2 border transition-all cursor-pointer ${selectedPayment === PaymentProviderType.ZaloPay
+                                            ? 'border-indigo-500 text-indigo-900 bg-indigo-50 font-bold hover:bg-slate-200 duration-500'
+                                            : 'border-transparent'
+                                            }`}
                                     >
-                                        Pay now
+                                        <div className="inline-flex items-center justify-center gap-2 relative z-10">
+
+                                            <img width="32"
+                                                height="32" src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay-Square.png" alt="" />
+                                            <p
+                                                className={`font-semibold absolute inset-0 w-full whitespace-nowrap ${selectedPayment === PaymentProviderType.ZaloPay
+                                                    ? 'translate-y-[0%] translate-x-full top-1 left-2 opacity-100 duration-700'
+                                                    : '-translate-y-[110%] translate-x-full top-1 left-2 opacity-0 duration-700'
+                                                    }`}
+                                            >
+                                                Zalo Pay
+                                            </p>
+                                        </div>
+                                        <input
+                                            type="radio"
+                                            name="payment"
+                                            value={PaymentProviderType.ZaloPay}
+                                            className="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
+                                            onChange={handleRadioChange}
+                                        />
+                                    </label>
+                                    <label
+                                        className={`inline-flex justify-between w-full items-center z-10 rounded-lg p-2 border transition-all cursor-pointer ${selectedPayment === PaymentProviderType.VnPay
+                                            ? 'border-indigo-500 text-indigo-900 bg-indigo-50 font-bold hover:bg-slate-200 duration-500'
+                                            : 'border-transparent'
+                                            }`}
+                                    >
+                                        <div className="inline-flex items-center justify-center gap-2 relative z-10">
+                                            <img width="32"
+                                                height="32" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAABGlBMVEX////tHCQAWqkAW6rsAAAAV6cAn9wAUqYAod0AVKWludftFyAASKIAS6T6y8wAVKf83t7r8PcATqUqabD85+ftCBXV3uzzg4buOj8AlNMAmtr0jY/Bz+P71tftEx34+/2Qqc8AabP98PD3FRCbzuwAcblaUJTX6/cAgsUAYa4AjM2x2PDG4vQAldgAeb/5wsN5v+f4uLmyw93q9fun0+5IreDwUlbxYWTydnlAdLX5xMXL5fVkt+OBw+hErOD3rrD1nqDuLDL2pKbvR0zxZ2rtJi1jir8AP6BTf7p0lsX0k5WFocpWYKBPjMP3CADwWFx9SIRHO4q3Nl60EUl2ap5LUpiGdaHfLj5QbqtqTY2ZQHPNLUrN2OkANJxpzO3pAAAPG0lEQVR4nO2dCXfaOhbHhTfsAFlonIU2JiGkBExoWqBNG5KmTZtu89o3b+bNmvn+X2N0JUuWZLOEsB/9z2kKkjH6+V7dK8kLCGlpaWlpaWlpaWlpaWlpaWlpaWlpaWlp9dPO2tqz8rwbMUU9MwvZbDH/Y97tmJoO87YByj6Zd0umpMO8EWljNRFjwBVFFAFXElEGXEFEFXDlEJOAK4aYBrhSiOmAK4TYD3BlEPsDPgjx3fuX21Ns5SM0CHB0xKcW6E1lum0dS4MBR0W8tTIg31o8Mw4DHA3xtZ+hyi0c4nDAURDfMMDFQxwFcDjihZXJLChiKqBte5FseyTEpyJgYFl7ixNuUgBtzzw53S85WKX90xPTs4ci3oiA1uuD2bV/qJKAttHad12Hy3X3W9SQ/RHfS4A3CG2/fL8glAlA2zgleO5+4xSrsU/euKeGPQDxnQT4HlV+QV78sAh9MQHotQCodHpk4w4I8uyjUwcoW15fxAMVMOPT3jh/RBXQNvfBeieeLZV6J9iS7r5ppyNuSoAvUSUXLEpETQAeQb9T+EjFxgnEnaNUxE0rJwMGwaIkjQTgCbZUg2cH6qX8TQNXpiEmAP0gfj9fxKQFMQPpbcQzj1oQaVpHzKIbLVydDDcy4AsZcL6IhwXFFeu4C55EOHbLoQkD/20cUWrvxC0lkoYKuO3nMpnFQEymCQHQ8EquC4j0z36dlNsGMydHlAHfoW1LAZwfYsKCXsNxTr3YYxutOozZ6q0GMMY1EqIMuJ4GOC/EBCB0wn0Bg8cYPII7hQCUhqgCbqYBzgcxAWh4OBGaaiGrq+NUEePbLNyMCDgPxJSxKE4Up9By20wkQ2DajxGxA5Ok8fZAAjzoDzh7xJ3kbAJMaFNSTuLZ9bod5QoB0cPDcoxoPrdEgoGAM0d8mzRTnZkQJwiPmg0mGDCtoIwxIpgbj26eHwsAGPBgEOCMEcspE0Kc/urw/2mUMfD4jeQK/M+pc8QGR3T/ogAOtOCsEXcSYQactASt97ChNoxoeFM6bbVgWkHGagQxiqg49f92nBPaPtSCM0bcShJi5wQntU8iE8LwprVBJk+tFET7XxLgpjx9WgDEJOGRS8jsBh154uzvnkQBxztJIJrPxwGcJeK3DdWEJy7phthZiZFw3IkzvK0gbphikAHA9dEAZ4hYTgxocKAh9qIRlcUdmtsTiGMDzhBRTYgQQoHAdJ0WdVaHxJtGI4moBJnthwDODxETOtQ73YiQpD7cO6UUSLb9qgC+ewggfGRG66gyYj8b8izvMUTz+U8B0N9GLx4GmMn4b2ZDKCP27Yc8y0eIUpAJxgHEw4NZLYaLiBBLj4CjxGMpnRBKWR73RRmwgl4+HBAWAuaAGOdDMv7GWSOa7guIOPX/9lMADMYDhMWqOSDakXueuNGYJm2s1vpN6INBbkxAmEjOAREbjYQUm41L1SxvKEEmyFTkcxUPIJwdoIAIwVSeWyQQ5SDzCMCbWRLGiGx+aOD5IQs+EqI0Hww+V9DH8QD9XzMFjBH5HL/lOoksD4hfxSDzGY0N+HrGgBwReFrRtEJOgaS2JA7V/A/KCdGFBuSIOBXStTZPyvI08xvPJwR4OwdAhgiz+kYyy5OBgDQf9PeWDZAhwqy3pSDaRydkLCoEGQD8vmSA3FGd5EDGmCTg3twAI0Sy+qRkeSMF8OkSAjLElIGMAoj9bHcpAfsjmr+vCCBCm39NZvmGbf4hAr4ZH/DDvPmw1v9mm6aU5R3375n4YryM9Ua5dm10BYsAiBF//vGnGVnRNHH2/8c/j8WTS5+WHRAjWscf/vj9XzhpHP357//89/hYvOQAAN+MCfh53mRc61Yu8I9//vx5fHwsX1FBAf0+CMMAF+cqxf5Ln9YFQr/GBMwsEGBfRAB8vRKAfRCt3fEBcwsGmIr4GMBg4QBTEAHwdkxAfwEBE4iPAMwtJqCM6MP67diA8766tK/WLT9qItzgU/mwcoAIHXwi9y8Fu5sIvbSC4TRpgHO/PniItg8OoBMd3I43Ult8QKLNm70xDbgMgC/ATdWrYR8AuDlvgOF60On5ZQR8DOKSAI6PuDSAYyNaC3LD0ygaC3GZAMdCXC7AMRBneZZ+Mnog4vIBPhBxGQEfhLicgA9AtN7Nu6njakTE5QUcEXF216tNQyMgzvBytaloKOKyAw5FXH7AIYjW+3k3bxJa739bzGoAIrQZpC8rBsua6FP0JsWMOet2QVe2x9L6B2XxLbCCFYgxkl68tqzo/HDOt6y9VeMDVV7u3vqw1rh38X7hF0W1tLS0tLS0VkWVi10uperF7lOiFyje5qny6WgTLISeral6dS/+vsArsSYquxfKnkm7Fiq2Hof4yfIjqWe9KrQGT34+xtvcyNt8j2pghlR+UsgqKubv4uZtfYkrvjD0uzwvy0sk92zrwtvHAQpPU/O/K1VPyYQPbpfb41MGdbJHayz60bphqvLyh3zbbxu8OLvGCuPPeF+lPb+1SalRfPTvTNyy1ucySk0F4H1w3vgwqDdbk5oguuPsMJsgNM3iHdv2VVxt8EdJbeV5YUHy0+h45GXnHUfxjYKJM18+N9oun78HymX1n3OxYdcYguF5sTmLh0lCs7DDdnBY5Ni2uOOvxIbZb48GRCh2UyWOgH1yPn/JtpIj0l4KoVH/dlePcVgH++HFhBvxD4BE7gg4wq+CUNsa5gQA0QV/vq8vV3z3ObX47EN5aTCVEHxwrcBpIjtkhW5qZGOWAi8Xgg3lzu+gCSheCFTCSCbHPVd+uqM4s+1LKPTKAqm9L5qCinH/esWPhc3j5hrZOHs4CUCEcmwByb8Qi+GhKyz6SIQ58er6/oTIZLYpEkuQ0GGzMu8u3sdXHmSLUaLcKsjAj9R3HkakG6khurAMIhFKj3YYQMiNSNtdxHD23ROGmI+zQJn7L8sNxEeNwiNzPdd27KbiGTAoZaMAmVC843oA4Q5zyywQPoN32Wc83sYpETswTxnUtNRHC6/QpMRTov8pLoSnkuTY7SwKoZBYBhCWWbuJDe880iN5/rPFZ2R+430WYgvdZkPw48cqfvqB4KafwElvJELxmeMs8Q8gRCyCkKhSiCzEk0NBjJN8aGPUmY9uTA5QSIlCJrDEqEkIc8I96AG7p3UUQkgCxEkB9RXz3Q3xN7F2uJ9m1+gYIH8/SUKeEgMeQ8CuOT5+IYSWeGOMtTuUcKsQm4U4qVEUuWUjxUObLNlLdrK/CRY/jYt732vcN/2PCmGcWLi5BxCyBFhci/qkR1I/H4AXpSHnEz60SfTSSSjDWs7OhFUkJ+WE0thmewjhNy9uLPFN2vN45vekULJVEAnzk0oUTDfcTaPHGnz0hb4WE4oP9KCJvz9hmZLYRWgsjKPZyNpISYlIHNpQs09W26qbQsP9+MwmJ4y7bJT4+xNSE2ZtACROykLLYVpKRGw2QY6KPFWciF7zlPgxJoqngjGhMBsmiX/AyNswvGz0I4Kkhg1RuD8qo7IyN+LEBjOCeEqk8z8YyAXCczgEworYFQ/6EZbvvmSNJ3drkR++JU56/4zonic/pbfxjJGfPKCYEiGAkGmFcPpdIBQvSsDzrX6E0s6jyV4xEp8tbRzOkJD3LxjHHChOKhGKz4UIft0OyPhca2nLG6Y6qy9Pl5CnRBiLwrQiEJ8NJxGKtxsGkGaGEsq5TlBRHLhMmZAsuFA33aQjNnEqLxOiQL4kYRghddKioLRZ4tQJeUr0v6/LPElCdTI1hJCkh8L9TiwzNSVOmbASu+kFTgjBJ7FSIVSe5DWMEGa9cmY4ZCO3rDgHnDIh+sUXTuGFfLWkSkjmVqMSkvwnZ/d4liiCT5tQfoyj/GS4BCH6EIxMSJxUSX089ojl0yYUJw7KolQKoZT4BxNCglfnCvFixmFcOHVC8UGHyjXLSULx2auDCXcKZnJdkMdNw4gLC9MmFO9ZVh5fmEIoPC9pMOEPiCqJkSZfcxNS4vQJ0WeeMWQnRcn8gYSHmSRX9cXNyBJpQf0qvlwjxJoZELKfKEycRCOrcSo2+qRszac/4lCFno8pqOfINvjglJ+5me7cgumG3oqunMGIlqASl8J+pFtHhDu8hYbHgbbo+KWonCQTl/jzUU6MT9EY9hR/nL7y1LJ85fzStsWk3hxZuYDbgSlhuZDn+sJ64hYrlI2Iiwux/kdy5Y8vcUm+jqapFxfKmcTtA6aU2z9fXnymgbcsi9YmCqi2FCXLpmhELS0tLS2t6ai96tmrXBrjQ7Vw4u0Y+pWdsI16l4M2ueymFDZ77Xb65k6//XSb2O496VPjHKQH6tytVq+HEPbaV4mycq/WSdu27Lql6z77qYFXy7s6G62Vj1CbfsX5ZVit4f+b1TDqW/gVakKr2qgcVuFVu1olhx//j48HLoSjUqt2oBBvQS3XroZthxaXa7iY+STewAXCZrVTI2+jilK72sHfWO7gr7jEH6v28Yvx1exRQrcTli5RrxdWqd/gV1eohL/7vIlK1bB3ji6dTgdAy2dheI6PTCe8rqLQDTtnbeRUmz1imxou7rqocx12Sldh9zw8p/akG3QvURiGziW6vgrPqeef4e8p4X1Ww+7VdZPubTqEuO0YCQzaoxhQSgmb0PYz1K3RT9CqKrhoiRRiq3RR5G9X2DTYhg7+YNglkQj2gS57ZOse2UXzquyw7cnf63anCi/bUF+tTocQ+mF4VXajRqK2ywmx/5LmXbODG56dtxHxMozdBkLYuu2wI4XbX6IgsBOAJburuUBYve66VVJB0Alht02OFz2InUkTRmEyIoRWXjVjQvI2IuzG7hOelRkhsSE6P3PdmkIYCoSoRzbo1ZpdpUIi7E2DEJ3hNl1GhOishpMcIYFXqIsxnHYNt+XSQVfYWaGqjP90a81r8EN0TQjbDsv9IXaJag/1OpAayAEjIDWXzIQxIa6/Um143b7Ee8N7nIoNUbtbKvUQBNJmB9WuS26TFONXuNndkoPbGjolMOC5U4Jvb187JQxbxYVlhP0VBw/k9Loudfcrp9Qr41RScqr4L1ARENjgHF3VcEjDG5KKLqkAFwKnJ19xRfe2gAohFpUGDOGIo08/9Y2vWmNIvdNsdgaNTmCD6gyGL9MTztSdgaPwoRtoaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpja//A5CyoVvyMfctAAAAAElFTkSuQmCC" alt="" />
+                                            <p
+                                                className={`font-semibold absolute inset-0 w-full whitespace-nowrap ${selectedPayment === PaymentProviderType.VnPay
+                                                    ? 'translate-y-[0%] translate-x-full top-1 left-2 opacity-100 duration-700'
+                                                    : '-translate-y-[110%] translate-x-full top-1 left-2 opacity-0 duration-700'
+                                                    }`}
+                                            >
+                                                VN Pay
+                                            </p>
+                                        </div>
+                                        <input
+                                            type="radio"
+                                            name="payment"
+                                            value={PaymentProviderType.VnPay}
+                                            className="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
+                                            onChange={handleRadioChange}
+                                        />
+                                    </label>
+                                    <label
+                                        className={`inline-flex justify-between w-full items-center z-10 rounded-lg p-2 border transition-all cursor-pointer ${selectedPayment === PaymentProviderType.Momo
+                                            ? 'border-indigo-500 text-indigo-900 bg-indigo-50 font-bold hover:bg-slate-200 duration-500'
+                                            : 'border-transparent'
+                                            }`}
+                                    >
+                                        <div className="inline-flex items-center justify-center gap-2 relative z-10">
+                                            <img width="32"
+                                                height="32" src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="" />
+                                            <p
+                                                className={`font-semibold absolute inset-0 w-full whitespace-nowrap ${selectedPayment === PaymentProviderType.Momo
+                                                    ? 'translate-y-[0%] translate-x-full top-1 left-2 opacity-100 duration-700'
+                                                    : '-translate-y-[110%] translate-x-full top-1 left-2 opacity-0 duration-700'
+                                                    }`}
+                                            >
+                                                Momo
+                                            </p>
+                                        </div>
+                                        <input
+                                            type="radio"
+                                            name="payment"
+                                            value={PaymentProviderType.Momo}
+                                            className="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
+                                            onChange={handleRadioChange}
+                                        />
+                                    </label>
+                                    {/* Repeat similar structure for other payment methods */}
+                                    <button className={styles.Btn} type="button" onClick={HandlePayForClass}>
+                                        Pay
+                                        <svg className={styles.svgIcon} viewBox="0 0 576 512"><path d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z"></path></svg>
                                     </button>
-                                        
                                 </div>
-                                <div className="text-gray-700 mb-2">Thank you for your business!</div>
-                                <div className="text-gray-700 text-sm">Please remit payment within 30 days.</div>
                             </div>
+
                         ) : (
                             <div>Not found Order Payment</div>
                         )}
