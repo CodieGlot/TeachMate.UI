@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from '../../../layouts';
 import { useLocation } from "react-router-dom";
-import { SearchService, UserDetailService } from '../../../services';
+import { ReportService, SearchService, UserDetailService } from '../../../services';
 import { AppUser, LearningModule } from '../../../interfaces';
-import { ModuleType } from '../../../common/enums';
+import { ModuleType, UserReportType } from '../../../common/enums';
 import { Subject } from "../../../common/enums";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './TutorDetailAnimation.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import toast from 'react-hot-toast';
 
 export function TutorDetail() {
     const [userData, setUserData] = useState<AppUser>();
@@ -68,40 +73,220 @@ export function TutorDetail() {
     const getSubjectString = (subjectCode: number): string => {
         return Subject[subjectCode];
     };
+
+    //show report input
+    const [showReportForm, setShowReportForm] = useState(false);
+
+    const handleReportClick = () => {
+        setShowReportForm(!showReportForm);
+    };
+
+    useEffect(() => {
+        AOS.init();
+    }, []);
+
+    const [UserReportTypee, setUserReportType] = useState<UserReportType>(0);
+    const [Title, setTitle] = useState('');
+    const [Description, setDescription] = useState('');
+
+    const handleSentReport = async () => {
+        try {
+            await ReportService.sentReportuser({
+                UserReportType: UserReportTypee,
+                Title,
+                Description,
+            });
+
+            // Optionally, reset form fields after successful submission
+            setUserReportType(0);
+            setTitle('');
+            setDescription('');
+            // navigate('./enroll-class?id=1&section=feedbackOk');
+
+            console.log('Sent repot submitted successfully!');
+            toast.success('Sent report successfully');
+        } catch (error) {
+            console.error('Failed to sent report', error);
+        }
+    };
+
+    useEffect(() => {
+        handleSentReport();
+    });
+
+
     return (
         <>
             <Header />
+            {showReportForm && (<div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>)}
+
+            {showReportForm && (
+                <div data-aos="zoom-in-right" data-aos-duration="1000">
+
+                    <div className={`w-[500px] fixed top-20 left-[500px] bg-white p-6 md:rounded-lg shadow-xl transform transition-transform duration-300 ${showReportForm ? 'translate-x-0' : 'translate-x-full'}`} onSubmit={(e) => { e.preventDefault(); handleSentReport(); }}>
+                        <div className="title">
+                            <h1 className="font-bold text-center">Report feature</h1>
+                        </div>
+
+                        <div className="options md:flex md:space-x-6 text-sm items-center text-gray-700 mt-4">
+                            <select className="w-full border border-gray-200 p-2 focus:outline-none focus:border-gray-500">
+                                <option selected value={UserReportType.Other} >Select an option</option>
+                                <option value={UserReportType.HarassingOrBullying}>HarassingOrBullying</option>
+                                <option value={UserReportType.ImpersonatingSomeoneElse}>ImpersonatingSomeoneElse</option>
+                                <option value={UserReportType.PostingInappropriateContent}>PostingInappropriateContent</option>
+                            </select>
+                        </div>
+
+                        <div className="form mt-4">
+                            <div className="flex flex-col text-sm">
+                                <label htmlFor="title" className="font-bold mb-2">Title
+                                </label>
+                                <input className="appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500" type="text" placeholder="Enter a title"
+                                    id="title"
+                                    name="title"
+                                    value={Title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="text-sm flex flex-col">
+                                <label htmlFor="description" className="font-bold mt-4 mb-2">Description</label>
+                                <textarea className="appearance-none w-full border border-gray-200 p-2 h-40 focus:outline-none focus:border-gray-500" placeholder="Enter your description"
+                                    id="description"
+                                    name="description"
+                                    value={Description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <div className="submit">
+                            <button type="button"
+                                onClick={handleSentReport}
+                                className="w-full bg-blue-600 shadow-lg text-white px-4 py-2 hover:bg-blue-700 mt-8 text-center font-semibold focus:outline-none">Submit</button>
+                        </div>
+                    </div >
+
+                    <div className="guiding-arrow"></div>
+
+
+                </div >
+            )
+            }
+
             <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
                 {userData ? (
-                    <div className="max-w-4xl bg-white w-full rounded-lg shadow-xl overflow-hidden">
+                    <div className="max-w-3xl bg-Black w-4/12 rounded-lg shadow-xl overflow-hidden ml-20 bg-white">
                         {/* User Profile Section */}
-                        <div className="p-6 bg-gradient-to-r from-blue-500/50 to-purple-600/50 text-white text-center">
+                        <div className="p-6 text-Black text-center">
+                            <div className="relative">
+                                <button
+                                    className="absolute top-4 right-4 bg-red-500 text-white p-2 rounded-full shadow-lg hover:bg-red-600 focus:outline-none z-10"
+                                    title="Report User"
+                                    onClick={handleReportClick}
+                                >
+                                    <i className="fas fa-flag"></i>
+                                </button>
+                            </div>
                             <h2 className="text-2xl font-bold">Profile Information</h2>
-                            <img
-                                width={200}
-                                height={200}
-                                className="mx-auto my-7 rounded-full shadow-lg"
-                                src={userData.avatar}
-                                alt="User Avatar"
-                            />
+                            <div className='my-5 flex items-center'>
+                                <img
+                                    width={200}
+                                    height={200}
+                                    className='rounded-full object-cover mx-auto shadow-lg w-[200px] h-[200px] flex mx-auto'
+                                    src={userData.avatar}
+                                    alt="User Avatar"
+                                />
+                            </div>
                         </div>
                         <div className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 hover:bg-gray-50 space-y-4 p-4 border-b">
                                 <p className="text-gray-500 font-semibold">Full Name</p>
-                                <p className="text-gray-700">{userData.displayName}</p>
+                                <p className="text-gray-700 font-semibold">{userData.displayName}</p>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 hover:bg-gray-50 space-y-4 p-4 border-b">
                                 <p className="text-gray-500 font-semibold">Phone Number</p>
-                                <p className="text-gray-700">{userData.phoneNumber}</p>
+                                <p className="text-gray-700 font-semibold">{userData.phoneNumber}</p>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 hover:bg-gray-50 space-y-4 p-4 border-b">
                                 <p className="text-gray-500 font-semibold">Email Address</p>
-                                <p className="text-gray-700">{userData.email}</p>
+                                <p className="text-gray-700 font-semibold">{userData.email}</p>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 hover:bg-gray-50 space-y-4 p-4">
-                                <p className="text-gray-500 font-semibold">About</p>
-                                <p className="text-gray-700">{userData.tutor?.description}</p>
+                        </div>
+                    </div>
+                ) : (
+                    <p className="text-gray-500">Loading...</p>
+                )}
+
+                {userData ? (
+                    <div className="top-0 max-w-6xl w-8/12 rounded-lg shadow-xl overflow-hidden mr-20 ml-8 bg-white">
+                        <div className="top-0 shadow rounded-lg p-6">
+                            <h2 className="text-xl font-bold mb-4">About Me</h2>
+                            <p className="text-gray-700">
+                                {userData.tutor?.description}
+                            </p>
+
+                            <h2 className="text-xl font-bold mt-6 mb-4">Experience</h2>
+                            <div className="mb-6">
+                                <div className="flex justify-between flex-wrap gap-2 w-full">
+                                    <span className="text-gray-700 font-bold">Web Developer</span>
+                                    <p>
+                                        <span className="text-gray-700 mr-2">at ABC Company</span>
+                                        <span className="text-gray-700">2017 - 2019</span>
+                                    </p>
+                                </div>
+                                <p className="mt-2">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae
+                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit egestas
+                                    suscipit.
+                                </p>
                             </div>
+
+                            <div className="mb-6">
+                                <div className="flex justify-between flex-wrap gap-2 w-full">
+                                    <span className="text-gray-700 font-bold">Web Developer</span>
+                                    <p>
+                                        <span className="text-gray-700 mr-2">at ABC Company</span>
+                                        <span className="text-gray-700">2017 - 2019</span>
+                                    </p>
+                                </div>
+                                <p className="mt-2">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae
+                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit egestas
+                                    suscipit.
+                                </p>
+                            </div>
+
+                            <div className="mb-6">
+                                <div className="flex justify-between flex-wrap gap-2 w-full">
+                                    <span className="text-gray-700 font-bold">Web Developer</span>
+                                    <p>
+                                        <span className="text-gray-700 mr-2">at ABC Company</span>
+                                        <span className="text-gray-700">2017 - 2019</span>
+                                    </p>
+                                </div>
+                                <p className="mt-2">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae
+                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit egestas
+                                    suscipit.
+                                </p>
+                            </div>
+
+                            <div className="mb-6">
+                                <div className="flex justify-between flex-wrap gap-2 w-full">
+                                    <span className="text-gray-700 font-bold">Web Developer</span>
+                                    <p>
+                                        <span className="text-gray-700 mr-2">at ABC Company</span>
+                                        <span className="text-gray-700">2017 - 2019</span>
+                                    </p>
+                                </div>
+                                <p className="mt-2">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae
+                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit egestas
+                                    suscipit.
+                                </p>
+                            </div>
+
                         </div>
                     </div>
                 ) : (
@@ -109,18 +294,19 @@ export function TutorDetail() {
                 )}
             </div>
 
+
             {/* Learning Modules Section */}
-            <div className="w-full bg-gray-100 py-5">
+            < div className="w-full bg-gray-100 py-5" >
                 <div className="container mx-auto px-4">
-                    <div className="max-w-7xl mx-auto bg-white w-full rounded-lg shadow-xl overflow-hidden">
+                    <div className="max-w-7xl mx-auto w-full rounded-lg shadow-xl overflow-hidden bg-white">
                         <div className="p-6 bg-gradient-to-r from-blue-500/50 to-purple-600/50 text-white text-center">
                             <h2 className="text-2xl font-bold">Learning Modules</h2>
                         </div>
                         <div className="p-6 w-full">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 bg-white">
                                 {currentModules.length > 0 ? (
                                     currentModules.map(module => (
-                                        <div key={module.id} className="relative w-full max-w-md min-w-0 mx-auto break-words bg-white dark:bg-gray-800 border dark:border-gray-700 shadow-lg rounded-xl transition-transform transform hover:scale-105 hover:shadow-2xl">
+                                        <div key={module.id} className="relative w-full max-w-md min-w-0 mx-auto break-words dark:bg-gray-800 border dark:border-gray-700 shadow-lg rounded-xl transition-transform transform hover:scale-105 hover:shadow-2xl">
                                             <div className="p-6 w-full">
                                                 <h3 className="text-lg text-indigo-500 font-bold">
                                                     {module.title}
@@ -255,7 +441,7 @@ export function TutorDetail() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }
