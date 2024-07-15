@@ -1,4 +1,4 @@
-import { GiveFeedback, ReceiveFeedback } from "../../pages";
+import { DisplayFeedbackForLearner, GiveFeedback, ReceiveFeedback } from "../../pages";
 
 const feedbackRoutes = [
   {
@@ -8,8 +8,11 @@ const feedbackRoutes = [
   {
     path: "/receivefeedback",
     element: <ReceiveFeedback />
+  },
+  {
+    path: "/displayfeedbackforlearner",
+    element: <DisplayFeedbackForLearner />
   }
-
 
 ];
 

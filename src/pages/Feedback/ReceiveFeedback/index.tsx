@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Feedback } from "../../../interfaces/Feedback/Feedback";
-import { FeedbackService } from "../../../services";
+import { AuthService, FeedbackService } from "../../../services";
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { Reply } from "../../../interfaces/Feedback";
+import { UserRole } from "../../../common/enums";
 
 export function ReceiveFeedback() {
   const [searchParams] = useSearchParams();
@@ -13,7 +14,7 @@ export function ReceiveFeedback() {
   const [replies, setReplies] = useState<Reply[]>([]);
   const [showCommentBox, setShowCommentBox] = useState<{ [key: string]: boolean }>({});
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+  const user = AuthService.getCurrentUser();
   // Function to toggle visibility of the reply box for a specific feedback
   const handleReplyClick = (feedbackId: string) => {
     setShowCommentBox(prevState => ({
@@ -41,7 +42,7 @@ export function ReceiveFeedback() {
       }
     };
     fetchFeedbacks();
-  }, [id]);
+  });
 
   useEffect(() => {
     const fetchReplies = async (feedbackId: string) => {
@@ -69,6 +70,18 @@ export function ReceiveFeedback() {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   };
+
+  const [replyContent, setReplyContent] = useState("");
+  const handleReply = async (id: number) => {
+    try {
+      await FeedbackService.tutorReplyFeedback({
+        learningModuleFeedbackId: id,
+        replyContent,
+      })
+    } catch (err) {
+      console.log("Reply fail" + err)
+    }
+  }
 
   return (
     <div className="p-10">
@@ -130,18 +143,21 @@ export function ReceiveFeedback() {
                     ))}
                   </p>
                 </div>
-                <div className="flex items-center mt-4 space-x-4">
-                  <button
-                    type="button"
-                    className="flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium"
-                    onClick={() => handleReplyClick(feedback.id.toString())}
-                  >
-                    <svg className="mr-1.5 w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
-                    </svg>
-                    Reply
-                  </button>
-                </div>
+                {user?.userRole == UserRole.TUTOR && (
+                  <div className="flex items-center mt-4 space-x-4">
+                    <button
+                      type="button"
+                      className="flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium"
+                      onClick={() => handleReplyClick(feedback.id.toString())}
+                    >
+                      <svg className="mr-1.5 w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
+                      </svg>
+                      Reply
+                    </button>
+                  </div>
+                )}
+
 
                 {/* Render replies for this feedback */}
                 {feedback.tutorReplyFeedback ? (
@@ -210,11 +226,13 @@ export function ReceiveFeedback() {
                           required
                           ref={textareaRef}
                           onInput={handleInput}
+                          onChange={(e) => setReplyContent(e.target.value)}
                         ></textarea>
                         <button
                           type="button"
-                          // onClick={(e) => handleReplyClick(e)}
+                          onClick={() => handleReply(feedback.id)}
                           className="ml-12 py-2 px-2 bg-blue-950 text-white rounded-sm bg-gradient-to-r to-indigo-600 from-sky-400"
+
                         >
                           Post Comment →
                         </button>

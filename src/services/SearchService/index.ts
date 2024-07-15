@@ -43,22 +43,15 @@ export const SearchService = {
     return learningModules;
   },
 
-
-  // getAverageRatingByStar: async (id: string | null): Promise<number> => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${import.meta.env.VITE_SERVER_URL}/api/Feedback/GetAverageRatingByStar/` + id,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         }
-  //       }
-  //     );
-  //     const averageRating: number = response.data;
-  //     return averageRating;
-  //   } catch (error) {
-  //     console.error("Error fetching average rating:", error);
-  //     throw error;
-  //   }
+  // getAverageRatingOfTutorByAllLearningModule: async (tutorId: string | null): Promise<AverageRating> => {
+  //   const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/LearningModule/AverageRatingOfTutor/` + tutorId,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //   const learningModules: AverageRating = response.data;
+  //   return learningModules;
   // },
+
 };

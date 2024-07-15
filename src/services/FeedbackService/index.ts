@@ -39,10 +39,11 @@ export const FeedbackService = {
       `${import.meta.env.VITE_SERVER_URL}/api/Feedback/TutorReplyFeedback`, dto,
       {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         }
       }
     );
+    
   },
 
   getReplyByFeedbackId: async (id: string | null): Promise<Reply> => {
@@ -57,6 +58,19 @@ export const FeedbackService = {
     );
     const Reply: Reply = response.data;
     return Reply;
+  },
+
+  hasFeedback: async (id: string): Promise<boolean> => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_SERVER_URL}/api/Feedback/HasFeedback?learningModuleId=` + id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    );
+    const data: boolean = response.data;
+    return data;
   },
 
   // getAverageRatingByStar: async (id: string | null): Promise<number> => {
