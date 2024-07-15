@@ -56,15 +56,19 @@ export function UploadMaterial() {
                     <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Upload material</p>
                 </div>
                 <form className={styles.form}>
-                   
-                    <p className={styles["form-paragraph"]}>
+
+                    <p className="text-center">
                         File should be {"<"} 10MB
                     </p>
-                    <label htmlFor={styles["file-input"]} className={styles["drop-container"]}>
+                    {/* <label htmlFor={styles["file-input"]} className={styles["drop-container"]}>
                         <span className={styles["drop-title"]}>Drop files here</span>
                         or
                         <input type="file" accept="image/*" required id={styles["file-input"]} onChange={loadFile} />
-                    </label>
+                    </label> */}
+                    <div className="max-w p-5">
+                        <label htmlFor="example1" className="mb-1 block text-sm font-medium text-gray-700">Upload file</label>
+                        <input id="example1" type="file" onChange={loadFile} className="mt-2 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-sky-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-sky-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60" />
+                    </div>
                     <div className="w-full max-w p-5 bg-white rounded-lg font-mono">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="unique-input"
                         >Display name</label>
@@ -89,11 +93,19 @@ export function UploadMaterial() {
                         </button>
                         <button
                             type="button"
+                            onClick={() => navigate('/manage-class?id=' + learningModuleId + '&section=material')}
+                            className="mx-auto mt-3 cursor-pointer group relative flex gap-1.5 px-7 py-3 bg-sky-400 bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
+                          
+                            Go back
+
+                        </button>
+                        {/* <button
+                            type="button"
                             className="bg-white mt-3 text-center w-48 rounded-2xl h-14 relative font-sans text-black text-xl font-semibold group"
                         >
                             <div
                                 className="bg-sky-400 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[150px] z-10 duration-500"
-                                onClick={() =>  navigate('/manage-class?id='+learningModuleId+'&section=material')}
+                                onClick={() => navigate('/manage-class?id=' + learningModuleId + '&section=material')}
                             >
                                 <svg
                                     width="25px"
@@ -112,7 +124,7 @@ export function UploadMaterial() {
                                 </svg>
                             </div>
                             <p className="translate-x-2">Go Back</p>
-                        </button>
+                        </button> */}
 
 
                     </div>

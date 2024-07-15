@@ -12,6 +12,7 @@ import contactRoutes from "./Contact";
 import forumRoutes from "./Forum";
 import materialRoutes from "./Material";
 import paymentRoutes from "./Payment";
+import certificateRoutes from "./Certificate";
 
 const Route = () => {
   const routes = useRoutes([
@@ -32,7 +33,7 @@ const Route = () => {
     ...forumRoutes,
     ...materialRoutes,
     ...paymentRoutes,
-
+    ...certificateRoutes,
     {
       path: "*",
       element: <NotFound />,

@@ -22,7 +22,7 @@ export function SetPrice() {
             await PaymentService.setPriceForLearningModule({ price, paymentType, learningModuleId: Number.parseInt(learningModuleId || "") });
             console.log('Set price successfully!');
             toast.success('Set price successfully');
-            navigate("/manage-class?id=" + learningModuleId);
+            navigate("/manage-class?section=tutor&id=" + learningModuleId);
         } catch (error) {
             console.error('Failed to set price', error);
             toast.error('Failed to set price');
