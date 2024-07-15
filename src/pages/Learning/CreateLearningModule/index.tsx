@@ -70,7 +70,10 @@ export function CreateLearningModule() {
       .lessThan(6, "Maximum Learners must less than or equal 5"),
     gradeLevel: Yup.number()
       .required("Grade Level is required")
-      .moreThan(0, "Grade Level must more than or equal 0")
+
+      .moreThan(9, "Grade Level must more than or equal 10")
+
+
       .lessThan(13, "Grade Level must less than or equal 12"),
   });
   const CurrendDateTime = () => {
@@ -79,13 +82,35 @@ export function CreateLearningModule() {
     const currentMonth = currentDate.getMonth() + 1; // Get current month (1-12, add +1 for human-readable format)
     const currentDay = currentDate.getDate(); // Get current day of the month (1-31)
 
+
+    if ((currentMonth < 10) && (currentDay<10)) return `${currentYear}-0${currentMonth}-0${currentDay}`;
+    if (currentMonth < 10)  return `${currentYear}-0${currentMonth}-${currentDay}`;
+    if (currentDay<10)  return `${currentYear}-${currentMonth}-0${currentDay}`;
+
     if (currentMonth < 10) return `${currentYear}-0${currentMonth}-${currentDay}`;
+
 
     return `${currentYear}-${currentMonth}-${currentDay}`;
   }
+  const CurrentDateTimePlusOneWeek = () => {
+    const currentDate = new Date();
+    const oneWeekLater = new Date(currentDate);
+    oneWeekLater.setDate(currentDate.getDate() + 14);
+
+    const currentYear = oneWeekLater.getFullYear();
+    const currentMonth = oneWeekLater.getMonth() + 1; // Get month (0-11, hence +1 for 1-12)
+    const currentDay = oneWeekLater.getDate();
+
+    const formattedMonth = currentMonth < 10 ? `0${currentMonth}` : currentMonth;
+    const formattedDay = currentDay < 10 ? `0${currentDay}` : currentDay;
+
+    return `${currentYear}-${formattedMonth}-${formattedDay}`;
+};
+
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEndDate(e.target.value);
   };
+
 
   const handleCreateLearningModule = async (values: FormikValues,
     { setSubmitting }: FormikHelpers<LoginFormValues>) => {
@@ -105,8 +130,14 @@ export function CreateLearningModule() {
         numOfWeeks
       });
 
+     
+      if (moduleType == ModuleType.Weekly) navigate("/manage-class?id=" + learningModule.id)
+      else navigate("/manage-class?id=" + learningModule.id);
+
+
       if (moduleType == ModuleType.Weekly) navigate("/SetPrice?id=" + learningModule.id)
       else navigate("/SetPrice?id=" + learningModule.id);
+
     } catch (err) {
       console.error("Add learning module failed:", err);
       if (axios.isAxiosError(err)) {
@@ -155,6 +186,7 @@ export function CreateLearningModule() {
       <div data-aos="zoom-in-left" data-aos-duration="1000">
         <Header />
         <Step />
+
 
         <section className="bg-white dark:bg-gray-900">
           <div className="py-3 px-4 mx-auto max-w-2xl lg:py-5">
@@ -240,6 +272,7 @@ export function CreateLearningModule() {
                       <input type="date"
                         // min={"2024-06-23"}
                         min={`${CurrendDateTime()}`}
+                        max={`${CurrentDateTimePlusOneWeek()}`}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date"
                         value={(startDate)}
@@ -261,6 +294,9 @@ export function CreateLearningModule() {
                         placeholder="Select date"
                         value={(endDate)}
                         onChange={handleEndDateChange}
+
+                        
+
                         readOnly />
                     </div>
                   </div>
@@ -283,7 +319,11 @@ export function CreateLearningModule() {
                   </div>
                   <div>
                     <label htmlFor="gradeLevel" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Grade Level</label>
+
+                  
+
                     <Field type="number" name="gradeLevel" id="gradeLevel" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+
                       placeholder="12"
                     />
                     <ErrorMessage
@@ -303,7 +343,6 @@ export function CreateLearningModule() {
                 </div>
                 <div className="mt-8">
                   <button
-
                     type="submit"
                     disabled={isSubmitting}
                     className="text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
