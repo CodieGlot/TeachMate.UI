@@ -19,12 +19,13 @@ interface UpdateFormValues {
   displayName: string;
   email: string
   phoneNumber: string
+  gradeLevel : number
 }
 import { StorageService } from "../../../services";
 export function AddLearnerDetail() {
   const user = AuthService.getCurrentUser();
 
-  const [gradeLevel, setGradeLevel] = useState(user?.learner?.gradeLevel ?? 0);
+ 
 
 
   const [avatar, setAvatar] = useState("https://i.pinimg.com/originals/ee/d1/76/eed176d5fb3f77e3e003b85a246ba7ad.jpg"); // Assuming the initial value is null // Assuming the initial value is null
@@ -32,8 +33,7 @@ export function AddLearnerDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  const [error, setError] = useState<AxiosError | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
+
   const validationSchema = Yup.object().shape({
     displayName: Yup.string()
       .matches(/^[a-zA-Z0-9\s]*$/, "display name not have special symbols"),
@@ -41,12 +41,17 @@ export function AddLearnerDetail() {
       .email('Invalid email format')
       .matches(/@gmail\.com$/, 'Email must end with @gmail.com'),
     phoneNumber: Yup.string()
-      .matches(/^0\d{9}$/, 'Phone number must begin with 0 and be digits only, up to 10 characters')
+      .matches(/^0\d{9}$/, 'Phone number must begin with 0 and be digits only, up to 10 characters'),
+    gradeLevel : Yup.number()
+    .required("Grade Level is required")
+      .moreThan(9, "Grade Level must more than or equal 10")
+      .lessThan(13, "Grade Level must less than or equal 12"),
   });
   const initialFormValues: UpdateFormValues = {
     displayName: user?.displayName || "",
     email: user?.email || "",
     phoneNumber: user?.phoneNumber || "",
+    gradeLevel : 0
   };
 
   useEffect(() => {
@@ -80,7 +85,7 @@ export function AddLearnerDetail() {
       //   setAvatar(img)
       // }
 
-      const { displayName, phoneNumber } = values;
+      const { displayName, phoneNumber,gradeLevel } = values;
       await UserDetailService.addLearnerDetail({
 
         phoneNumber,
@@ -211,17 +216,20 @@ export function AddLearnerDetail() {
                   </div>
                   <div>
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Grade Level</label>
-                    <input
+                    <Field
                       type="number"
-                      name="email"
-                      id="email"
+                      name="gradeLevel"
+                      id="gradeLevel"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Your grade level"
                       required
                       min={10}
                       max={12}
-                      value={gradeLevel}
-                      onChange={(e) => setGradeLevel(Number.parseInt(e.target.value))}
+                    />
+                    <ErrorMessage
+                      className="text-red-500 p-5 bg-white font-medium text-xs"
+                      name="gradeLevel"
+                      component="div"
                     />
                   </div>
                   <div className="mt-10 flex p-4 text-sm text-gray-400 rounded-lg bg-gradient-to-r from-sky-400/20 to-indigo-600/20 h-full lg:w-full lg:ml-auto" role="alert">
@@ -244,8 +252,8 @@ export function AddLearnerDetail() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="text-white bg-gradient-to-r to-indigo-600 from-sky-400 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                    Update</button>
+                    className="w-full text-black bg-gradient-to-r from-sky-400 to-indigo-600 hover:from-sky-500 hover:to-indigo-700 focus:ring-4 focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:from-sky-400 dark:to-indigo-600 dark:hover:from-sky-500 dark:hover:to-indigo-700 dark:focus:ring-indigo-800 border">
+                    Submit</button>
                 </div>
               </Form>
             )}

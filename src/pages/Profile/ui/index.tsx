@@ -3,7 +3,9 @@ import { UserRole } from "../../../common/enums";
 import { Header } from "../../../layouts";
 import { AuthService, UserDetailService } from "../../../services";
 import { AppUser } from "../../../interfaces";
+import ConfirmModal from "../../Modal";
 export function Profile() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState<AppUser>();
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -105,6 +107,19 @@ export function Profile() {
                                 <button onClick={navigateToUpdate} className="bg-indigo-700 hover:bg-indigo-900 text-white font-bold py-2 px-4 rounded-full">
                                     Update Profile
                                 </button>
+                                <button onClick={() => setIsModalOpen(true)}
+                                className="bg-indigo-700 hover:bg-indigo-900 text-white font-bold py-2 px-4 rounded-full ml-20">
+                                    
+                                    Delete Account
+                                </button>
+                                <ConfirmModal
+                          title="Delete Account"
+                          message="Do you actually want to delete the account ?"
+                          open={isModalOpen}
+                          onClose={() => setIsModalOpen(false)}
+                          onConfirm={navigateToUpdate}
+                        />
+
                             </div>
 
                             <div className="mt-6 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-between">
@@ -168,15 +183,15 @@ export function Profile() {
 
                         </div>
                         <div className="w-full lg:w-2/5 mt-20 mr-10">
-                           
-                                <img
-                                    src={user?.avatar}
-                                    className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block object-cover w-full "
-                                    style={{ aspectRatio: '1 / 1' }}
-                                    width={400}
-                                    height={400}
-                                />
-                           
+
+                            <img
+                                src={user?.avatar}
+                                className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block object-cover w-full "
+                                style={{ aspectRatio: '1 / 1' }}
+                                width={400}
+                                height={400}
+                            />
+
 
                         </div>
 
