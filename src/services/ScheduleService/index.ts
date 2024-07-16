@@ -88,5 +88,16 @@ export const ScheduleService = {
         const learningSession: LearningSession = response.data;
         return learningSession;
       },
+
+      participateLearningSession:  async (learningSessionId: string) : Promise<string> => {
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/Schedule/ParticipateLearningSession?learningSessionId=`+learningSessionId,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          });
+          const linkMeet: string = response.data;
+          return linkMeet;
+      }
      
 };

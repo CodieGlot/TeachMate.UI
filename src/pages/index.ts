@@ -10,3 +10,5 @@ export * from "./Contact";
 export * from "./Forum";
 export * from "./StudyMaterial"
 export * from "./Payment"
+export * from "./Certificates"
+export * from "./Loading"
