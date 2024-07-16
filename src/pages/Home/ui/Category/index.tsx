@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
+
+
 export function Category() {
-  const navigate = useNavigate();
+  const navigate = useNavigate();``
   const handleSignUp = async () => {
     navigate("/auth/signup");
   }

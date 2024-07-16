@@ -62,14 +62,15 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     maximumLearners: -1,
     moduleType: 2,
     numOfWeeks: -1,
-    price: 0,
+    maxPrice: -1,
+    minPrice: -1
   });
 
   const getModuleType = (moduleTypeCode: number): string => {
     return ModuleType[moduleTypeCode];
-  };  
+  };
 
-  
+
   useEffect(() => {
     if (searchQuery) {
       setSearchParams((prevParams) => ({
@@ -125,7 +126,7 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
     const { name, value } = e.target;
 
     // Kiểm tra nếu tên thuộc tính nằm trong danh sách các thuộc tính hợp lệ
-    if (name === "subject" || name === "moduleType" || name === "gradeLevel" || name === "maximumLearners" || name === "numOfWeeks") {
+    if (name === "subject" || name === "moduleType" || name === "gradeLevel" || name === "maximumLearners" || name === "numOfWeeks" || name === "maxPrice" || name === "minPrice") {
       // Thử chuyển đổi giá trị thành số nguyên
       const parsedValue = Number.parseInt(value);
       // Kiểm tra xem parsedValue có phải là một số hợp lệ hay không
@@ -349,6 +350,30 @@ export function SearchClass({ searchQuery }: SearchClassProps) {
                                 <option value={11}>Grade 11</option>
                                 <option value={12}>Grade 12</option>
                               </select>
+
+                              <div className="w-full mt-5">
+                                <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Max Price</label>
+                                <input type="number" name="maxPrice" id="price"
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                  value={searchParams.maxPrice === -1 ? '' : searchParams.maxPrice}
+                                  onChange={handleSearchChange}
+                                  placeholder="Max Price"
+                                  required
+
+                                />
+                              </div>
+
+                              <div className="w-full mt-5">
+                                <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Min Price</label>
+                                <input type="number" name="minPrice" id="price"
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                  value={searchParams.minPrice === -1 ? '' : searchParams.minPrice}
+                                  onChange={handleSearchChange}
+                                  placeholder="Min Price"
+                                  required
+
+                                />
+                              </div>
 
                               <div className="w-full mt-5">
                                 <label htmlFor="startDate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start Date</label>
