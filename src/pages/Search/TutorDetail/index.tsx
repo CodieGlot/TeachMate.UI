@@ -140,11 +140,13 @@ export function TutorDetail() {
                                 </div>
 
                                 <div className="options md:flex md:space-x-6 text-sm items-center text-gray-700 mt-4">
-                                    <select className="w-full border border-gray-200 p-2 focus:outline-none focus:border-gray-500">
+                                    <select className="w-full border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
+                                    >
                                         <option selected value={UserReportType.Other}>Select an option</option>
-                                        <option value={UserReportType.HarassingOrBullying}>HarassingOrBullying</option>
-                                        <option value={UserReportType.ImpersonatingSomeoneElse}>ImpersonatingSomeoneElse</option>
-                                        <option value={UserReportType.PostingInappropriateContent}>PostingInappropriateContent</option>
+
+                                        <option value={UserReportType.HarassingOrBullying.toString()}> Harassing Or Bullying</option>
+                                        <option value={UserReportType.ImpersonatingSomeoneElse.toString()}>Impersonating Someone Else</option>
+                                        <option value={UserReportType.PostingInappropriateContent.toString()}>Posting Inappropriate Content</option>
                                     </select>
                                 </div>
 
@@ -192,9 +194,9 @@ export function TutorDetail() {
                 )}
 
 
-                <div className="min-h-screen flex items-start bg-gray-100 px-4 mt-10">
+                <div className="min-h-screen flex items-start bg-white px-4 mt-10">
                     {userData ? (
-                        <div className="max-w-3xl bg-Black w-4/12 rounded-lg shadow-xl overflow-hidden ml-20 bg-white mt-10">
+                        <div className="max-w-3xl bg-Black w-4/12 rounded-lg shadow-xl overflow-hidden ml-20 bg-gray mt-10">
                             {/* User Profile Section */}
                             <div className="p-6 text-Black text-center">
                                 <div className="relative">
