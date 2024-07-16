@@ -50,7 +50,7 @@ export function Header() {
             />
           </a>
           <form
-            className="relative flex ml-6"
+            className="search relative flex ml-6"
             style={{ marginLeft: '50px' }}
             onSubmit={(e) => {
               e.preventDefault();
@@ -83,7 +83,7 @@ export function Header() {
           {appUser?.userRole === UserRole.LEARNER && (
             <a
               href="/learning"
-              className="text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
+              className="learning text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
             >
               Learning
             </a>
@@ -91,26 +91,26 @@ export function Header() {
           {appUser?.userRole === UserRole.TUTOR && (
             <a
               href="/teaching"
-              className="text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
+              className="teaching text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
             >
               Teaching
             </a>
           )}
           <a
             href="/forum"
-            className="text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
+            className="forum text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
           >
             Forum
           </a>
           <a
             href="/contact"
-            className="text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
+            className="news text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
           >
             Contact
           </a>
           <a
             href={import.meta.env.VITE_TEACHMATE_CHATAPP_URL}
-            className="text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
+            className="chat text-sm font-semibold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 hover:bg-indigo-100 py-2 px-4 rounded-md transition duration-300"
             target="_blank"
             rel="noopener noreferrer"
           >

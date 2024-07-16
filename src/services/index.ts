@@ -10,3 +10,4 @@ export * from "./LearningMaterialService"
 export * from "./PaymentService";
 export * from "./CertificateService"
 export * from "./ReportService";
+export * from "./ChatBotService"
