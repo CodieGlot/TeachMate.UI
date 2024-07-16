@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../../layouts";
-import { Step } from "../Step";
 import { PaymentService } from "../../../services";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Step from "../Step";
 
 
 export function AccountInformation() {
@@ -55,7 +55,7 @@ export function AccountInformation() {
   return (
     <>
       <Header />
-      <Step></Step>
+      <Step currentStep={3}/>
       <section className=" py-5 antialiased dark:bg-gray-900 ">
         <div className="mx-auto w-[600px] px-4 2xl:px-0">
 

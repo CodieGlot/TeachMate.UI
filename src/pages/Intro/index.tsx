@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../layouts";
-import { Step } from "../Payment/Step";
 
 export function Intro() {
 
@@ -10,7 +9,6 @@ export function Intro() {
   return (
     <>
     <Header/>
-    <Step></Step>
       <section className=" py-5 antialiased dark:bg-gray-900 ">
         <div className="mx-auto w-[600px] px-4 2xl:px-0">
          
