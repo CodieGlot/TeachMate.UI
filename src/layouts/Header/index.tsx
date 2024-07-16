@@ -45,7 +45,7 @@ export function Header() {
             <span className="sr-only">Resort Hub Logo</span>
             <img
               className="h-12 w-auto indigo-400"
-              src="src/assets/Group.svg"
+              src="https://svgur.com/i/18J9.svg"
               alt="Logo"
             />
           </a>
