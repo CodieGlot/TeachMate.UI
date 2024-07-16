@@ -13,6 +13,7 @@ import 'aos/dist/aos.css';
 import { useEffect, useState } from "react";
 import Joyride from "react-joyride";
 import CTA from "./ui/CTA";
+import { ChatBot } from "../ChatBot";
 
 
 export function Home() {
@@ -58,6 +59,10 @@ export function Home() {
       content: "For more info about us, click here!",
     },
     {
+      target: ".chat-gpt",
+      content: "If you have any question you cannot solve, try asking AI assistance",
+    },
+    {
       target: ".login",
       content: "You can log in here, or sign up if you're new, begin your journey with us now",
     },
@@ -94,6 +99,8 @@ export function Home() {
         <Partner />
         <FAQs />
         <Footer />
+        <ChatBot/>
+
       </div>
     </>
   );

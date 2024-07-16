@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Header } from "../../layouts";
-import { Step } from "../Payment/Step";
+import { Header } from "../../../layouts";
+import { Step } from "../Step";
 
-export function Intro() {
+
+export function AccountInformation() {
 
   const [open, setOpen] = useState(false);
 

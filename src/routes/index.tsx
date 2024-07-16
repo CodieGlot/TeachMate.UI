@@ -13,7 +13,7 @@ import forumRoutes from "./Forum";
 import materialRoutes from "./Material";
 import paymentRoutes from "./Payment";
 import certificateRoutes from "./Certificate";
-import Intro from "../pages/Intro";
+import { Intro } from "../pages/Intro";
 
 const Route = () => {
   const routes = useRoutes([
