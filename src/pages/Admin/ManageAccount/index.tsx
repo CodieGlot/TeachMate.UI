@@ -111,9 +111,8 @@ export function ManageAccount() {
 
   return (
     <body>
-      <div ref={mainContentRef}
-        className="p-5 z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out">
-        <div className="flex flex-wrap mx-3 mb-5">
+      <div ref={mainContentRef}className="p-5 z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out">
+        <div className="mt-10 flex flex-wrap mx-3 mb-5">
           <div className="w-full max-w-full px-3 mb-6 mx-auto">
             <div className="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
               <div className="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
