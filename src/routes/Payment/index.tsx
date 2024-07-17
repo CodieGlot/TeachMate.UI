@@ -1,4 +1,4 @@
-import { LearnerPayment, SetPrice } from "../../pages/Payment";
+import { AccountInformation, LearnerPayment, SetPrice } from "../../pages/Payment";
 import PaymentNavigate from "../../pages/Payment/PaymentResult";
 
 
@@ -14,6 +14,10 @@ const paymentRoutes = [
   {
     path: "/payment/success",
     element: <PaymentNavigate />,
+  },
+  {
+    path: "/payment/add-account-info",
+    element: <AccountInformation />,
   },
   
 ];

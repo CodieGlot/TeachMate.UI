@@ -4,10 +4,10 @@ import toast from 'react-hot-toast';
 import { PaymentType } from '../../../common/enums/Payment';
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import { Step } from '../Step';
 import { Header } from '../../../layouts';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Step from '../Step';
 
 
 export function SetPrice() {
@@ -22,7 +22,9 @@ export function SetPrice() {
             await PaymentService.setPriceForLearningModule({ price, paymentType, learningModuleId: Number.parseInt(learningModuleId || "") });
             console.log('Set price successfully!');
             toast.success('Set price successfully');
-            navigate("/manage-class?id=" + learningModuleId);
+            navigate("/payment/add-account-info?id="+learningModuleId);
+
+            // navigate("/manage-class?section=tutor&id=" + learningModuleId);
         } catch (error) {
             console.error('Failed to set price', error);
             toast.error('Failed to set price');
@@ -37,7 +39,7 @@ export function SetPrice() {
         <>
             <div data-aos="zoom-in-left" data-aos-duration="1000">
                 <Header />
-                <Step />
+                <Step currentStep={2} />
                 <div className="relative py-10 sm:max-w-xl sm:mx-auto animate__animated animate__fadeInUp">
                     <div className="max-w-md mx-auto bg-white rounded-3xl shadow-xl p-8">
                         <div className="text-center mb-6">
@@ -114,7 +116,7 @@ export function SetPrice() {
                                     type="button"
                                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                                 >
-                                    Save Settings
+                                    Save
                                 </button>
                             </div>
                         </form>

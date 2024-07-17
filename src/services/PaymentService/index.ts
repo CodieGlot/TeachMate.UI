@@ -1,7 +1,8 @@
+import { AddAccountInformationDto } from './../../common/dtos/Payment/AddAccountInformationDto';
 import axios from "axios";
 import { AuthService } from "../AuthService";
 import { OrderUrlResponseDto, SetPriceDto, UpdateTransactionDto, CreateTransactionDto } from "../../common/dtos/Payment";
-import { LearningModule, PaymentOrder, Transaction } from "../../interfaces";
+import { AccountInformation, LearningModule, PaymentOrder, Transaction } from "../../interfaces";
 
 
 const token = AuthService.getAccessToken()
@@ -110,6 +111,37 @@ export const PaymentService = {
 
   checkPermissionToViewLearningModule: async (id: string) : Promise<boolean> => {
     const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/Payment/CheckPermissionToViewLearningModule?learningModuleId=`+id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      const data : boolean = response.data
+      return data
+  },
+
+  addAccountInfo: async (dto: AddAccountInformationDto) : Promise<AccountInformation> => {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/Payment/AddAccountInfo`,dto,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      const data : AccountInformation = response.data
+      return data
+  },
+  getAccountInfo: async () : Promise<AccountInformation> => {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/Payment/GetAccountInfo`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      const data : AccountInformation = response.data
+      return data
+  },
+  existedAccountInfo: async () : Promise<boolean> => {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/Payment/ExistedAccountInfo`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

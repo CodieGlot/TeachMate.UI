@@ -15,7 +15,7 @@ export function ManageClass() {
     const [selectedTab, setSelectedTab] = useState<string>('tutor');
     useEffect(() => {
         AOS.init();
-        handleTabClick(section || 'info')
+        handleTabClick(section || 'tutor')
     }, []);
     const handleTabClick = (tab: string) => {
         setSelectedTab(tab);
@@ -27,7 +27,6 @@ export function ManageClass() {
         <>
             <div data-aos="zoom-in-left" data-aos-duration="1000">
                 <Header />
-                <Step />
                 <div className="md:flex w-5/6 mx-auto mt-5">
                     <ul className="flex-column space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
                         <li>

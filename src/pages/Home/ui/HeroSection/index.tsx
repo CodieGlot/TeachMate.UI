@@ -59,10 +59,10 @@ export function HeroSection() {
         <main className="mx-auto mt-16 max-w-7xl px-4 px-6 sm:mt-24 lg:mt-32">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
-              <h1>
+              <h1 className="header">
                 <span className="mt-1 block text-4xl font-bold tracking-tight sm:text-5xl xl:text-6xl">
                   <span className="block bg-gradient-to-r from-sky-400 to-indigo-600 bg-clip-text text-transparent">
-                    Discover Potential
+                    Teach Mate Website
                   </span>
                 </span>
               </h1>
@@ -150,7 +150,7 @@ export function HeroSection() {
                   <span className="sr-only">Watch our video to learn more</span>
                   <img
                     className="w-full"
-                    src="src/assets/study.jpg"
+                    src="https://i.ibb.co/jW6LPMP/study.jpg"
                     alt=""
                   />
                 </button>

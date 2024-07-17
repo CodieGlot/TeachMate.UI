@@ -32,7 +32,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="src/assets/maths.jpg"
+                        src="https://i.ibb.co/p2TKqwG/Maths.jpg"
                         alt=""
                         className="h-full w-full object-cover object-center"
                       />
@@ -51,7 +51,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="src/assets/english.jpg"
+                        src="https://i.ibb.co/VvprhGs/english.png"
                         className="h-full w-full object-cover object-center"
                       />
                     </span>
@@ -69,7 +69,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="src/assets/physic.jpg"
+                        src="https://i.ibb.co/0FV16rR/physic.webp"
                         alt=""
                         className="h-full w-full object-cover object-center"
                       />
@@ -88,7 +88,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="src/assets/chemistry.jpg"
+                        src="https://i.ibb.co/0ZWc7B3/chemistry.jpg"
                         alt=""
                         className="h-full w-full object-cover object-center"
                       />
@@ -107,7 +107,7 @@ export function Category() {
                   >
                     <span aria-hidden="true" className="absolute inset-0">
                       <img
-                        src="src/assets/Geography.jpg"
+                        src="https://i.ibb.co/BzLNrHf/geography.jpg"
                         alt=""
                         className="h-full w-full object-cover object-center"
                       />

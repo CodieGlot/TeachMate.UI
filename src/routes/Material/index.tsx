@@ -9,7 +9,7 @@ const materialRoutes = [
     path: "/upload-material",
     element: <UploadMaterial/>
   }
- 
+  // /upload-certificate
 
 
 ];

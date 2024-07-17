@@ -165,6 +165,8 @@ export function UpdateLearningModule() {
                   placeholder="12" 
                   required
                   value={gradeLevel}
+                  min={10}
+                  max={12}
                   onChange={(e) => setGradeLevel(Number.parseInt(e.target.value))} />
               </div>
               <div className="sm:col-span-2">

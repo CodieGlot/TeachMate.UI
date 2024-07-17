@@ -5,6 +5,8 @@ import { SearchService } from "../../../services";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useNavigate } from "react-router-dom";
+// import { LearningModule } from "../../../interfaces";
+// import { useLocation } from "react-router-dom";
 
 
 interface SearchTutorProps {
@@ -61,71 +63,31 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
     AOS.init();
   }, []);
 
-  const TutorRating: React.FC<{ tutor: AppUser }> = ({ tutor }) => {
-    const rating = tutor.tutor?.rating || 0;
-    const filledStars = Math.floor(rating);
-    const hasHalfStar = rating - filledStars >= 0.5;
 
-    return (
-      <div className="flex items-center">
-        {[...Array(5)].map((_, starIndex) => {
-          if (starIndex < filledStars) {
-            // Filled star
-            return (
-              <svg
-                key={starIndex}
-                className="w-6 h-6 inline text-yellow-300 dark:text-yellow-300 fill-current"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 14.328l-4.112 2.238.786-4.595L2 7.875l4.597-.67L10 2l1.403 5.206 4.597.67-3.674 3.996.786 4.595z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            );
-          } else if (hasHalfStar && starIndex === filledStars) {
-            // Half star
-            return (
-              <svg
-                key={starIndex}
-                className="w-6 h-6 inline text-yellow-300 dark:text-yellow-300 fill-current"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 14.328l-4.112 2.238.786-4.595L2 7.875l4.597-.67L10 2l1.403 5.206 4.597.67-3.674 3.996.786 4.595z"
-                  clipRule="evenodd"
-                />
-                <path
-                  d="M10 2v12.328l-4.112 2.238.786-4.595L2 7.875l4.597-.67L10 2z"
-                  className="text-gray-300 dark:text-gray-300 fill-current"
-                />
-              </svg>
-            );
-          } else {
-            // Empty star
-            return (
-              <svg
-                key={starIndex}
-                className="w-6 h-6 inline text-gray-300 dark:text-gray-300 fill-current"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 14.328l-4.112 2.238.786-4.595L2 7.875l4.597-.67L10 2l1.403 5.206 4.597.67-3.674 3.996.786 4.595z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            );
-          }
-        })}
-      </div>
-    );
-  };
+  // // getAverageRatingForTutor
+  // const [learningModules, setLearningModules] = useState<LearningModule[]>([]);
+  // const location = useLocation();
+
+  // // Get tutorId from state
+  // const tutorId = location.state;
+
+  // useEffect(() => {
+  //   const fetchLearningModules = async () => {
+  //     try {
+  //       if (tutorId) {
+  //         const data = await SearchService.getAverageRatingOfTutorByAllLearningModule(tutorId);
+  //         setLearningModules(data);
+
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch learning modules:", error);
+  //     }
+  //   };
+
+  //   if (tutorId) {
+  //     fetchLearningModules();
+  //   }
+  // }, [tutorId]);
 
 
   return (
@@ -203,7 +165,23 @@ export function SearchTutor({ searchQuery }: SearchTutorProps) {
                     </div>
                     <div className="w-full text-center">
                       <div className="flex justify-center pt-8 pb-0 lg:pt-4">
-                        <TutorRating tutor={tutor} />
+                        <div className="flex items-center">
+                          <svg className="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                          <svg className="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                          <svg className="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                          <svg className="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                          <svg className="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                     {/* Toggle Details Button */}
