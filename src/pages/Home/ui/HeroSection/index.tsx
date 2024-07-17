@@ -150,7 +150,7 @@ export function HeroSection() {
                   <span className="sr-only">Watch our video to learn more</span>
                   <img
                     className="w-full"
-                    src="src/assets/study.jpg"
+                    src="https://i.ibb.co/jW6LPMP/study.jpg"
                     alt=""
                   />
                 </button>

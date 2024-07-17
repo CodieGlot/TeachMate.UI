@@ -116,7 +116,7 @@ export function SetPrice() {
                                     type="button"
                                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                                 >
-                                    Save Settings
+                                    Save
                                 </button>
                             </div>
                         </form>
