@@ -6,7 +6,6 @@ import { LearningModuleService } from "../../../services/LearningModuleService";
 import { useNavigate } from "react-router-dom";
 import 'aos/dist/aos.css';
 import axios, { AxiosError } from "axios";
-import { Step } from "../../Payment/Step";
 
 import {
   Formik,
@@ -19,6 +18,7 @@ import {
 import * as Yup from "yup";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Step from "../../Payment/Step";
 
 interface LoginFormValues {
   title: string;
@@ -185,7 +185,8 @@ export function CreateLearningModule() {
     <>
       <div data-aos="zoom-in-left" data-aos-duration="1000">
         <Header />
-        <Step />
+        <Step currentStep={1}/>
+
 
 
         <section className="bg-white dark:bg-gray-900">
