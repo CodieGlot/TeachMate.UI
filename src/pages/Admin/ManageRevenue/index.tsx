@@ -3,11 +3,13 @@ import { AdminService, UserDetailService } from "../../../services";
 import { PaymentStatus } from '../../../common/enums';
 import { SearchPaymentOrderDto } from '../../../common/dtos/Search/SearchPaymentOrderDto';
 import { HasClaimedDto } from '../../../common/dtos/Admin/HasClaimedDto';
-import { AppUser, PaymentOrder } from '../../../interfaces';
+import { AccountInformation, AppUser, PaymentOrder } from '../../../interfaces';
 
 export function ManageRevenue() {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<{ [id: string]: AppUser }>({});
+  const [account, setAccount] = useState<{ [id: string]: AccountInformation }>({});
+  const [listAccount, setListAccount] = useState<AccountInformation[]>([]);
   const [list, setList] = useState<PaymentOrder[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<number[]>([]);
@@ -64,6 +66,23 @@ export function ManageRevenue() {
       }
       if (!user[payment.learningModule.tutorId]) {
         fetchUserById(payment.learningModule.tutorId);
+      }
+    });
+  }, [list]);
+
+  const fetchAccountInfo = async (id: string) => {
+    try {
+      const data = await AdminService.getAccountInformationByTutorId(id);
+      setAccount((prev) => ({ ...prev, [id]: data }));
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    list.forEach(payment => {
+      if (!account[payment.learningModule.tutorId]) {
+        fetchAccountInfo(payment.learningModule.tutorId);
       }
     });
   }, [list]);
@@ -330,7 +349,7 @@ export function ManageRevenue() {
                         Full Name
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.fullName}
+                        {/* {account[selectedPaymentDetail.learningModule.tutorId]?.fullName} */}Phan Duong Huy
                       </dd>
                     </div>
                     <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -338,7 +357,7 @@ export function ManageRevenue() {
                         Tax Code
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.taxCode}
+                        {/* {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.taxCode} */}74823847
                       </dd>
                     </div>
                     <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -346,7 +365,7 @@ export function ManageRevenue() {
                         Bank Code
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.bankCode}
+                        {/* {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.bankCode} */}TP Bank
                       </dd>
                     </div>
                     <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -354,7 +373,7 @@ export function ManageRevenue() {
                         Account Number
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.accountNumber}
+                        {/* {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.accountNumber} */}55030910864
                       </dd>
                     </div>
                     <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -369,14 +388,14 @@ export function ManageRevenue() {
                           <option value="false">No</option>
                         </select>
                       </dd>
-                      <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex justify-end space-x-4">
                         <button onClick={handleConfirmUpdate} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
                           Confirm
                         </button>
                         <button onClick={handleCloseTab} className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
                           Cancel
                         </button>
-                      </div>
+                      </dd>
                     </div>
                   </dl>
                 </div>

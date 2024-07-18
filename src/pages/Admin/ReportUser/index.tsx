@@ -5,7 +5,7 @@ import { SearchReportUserDto, UpdateReportStatusDto } from '../../../common/dtos
 //import { UpdateReportStatusDto } from '../../../common/dtos/Report/UpdateReportStatusDto';
 import { Report } from '../../../interfaces';
 
-export function UserSystem() {
+export function ReportUser() {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<Report[]>([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -138,7 +138,7 @@ export function UserSystem() {
               {/* card header */}
               <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
                 <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
-                  <span className="mr-3 font-semibold text-dark">Manage User System</span>
+                  <span className="mr-3 font-semibold text-dark">Manage Report User</span>
                 </h3>
                 <div className="flex items-center space-x-3">
                   <select

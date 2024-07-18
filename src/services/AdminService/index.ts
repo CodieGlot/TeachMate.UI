@@ -136,7 +136,7 @@ export const AdminService = {
     }
   },
 
-  getAccountInformationByTutorId: async (id: number) : Promise<AccountInformation> => {
+  getAccountInformationByTutorId: async (id: string) : Promise<AccountInformation> => {
     const response = await axios.get(
       `${import.meta.env.VITE_SERVER_URL}/api/Admin/GetAccountInformationByTutorId?id=`+id,
       {
@@ -145,8 +145,8 @@ export const AdminService = {
         },
       }
     );
-    const payment: PaymentOrder = response.data;
-    return payment;
+    const account: AccountInformation = response.data;
+    return account;
   },
 
   getPaymentByID: async (id: number) : Promise<PaymentOrder> => {

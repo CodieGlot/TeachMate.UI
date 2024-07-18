@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AdminDashboard } from "./AdminDashboard";
 import { ManageAccount } from "./ManageAccount";
 import { ReportSystem } from "./ReportSystem";
-import { UserSystem } from "./UserSystem";
+import { ReportUser } from "./ReportUser";
 import { useNavigate } from "react-router-dom";
 import { ManageRevenue } from "./ManageRevenue";
 
@@ -132,24 +132,6 @@ export function Manage() {
               <span className="font-medium transition-all duration-200 opacity-0">Manage Revenue</span>
             </button>
 
-            {/* System Activities */}
-            <button
-              className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
-              onClick={(e) => highlightSidebarItem(e.currentTarget)}
-            >
-              <i className="fas fa-cogs"></i>
-              <span className="font-medium transition-all duration-200 opacity-0">System Activities</span>
-            </button>
-
-            {/* Notifications */}
-            <button
-              className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
-              onClick={(e) => highlightSidebarItem(e.currentTarget)}
-            >
-              <i className="fas fa-bell"></i>
-              <span className="font-medium transition-all duration-200 opacity-0">Notifications</span>
-            </button>
-
             {/* Reported System Issues */}
             <button
               className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
@@ -162,7 +144,7 @@ export function Manage() {
             {/* Reported User Issues */}
             <button
               className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
-              onClick={(e) => handleTabClick(e, 'userSystem')}
+              onClick={(e) => handleTabClick(e, 'reportUser')}
             >
               <i className="fas fa-user-cog"></i>
               <span className="font-medium transition-all duration-200 opacity-0">Reported User</span>
@@ -184,8 +166,8 @@ export function Manage() {
         {selectedTab === 'reportSystem' && (
           <ReportSystem />
         )}
-        {selectedTab === 'userSystem' && (
-          <UserSystem />
+        {selectedTab === 'reportUser' && (
+          <ReportUser />
         )}
         {selectedTab === 'payment' && (
           <ManageRevenue />
