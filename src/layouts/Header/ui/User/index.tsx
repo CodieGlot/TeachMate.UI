@@ -85,7 +85,10 @@ export function User() {
   return (
     <>
       {user === null ? (
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div
+          id="login-button"
+          className="hidden lg:flex lg:flex-1 lg:justify-end"
+        >
           <a
             href="/auth/login"
             className="login text-sm font-semibold leading-6 text-gray-900"
@@ -146,7 +149,7 @@ export function User() {
           </div>
 
           <a href="/profile" className="group block flex-shrink-0">
-            <div className="relative">
+            <div id="user-header-card" className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-sky-400 to-indigo-600 rounded-full shadow-md border border-gray-200"></div>
               <div className="relative flex items-center justify-center p-1 bg-white rounded-full shadow-lg">
                 <div>
@@ -218,6 +221,7 @@ export function User() {
 
           <div className="border-l mx-4" />
           <button
+            id="logout-button"
             onClick={handleLogout}
             className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-600 pt-1"
           >

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../../services";
 import { UserRole } from "../../../common/enums";
 import * as Yup from "yup"; //buoc1
-import styles from './signup.module.css'
+import styles from "./signup.module.css";
 
 //buoc2
 import {
@@ -34,10 +34,10 @@ const validationSchema = Yup.object().shape({
     ),
   confirmPassword: Yup.string()
     .required("Confirm Password is required")
-    .oneOf([Yup.ref('password')], "Passwords must match"),
+    .oneOf([Yup.ref("password")], "Passwords must match"),
   email: Yup.string()
     .required("Email is required")
-    .email("Invalid email format")
+    .email("Invalid email format"),
 });
 
 //buoc4: de tat ca trong form vao day
@@ -97,15 +97,14 @@ export function Signup() {
       });
 
       if (user.userRole === UserRole.TUTOR) {
-        navigate('/add-tutor-detail', {
-          state: { accessToken, user }
+        navigate("/add-tutor-detail", {
+          state: { accessToken, user },
         });
       } else if (user.userRole === UserRole.LEARNER) {
-        navigate('/add-learner-detail', {
-          state: { accessToken, user }
+        navigate("/add-learner-detail", {
+          state: { accessToken, user },
         });
       }
-
     } catch (err) {
       console.error("Signup failed:", err);
       if (axios.isAxiosError(err)) {
@@ -139,9 +138,7 @@ export function Signup() {
   };
 
   return (
-
     <div data-aos="zoom-in-left" data-aos-duration="1000">
-
       <div className="font-[sans-serif] bg-white text-white">
         <div className="grid md:grid-cols-2 items-center gap-8 h-full">
           <div className="max-md:order-1 p-4">
@@ -166,7 +163,9 @@ export function Signup() {
                       </h3>
                     </div>
                     <div>
-                      <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg-50">Username</label>
+                      <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg-50">
+                        Username
+                      </label>
                       <div className="relative flex items-center">
                         <Field
                           name="username"
@@ -175,7 +174,6 @@ export function Signup() {
                           required
                           className="w-full bg-transparent text-black border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
                           placeholder="Enter username"
-
                         />
 
                         <svg
@@ -185,7 +183,12 @@ export function Signup() {
                           className="w-[18px] h-[18px] absolute right-2"
                           viewBox="0 0 24 24"
                         >
-                          <circle cx={10} cy={7} r={6} data-original="#000000" />
+                          <circle
+                            cx={10}
+                            cy={7}
+                            r={6}
+                            data-original="#000000"
+                          />
                           <path
                             d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"
                             data-original="#000000"
@@ -193,6 +196,7 @@ export function Signup() {
                         </svg>
                       </div>
                       <ErrorMessage
+                        id="username-error"
                         className={styles.error}
                         name="username"
                         component="div"
@@ -200,16 +204,17 @@ export function Signup() {
                     </div>
 
                     <div className="mt-8">
-                      <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Password</label>
+                      <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">
+                        Password
+                      </label>
                       <div className="relative flex items-center">
                         <Field
                           name="password"
                           id="password"
-                          type={showPassword ? 'text' : 'password'}
+                          type={showPassword ? "text" : "password"}
                           required
                           className="w-full bg-transparent text-gray-400 text-sm border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
                           placeholder="Enter password"
-
                         />
 
                         <svg
@@ -228,19 +233,19 @@ export function Signup() {
                       </div>
 
                       <ErrorMessage
+                        id="password-error"
                         className={styles.error}
                         name="password"
                         component="div"
                       />
-
-
-
                     </div>
                     <div className="mt-8">
-                      <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Confirm Password</label>
+                      <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">
+                        Confirm Password
+                      </label>
                       <div className="relative flex items-center">
                         <Field
-                          type={showConfirmPassword ? 'text' : 'password'}
+                          type={showConfirmPassword ? "text" : "password"}
                           name="confirmPassword"
                           id="confirmPassword"
                           required
@@ -263,26 +268,28 @@ export function Signup() {
                         </svg>
                       </div>
                       <ErrorMessage
+                        id="confirmPassword-error"
                         className={styles.error}
                         name="confirmPassword"
                         component="div"
                       />
                     </div>
                     <div className="mt-8">
-                      <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Email</label>
+                      <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">
+                        Email
+                      </label>
                       <div className="relative flex items-center">
                         <Field
+                          id="email"
                           name="email"
                           type="text"
                           required
                           className="w-full bg-transparent text-gray-400 text-sm border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none"
                           placeholder="Email"
-
                         />
-
-
                       </div>
                       <ErrorMessage
+                        id="email-error"
                         className={styles.error}
                         name="email"
                         component="div"
@@ -290,7 +297,9 @@ export function Signup() {
                     </div>
                     <div className="flex justify-around gap-10 mt-10 items-center">
                       <div className="">
-                        <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">Role</label>
+                        <label className="text-xs block mb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-600 text-lg">
+                          Role
+                        </label>
                         <div className="flex items-center mb-4">
                           <input
                             defaultChecked
@@ -334,17 +343,33 @@ export function Signup() {
                         />
                       </div>
 
-                      <div className="flex p-4 text-sm text-gray-400 rounded-lg bg-gradient-to-r from-sky-400/20 to-indigo-600/20 h-full lg:w-11/12 lg:ml-auto" role="alert">
-                        <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                      <div
+                        className="flex p-4 text-sm text-gray-400 rounded-lg bg-gradient-to-r from-sky-400/20 to-indigo-600/20 h-full lg:w-11/12 lg:ml-auto"
+                        role="alert"
+                      >
+                        <svg
+                          className="flex-shrink-0 inline w-4 h-4 me-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
                           <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                         </svg>
                         <span className="sr-only">Info</span>
                         <div>
-                          <span className="font-medium">Ensure that these requirements are met:</span>
+                          <span className="font-medium">
+                            Ensure that these requirements are met:
+                          </span>
                           <ul className="mt-1.5 list-disc list-inside">
-                            <li>At least 6 characters (and up to 20 characters)</li>
+                            <li>
+                              At least 6 characters (and up to 20 characters)
+                            </li>
                             <li>At least one upper character</li>
-                            <li>Inclusion of at least one special character, e.g., ! @ # ?</li>
+                            <li>
+                              Inclusion of at least one special character, e.g.,
+                              ! @ # ?
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -360,7 +385,6 @@ export function Signup() {
                           Register
                         </span>
                       </button>
-
 
                       <p className="font-semibold ml-1 hover:underline text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600">
                         Already have an account?{" "}

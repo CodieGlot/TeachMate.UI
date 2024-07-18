@@ -27,7 +27,7 @@ interface LoginFormValues {
 
 export function Login() {
   const navigate = useNavigate();
- 
+
   const initialFormValues: LoginFormValues = {
     username: "",
     password: "",
@@ -91,7 +91,6 @@ export function Login() {
     }
   };
 
-  
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
     const { credential } = credentialResponse;
     if (credential) {
@@ -108,15 +107,13 @@ export function Login() {
     }
   };
 
-  const labelCharStyles = (index: number) => ({
-    '--index': index.toString(),
-  } as React.CSSProperties);
-
+  const labelCharStyles = (index: number) =>
+    ({
+      "--index": index.toString(),
+    } as React.CSSProperties);
 
   return (
-    
     <div data-aos="zoom-in-left" data-aos-duration="1000">
-     
       <div className="font-[sans-serif] text-[#333] bg-white">
         <div className="min-h-screen flex flex-col items-center justify-center">
           <div className="grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">
@@ -160,6 +157,7 @@ export function Login() {
                         className="w-full text-sm border-b border-gray-300 focus:border-[#333] px-2 py-3 outline-none"
                       />
                       <ErrorMessage
+                        id="username-error"
                         className={styles.error}
                         // "text-red-500 p-5 bg-white font-medium text-xs"
                         name="username"
@@ -196,6 +194,7 @@ export function Login() {
                         className="w-full text-sm border-b border-gray-300 focus:border-[#333] px-2 py-3 outline-none"
                       />
                       <ErrorMessage
+                        id="password-error"
                         className={styles.error}
                         // "text-red-500 p-5 bg-white font-medium text-xs"
                         name="password"
@@ -249,12 +248,14 @@ export function Login() {
                     </p>
                     <div className="space-x-8 flex justify-center">
                       {/* Google Login component or other integrations */}
-                      <GoogleLogin
-                        onSuccess={handleGoogleLogin}
-                        onError={() => {
-                          console.log("Login with Google Failed");
-                        }}
-                      />
+                      <div className="google-login-button-class">
+                        <GoogleLogin
+                          onSuccess={handleGoogleLogin}
+                          onError={() => {
+                            console.log("Login with Google Failed");
+                          }}
+                        />
+                      </div>
                     </div>
                   </Form>
                 )}
@@ -267,9 +268,9 @@ export function Login() {
                 alt="login-image"
               />
             </div>
-          </div >
-        </div >
-      </div >
-    </div >
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
