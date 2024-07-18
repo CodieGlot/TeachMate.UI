@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthService } from '../../services';
-import { UserRole } from '../../common/enums';
-import { User } from './ui';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthService } from "../../services";
+import { UserRole } from "../../common/enums";
+import { User } from "./ui";
 
 export function Header() {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isSticky, setIsSticky] = useState(false); // State to control sticky behavior
   const [isScrolled, setIsScrolled] = useState(false); // State to control opacity on scroll
 
   const handleSearch = async () => {
-    navigate('/search', { state: { searchQuery } });
+    navigate("/search", { state: { searchQuery } });
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,17 +29,24 @@ export function Header() {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const appUser = AuthService.getCurrentUser();
 
   return (
-    <header className={`bg-white ${isSticky ? 'sticky top-0 z-50 shadow-md' : ''} ${isScrolled ? 'opacity-75' : ''}`}>
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <header
+      className={`bg-white ${isSticky ? "sticky top-0 z-50 shadow-md" : ""} ${
+        isScrolled ? "opacity-75" : ""
+      }`}
+    >
+      <nav
+        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        aria-label="Global"
+      >
         <div className="flex lg:flex-1 items-center">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Resort Hub Logo</span>
@@ -51,7 +58,7 @@ export function Header() {
           </a>
           <form
             className="search relative flex ml-6"
-            style={{ marginLeft: '50px' }}
+            style={{ marginLeft: "50px" }}
             onSubmit={(e) => {
               e.preventDefault();
               handleSearch();
@@ -64,14 +71,23 @@ export function Header() {
                 placeholder="Search..."
                 onChange={handleInputChange}
                 value={searchQuery}
-
               />
               <button
                 type="submit"
                 className="p-2.5 text-sm font-medium text-white bg-gradient-to-r from-violet-500/50 to-indigo-500/20 border-none rounded-r-lg ml-0.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 19l-6-6M11 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 19l-6-6M11 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
                 </svg>
                 <span className="sr-only">Search</span>
               </button>
@@ -132,7 +148,11 @@ export function Header() {
             stroke="currentColor"
             aria-hidden="true"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M3 6h18M3 18h18" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 12h18M3 6h18M3 18h18"
+            />
           </svg>
         </button>
 
@@ -145,7 +165,7 @@ export function Header() {
         className="lg:hidden"
         role="dialog"
         aria-modal="true"
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       >
         <div className="fixed inset-0 z-10 bg-gray-900/50" />
         <div className="fixed inset-y-0 right-0 z-20 w-full max-w-sm bg-white shadow-lg py-6 px-4 sm:max-w-xs">
@@ -206,7 +226,7 @@ export function Header() {
               Company
             </a>
           </div>
-          <div className="mt-6">
+          <div id="login-button" className="mt-6">
             <a
               href="#"
               className="block py-2.5 px-4 text-base font-semibold text-gray-900 hover:bg-gray-100 rounded-md transition duration-300"
