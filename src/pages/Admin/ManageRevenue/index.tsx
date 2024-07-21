@@ -9,7 +9,7 @@ export function ManageRevenue() {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<{ [id: string]: AppUser }>({});
   const [account, setAccount] = useState<{ [id: string]: AccountInformation }>({});
-  const [listAccount, setListAccount] = useState<AccountInformation[]>([]);
+  //  const [listAccount, setListAccount] = useState<AccountInformation[]>([]);
   const [list, setList] = useState<PaymentOrder[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<number[]>([]);
@@ -98,6 +98,17 @@ export function ManageRevenue() {
     //await fetchPaymentOrder(updatedQuery);
   };
 
+  const handleHasClaimedChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    const updatedQuery: SearchPaymentOrderDto = {
+      ...searchQuery,
+      hasClaimed: value === "All" ? null : value === "true",
+    };
+    setSearchQuery(updatedQuery);
+    console.log(updatedQuery);
+    //await fetchPaymentOrder(updatedQuery);
+  };
+
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
     setSelectAll(checked);
@@ -117,7 +128,7 @@ export function ManageRevenue() {
     }
   };
 
-  const handleEditClick = async (paymentId: number) => {
+  const handleViewMoreClick = async (paymentId: number) => {
     try {
       const paymentDetail = await AdminService.getPaymentByID(paymentId);
       setSelectedPaymentDetail(paymentDetail);
@@ -144,7 +155,8 @@ export function ManageRevenue() {
     // Logic to confirm and update payment details
     if (selectedPaymentDetail) {
       const hasClaimedDto: HasClaimedDto = {
-        id: selectedPaymentDetail.id
+        id: selectedPaymentDetail.id,
+        hasClaimed: selectedPaymentDetail.hasClaimed
       };
       try {
         await AdminService.updateHasClaimed(hasClaimedDto);
@@ -169,20 +181,7 @@ export function ManageRevenue() {
                   <span className="mr-3 font-semibold text-dark">Manage Revenue</span>
                 </h3>
                 <div className="flex items-center space-x-3">
-                  {/* <select
-                    name="typeErrorSystem"
-                    className="ml-3 p-2 rounded-full border border-gray-300"
-                    onChange={handleTypeError}
-                  >
-                    <option value="All">All Status</option>
-                    {Object.keys(PaymentStatus)
-                      .filter(key => isNaN(Number(key)))
-                      .map((key) => (
-                        <option key={key} value={PaymentStatus[key as keyof typeof PaymentStatus]}>
-                          {getStatus(PaymentStatus[key as keyof typeof PaymentStatus])}
-                        </option>
-                      ))}
-                  </select> */}
+                  
                   <select
                     name="paymentStatus"
                     className="ml-3 p-2 rounded-full border border-gray-300"
@@ -196,6 +195,15 @@ export function ManageRevenue() {
                           {getStatus(PaymentStatus[key as keyof typeof PaymentStatus])}
                         </option>
                       ))}
+                  </select>
+                  <select
+                    name="hasClaimed"
+                    className="ml-3 p-2 rounded-full border border-gray-300"
+                    onChange={handleHasClaimedChange}
+                  >
+                    <option value="All">All Claimed Status</option>
+                    <option value="true">Claimed</option>
+                    <option value="false">Not Claimed</option>
                   </select>
                 </div>
               </div>
@@ -299,7 +307,7 @@ export function ManageRevenue() {
                                   </svg>
                                 </span>
                                 <span
-                                  className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-black dark:group-hover:text-black" onClick={() => handleEditClick(payment.id)}
+                                  className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-black dark:group-hover:text-black" onClick={() => handleViewMoreClick(payment.id)}
                                 >View More</span>
                               </div>
                             </div>
@@ -323,7 +331,7 @@ export function ManageRevenue() {
             <div className="fixed inset-0 transition-opacity">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white overflow-hidden shadow rounded-lg border">
                 <div className="px-4 py-5 sm:px-6">
@@ -349,7 +357,7 @@ export function ManageRevenue() {
                         Full Name
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {/* {account[selectedPaymentDetail.learningModule.tutorId]?.fullName} */}Phan Duong Huy
+                        {account[selectedPaymentDetail.learningModule?.tutorId]?.fullName}
                       </dd>
                     </div>
                     <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -357,7 +365,7 @@ export function ManageRevenue() {
                         Tax Code
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {/* {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.taxCode} */}74823847
+                        {account[selectedPaymentDetail.learningModule?.tutorId]?.taxCode}
                       </dd>
                     </div>
                     <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -365,7 +373,7 @@ export function ManageRevenue() {
                         Bank Code
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {/* {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.bankCode} */}TP Bank
+                        {account[selectedPaymentDetail.learningModule?.tutorId]?.bankCode}
                       </dd>
                     </div>
                     <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -373,7 +381,7 @@ export function ManageRevenue() {
                         Account Number
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {/* {user[selectedPaymentDetail.learningModule.tutorId]?.tutor?.accountInformation.accountNumber} */}55030910864
+                        {account[selectedPaymentDetail.learningModule?.tutorId]?.accountNumber}
                       </dd>
                     </div>
                     <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -381,7 +389,7 @@ export function ManageRevenue() {
                         Has Claimed
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        <select value={selectedPaymentDetail.hasClaimed.toString()}
+                        <select value={selectedPaymentDetail?.hasClaimed?.toString() ?? 'false'}
                           onChange={handleHasClaimed}
                           className="mt-1 block w-full p-2 border border-gray-300 rounded-md">
                           <option value="true">Yes</option>

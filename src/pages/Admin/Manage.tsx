@@ -8,6 +8,7 @@ import { ManageRevenue } from "./ManageRevenue";
 
 export function Manage() {
 
+  const navigate = useNavigate();
   const sidebarRef = useRef<HTMLDivElement>(null); // Specify HTMLDivElement type
   const mainContentRef = useRef<HTMLDivElement>(null); // Specify HTMLDivElement type
   const [selectedTab, setSelectedTab] = useState<string>('dashboard');
@@ -20,18 +21,18 @@ export function Manage() {
   useEffect(() => {
     const sidebar = sidebarRef.current;
     const mainContent = mainContentRef.current;
-  
+
     if (sidebar && mainContent) {
       sidebar.style.width = "16rem";
       mainContent.style.marginLeft = "16rem";
       sidebar.classList.add("text-left", "px-6");
       sidebar.classList.remove("text-center", "px-0");
-  
+
       const labels = sidebar.querySelectorAll("span");
       labels.forEach((label) => label.classList.remove("opacity-0"));
     }
-  }, []); 
-  
+  }, []);
+
   const expandSidebar = () => {
     const sidebar = sidebarRef.current;
     const mainContent = mainContentRef.current;
@@ -69,9 +70,12 @@ export function Manage() {
     const icon = element.querySelector("i");
     if (icon) {
       icon.classList.add("text-white");
-    } 
+    }
   };
 
+  const handleLogoutClick = () => {
+    navigate('/auth/login');
+  };
 
   return (
     <body className="overflow-x-hidden">
@@ -88,12 +92,10 @@ export function Manage() {
             {/* Notification and Profile */}
             <div className="space-x-4 flex items-center">
               <button className="p-2">
-                <i className="fas fa-bell text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
+                <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
               </button>
               <button className="p-2">
-                {/* <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"
-                onClick={() => navigate("/auth/login")}></i> */}
-                <i className="fas fa-user text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg"></i>
+                <i className="fas fa-sign-out-alt text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-600 text-lg" onClick={handleLogoutClick}></i>
               </button>
             </div>
           </div>
@@ -133,7 +135,7 @@ export function Manage() {
             </button>
 
             {/* Reported System Issues */}
-            <button
+            <button id="report-system"
               className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
               onClick={(e) => handleTabClick(e, 'reportSystem')}
             >
@@ -155,7 +157,7 @@ export function Manage() {
 
 
       {/* Content */}
-      
+
       <div ref={mainContentRef} className="ml-16 bg-gray-100   w-full  transition-all duration-200 ease-in-out ">
         {selectedTab === 'dashboard' && (
           <AdminDashboard />

@@ -5,6 +5,7 @@ export const UserSummary: React.FC = () => {
   const [totalTutors, setTotalTutors] = useState<number>(0);
   const [totalLeaner, setTotalLearner] = useState<number>(0);
   const [totalClass, setTotalClass] = useState<number>(0);
+  const [TotalRevenue, setTotalRevenue] = useState<number>(0);
 
   const fetchTotalTutor = async () => {
     try {
@@ -45,10 +46,23 @@ export const UserSummary: React.FC = () => {
     fetchTotalClass();
   }, []);
 
+  const fetchTotalRevenue = async () => {
+    try {
+      const data = await AdminService.totalRevenue();
+      setTotalRevenue(data);
+    } catch (error) {
+      console.error('Error fetching leaner count:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTotalRevenue();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       <div className="bg-slate-50 p-5 m-2 rounded-md flex justify-between items-center shadow">
-        <div>
+        <div id="TotalTutor">
           <h3 className="font-bold">Total Tutor</h3>
           <p className="text-gray-500">{totalTutors}</p>
         </div>
@@ -70,8 +84,8 @@ export const UserSummary: React.FC = () => {
       </div>
       <div className="bg-slate-50 p-5 m-2 flex justify-between items-center shadow">
         <div>
-          <h3 className="font-bold">New Orders</h3>
-          <p className="text-gray-500">20</p>
+          <h3 className="font-bold">Total Revenue</h3>
+          <p className="text-gray-500">{TotalRevenue}</p>
         </div>
         <i className="fa-solid fa-clipboard-list p-4 bg-gray-200 rounded-md"></i>
       </div>

@@ -5,6 +5,7 @@ import { SearchUserDto, UpdateReportStatusDto, SearchReportSystemDto,  SearchRep
 import { DisableDto } from "../../common/dtos/Admin/DisableDto";
 import { SearchPaymentOrderDto } from "../../common/dtos/Search/SearchPaymentOrderDto";
 import { HasClaimedDto } from "../../common/dtos/Admin/HasClaimedDto";
+import { TotalRevenueForMonthDto } from "../../common/dtos/Admin/TotalRevenueForMonthDto";
 import { AccountInformation } from "../../interfaces/Payment/AccountInformation";
 
 const token = AuthService.getAccessToken()
@@ -190,7 +191,7 @@ export const AdminService = {
   updateHasClaimed: async (dto: HasClaimedDto): Promise<PaymentOrder[]> => {
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_SERVER_URL}/api/Admin/HasClaimedDto`, dto,
+        `${import.meta.env.VITE_SERVER_URL}/api/Admin/UpdateHasClaimed`, dto,
         // Correctly pass the data in the request body
         {
           headers: {
@@ -259,4 +260,40 @@ export const AdminService = {
       throw error;
     }
   },
+
+  totalRevenue: async (): Promise<number> => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/Admin/TotalRevenue`,
+        // Correctly pass the data in the request body
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error count:', error);
+      throw error;
+    }
+  },
+
+  totalRevenueForMontkh: async (dto: TotalRevenueForMonthDto): Promise<number> => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/api/Admin/TotalRevenueForMonth`, dto,
+        // Correctly pass the data in the request body
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error count:', error);
+      throw error;
+    }
+  }, 
 };
