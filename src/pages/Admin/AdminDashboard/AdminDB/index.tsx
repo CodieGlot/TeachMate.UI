@@ -12,7 +12,7 @@ export function AdminDashboard() {
     ">
 
       {/* Main Content */}
-      <div className="bg-white p-4 rounded-md shadow-md">
+      <div className="mt-20 bg-white p-4 rounded-md shadow-md">
         <section className="p-5">
           <UserSummary />
           <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
@@ -23,24 +23,29 @@ export function AdminDashboard() {
               </div>
             </div>
             <div className="overflow-x-auto m-2 shadow-md">
-              <h2 className="text-xl p-2">User List</h2>
-              {/* Add user list table code here */}
-            </div>
-          </div>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            <div className="m-2 lg:col-span-1 shadow-md">
               <h2 className="text-xl p-2">Pie Chart</h2>
               <div id="pie_chart" className="w-full">
                 <Charts chartType="pie" />
               </div>
             </div>
-            <div className="m-2 lg:col-span-2 shadow-md">
+          </div>
+          {/* <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <div className="m-2 lg:col-span-1 shadow-md">
+              <h2 className="text-xl p-2">Pie Chart</h2>
+              <div id="pie_chart" className="w-full">
+                <Charts chartType="pie" />
+              </div>
+            </div> */}
+            {/* <div className="m-2 lg:col-span-2 shadow-md">
               <h2 className="text-xl p-2">Candlestick Chart</h2>
               <div id="candle_chart" className="w-full">
                 <Charts chartType="candlestick" />
               </div>
+            </div> */}
+            {/* <div className="m-2 lg:col-span-2  m-2 shadow-md">
+              <h2 className="text-xl p-2">Reccently User</h2>
             </div>
-          </div>
+          </div> */}
           <div className="grid grid-cols-1">
             <div className="m-2 shadow-md">
               <h2 className="text-xl p-2">Heatmap Chart</h2>

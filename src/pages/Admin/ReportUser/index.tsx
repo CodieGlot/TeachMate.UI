@@ -5,7 +5,7 @@ import { SearchReportUserDto, UpdateReportStatusDto } from '../../../common/dtos
 //import { UpdateReportStatusDto } from '../../../common/dtos/Report/UpdateReportStatusDto';
 import { Report } from '../../../interfaces';
 
-export function UserSystem() {
+export function ReportUser() {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<Report[]>([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -130,15 +130,15 @@ export function UserSystem() {
   };
 
   return (
-    <div ref={mainContentRef} className="z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out">
-      <div className="flex flex-wrap mx-3 mb-5">
+    <div ref={mainContentRef} className="p-5 z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out">
+      <div className="mt-10 flex flex-wrap mx-3 mb-5">
         <div className="w-full max-w-full px-3 mb-6 mx-auto">
           <div className="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
             <div className="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
               {/* card header */}
               <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
                 <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
-                  <span className="mr-3 font-semibold text-dark">Manage User System</span>
+                  <span className="mr-3 font-semibold text-dark">Manage Report User</span>
                 </h3>
                 <div className="flex items-center space-x-3">
                   <select
@@ -180,6 +180,7 @@ export function UserSystem() {
                       <tr className="font-semibold text-[0.95rem] text-secondary-dark">
                         <th className="pb-3 text-start min-w-[50px]">
                           <input
+                            id="drop-down"
                             type="checkbox"
                             className="form-checkbox"
                             checked={selectAll}
@@ -298,16 +299,40 @@ export function UserSystem() {
             <div className="fixed inset-0 transition-opacity">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900">Report Detail</h3>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500"><strong>Title:</strong> {selectedReportDetail.title}</p>
-                      <p className="text-sm text-gray-500"><strong>Description:</strong> {selectedReportDetail.description}</p>
-                      <p className="text-sm text-gray-500"><strong>Status:</strong></p>
+              <div className="bg-white overflow-hidden shadow rounded-lg border">
+                <div className="px-4 py-5 sm:px-6">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900">
+                    Report User Detail
+                  </h3>
+                  {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                    This is some information about the user.
+                  </p> */}
+                </div>
+                <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+                  <dl className="sm:divide-y sm:divide-gray-200">
+                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt className="text-sm font-medium text-gray-500">
+                        Title
+                      </dt>
+                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {selectedReportDetail.title}
+                      </dd>
+                    </div>
+                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt className="text-sm font-medium text-gray-500">
+                      Description
+                      </dt>
+                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      {selectedReportDetail.description}
+                      </dd>
+                    </div>
+                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt className="text-sm font-medium text-gray-500">
+                      Status
+                      </dt>
+                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                       <select value={selectedReportDetail.status.toString()} onChange={handleStatusUpdate} className="mt-1 block w-full p-2 border border-gray-300 rounded-md">
                         {Object.keys(ReportStatus)
                           .filter(key => !isNaN(Number(key)))
@@ -317,17 +342,18 @@ export function UserSystem() {
                             </option>
                           ))}
                       </select>
+                      </dd>
+                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex justify-end space-x-4">
+                        <button onClick={handleConfirmUpdate} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                          Confirm
+                        </button>
+                        <button onClick={handleCloseTab} className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                          Cancel
+                        </button>
+                      </dd>
                     </div>
-                  </div>
+                  </dl>
                 </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button onClick={handleConfirmUpdate} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                  Confirm
-                </button>
-                <button onClick={handleCloseTab} className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                  Cancel
-                </button>
               </div>
             </div>
           </div>

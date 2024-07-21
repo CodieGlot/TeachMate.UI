@@ -8,13 +8,13 @@ export function ManageAccount() {
 
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<AppUser[]>([]);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<SearchUserDto>({
     displayNameorUsername: null,
     userRole: null,
     isDisable: null,
   });
+  const [showModal, setShowModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState<AppUser | null>(null);
 
   const getUserRole = (roleCode: number): string => {
     return UserRole[roleCode];
@@ -71,34 +71,6 @@ export function ManageAccount() {
     fetchAppUsers(updatedQuery);
   };
 
-  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { checked } = event.target;
-    setSelectAll(checked);
-    if (checked) {
-      setSelectedUsers(list.map(user => user.id));
-    } else {
-      setSelectedUsers([]);
-    }
-  };
-
-  const handleUserSelect = (event: React.ChangeEvent<HTMLInputElement>, userId: string) => {
-    const { checked } = event.target;
-    if (checked) {
-      setSelectedUsers(prevSelectedUsers => [...prevSelectedUsers, userId]);
-    } else {
-      setSelectedUsers(prevSelectedUsers => prevSelectedUsers.filter(id => id !== userId));
-    }
-  };
-
-  const handleUpdateStatus = async (userId: string) => {
-    try {
-      await AdminService.updateStatus({ id: userId });
-      await fetchAppUsers(searchQuery);
-    } catch (error) {
-      console.error('Error updating status:', error);
-    }
-  };
-
   const handleUserRoleChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
     const updatedQuery: SearchUserDto = {
@@ -109,11 +81,29 @@ export function ManageAccount() {
     await fetchAppUsers(updatedQuery);
   };
 
+  const handleUpdateStatus = async (user: AppUser) => {
+    setCurrentUser(user);
+    setShowModal(true);
+  };
+
+  const confirmUpdateStatus = async () => {
+    if (currentUser) {
+      try {
+        await AdminService.updateStatus({ id: currentUser.id });
+        await fetchAppUsers(searchQuery);
+      } catch (error) {
+        console.error('Error updating status:', error);
+      } finally {
+        setShowModal(false);
+        setCurrentUser(null);
+      }
+    }
+  };
+
   return (
     <body>
-      <div ref={mainContentRef}
-        className="p-5 z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out">
-        <div className="flex flex-wrap mx-3 mb-5">
+      <div ref={mainContentRef} className="p-5 z-0 ml-16 bg-gray-100 min-h-screen w-full lg:w-4/5 overflow-y-auto transition-all duration-200 ease-in-out">
+        <div className="mt-10 flex flex-wrap mx-3 mb-5">
           <div className="w-full max-w-full px-3 mb-6 mx-auto">
             <div className="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
               <div className="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
@@ -167,14 +157,6 @@ export function ManageAccount() {
                     <table className="w-full my-0 align-middle text-dark border-neutral-200">
                       <thead className="align-bottom">
                         <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-                          <th className="pb-3 text-start min-w-[50px]">
-                            <input
-                              type="checkbox"
-                              className="form-checkbox"
-                              checked={selectAll}
-                              onChange={handleSelectAll}
-                            />
-                          </th>
                           <th className="pb-3 text-start min-w-[175px]">NAME</th>
                           <th className="pb-3 text-end min-w-[100px]">USERNAME</th>
                           <th className="pb-3 text-end min-w-[100px]">ROLE</th>
@@ -184,15 +166,6 @@ export function ManageAccount() {
                       <tbody>
                         {list.map((user) => (
                           <tr key={user.id} className="border-b border-dashed last:border-b-0">
-                            <td className="p-3 pl-0 text-start">
-                              <input
-                                type="checkbox"
-                                name={`selectUser-${user.id}`}
-                                className="form-checkbox"
-                                checked={selectedUsers.includes(user.id)}
-                                onChange={(e) => handleUserSelect(e, user.id)}
-                              />
-                            </td>
                             <td className="p-3 pl-0">
                               <div className="flex items-center">
                                 <div className="relative inline-block shrink-0 rounded-2xl me-3">
@@ -222,7 +195,7 @@ export function ManageAccount() {
                               <button
                                 type="button"
                                 className="px-4 py-2 bg-blue-500 text-white rounded-full"
-                                onClick={() => handleUpdateStatus(user.id)}
+                                onClick={() => handleUpdateStatus(user)}
                               >
                                 Update Status
                               </button>
@@ -237,7 +210,31 @@ export function ManageAccount() {
             </div>
           </div>
         </div>
+
+        {/* Confirmation Modal */}
+        {showModal && currentUser && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg p-6 w-1/3">
+              <h2 className="text-xl font-semibold mb-4">Confirm Update</h2>
+              <p>Are you sure you want to update the status of <strong>{currentUser.displayName}</strong>?</p>
+              <div className="flex justify-end mt-6">
+                <button
+                  className="px-4 py-2 mr-2 bg-gray-300 text-black rounded-full"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-blue-500 text-white rounded-full"
+                  onClick={confirmUpdateStatus}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </body>
+    </body >
   );
 }

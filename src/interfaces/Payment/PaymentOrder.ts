@@ -1,6 +1,7 @@
 import { Learner } from "../AppUser";
 import { LearningModule } from "../Learning";
 import { PaymentStatus } from "../../common/enums";
+import { Transaction } from "./Transaction";
 
 export interface PaymentOrder {
     id: number;
@@ -12,5 +13,6 @@ export interface PaymentOrder {
     paymentStatus: PaymentStatus;
     paymentAmount: number;
     hasClaimed: boolean;
+    transaction: Transaction[];
   }
   
