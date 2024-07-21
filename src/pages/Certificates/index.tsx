@@ -5,6 +5,7 @@ import 'aos/dist/aos.css';
 import toast from 'react-hot-toast';
 import { CertificateService, StorageService } from '../../services';
 import { Certificate } from '../../interfaces';
+import { useNavigate } from "react-router-dom";
 
 export function UploadCertificate() {
   const [fileName, setFileName] = useState('');
@@ -13,6 +14,8 @@ export function UploadCertificate() {
   const [title, setTitle] = useState('');
   const [dateClaimed, setDateClaimed] = useState('');
   const [description, setDescription] = useState('');
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     AOS.init();
@@ -49,7 +52,7 @@ export function UploadCertificate() {
         });
         setCertificate(data);
         toast.success("Upload file successfully")
-
+        navigate("/TutorDetail")
       }
     } catch (error) {
       console.error("Fail to upload: ", error)

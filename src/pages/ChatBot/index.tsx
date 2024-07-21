@@ -29,7 +29,7 @@ export function ChatBot() {
         <>
             <button
                 onClick={() => setOpen(!open)}
-                className="chat-gpt sticky bottom-4 right-4 left-[95%] inline-flex items-center justify-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50 border rounded-full w-16 h-16 bg-sky-500 hover:bg-sky-700 m-0 cursor-pointer border-gray-200 bg-none p-0 normal-case leading-5 hover:text-gray-900"
+                className="mb-4 chat-gpt sticky bottom-4 right-4 left-[95%] inline-flex items-center justify-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50 border rounded-full w-16 h-16 bg-sky-500 hover:bg-sky-700 m-0 cursor-pointer border-gray-200 bg-none p-0 normal-case leading-5 hover:text-gray-900"
                 type="button" aria-haspopup="dialog" aria-expanded="false" data-state="closed">
                 <svg xmlns=" http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -90,7 +90,7 @@ export function ChatBot() {
                                         </svg></div>
                                     </span>
                                         <p className="leading-relaxed"><span className="block font-bold text-gray-700">AI </span>{qa.answer}
-                                          </p>
+                                        </p>
                                     </div>
                                 </div>
                             ))}

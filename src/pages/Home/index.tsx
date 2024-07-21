@@ -22,7 +22,7 @@ export function Home() {
   const handleClickStart = () => {
     setRun(true);
   };
-  
+
   const steps = [
     {
       target: ".header",
@@ -45,7 +45,7 @@ export function Home() {
       target: ".forum",
       content: "Join our community of knowledge and discuss now",
     },
-   
+
     {
       target: ".news",
       content: "Subscribe to our newsletter here",
@@ -72,24 +72,24 @@ export function Home() {
   }, []);
   return (
     <>
- 
-     <Joyride
-     disableScrolling={true}
-     run={run}
-       steps={steps}
-       continuous={true}
-       styles={{
-         options: {
-           arrowColor: "#818cf8",
-           primaryColor: "#38bdf8",
-           textColor: "#000",
-         },
-       }}
-      //  showProgress={true}
-       showSkipButton={true}
-     />
-    
-     
+
+      <Joyride
+        disableScrolling={true}
+        run={run}
+        steps={steps}
+        continuous={true}
+        styles={{
+          options: {
+            arrowColor: "#818cf8",
+            primaryColor: "#38bdf8",
+            textColor: "#000",
+          },
+        }}
+        //  showProgress={true}
+        showSkipButton={true}
+      />
+
+
       <div data-aos="zoom-in-left" data-aos-duration="1000">
         <Header />
         <HeroSection />
@@ -98,9 +98,8 @@ export function Home() {
         <Story />
         <Partner />
         <FAQs />
+        <ChatBot />
         <Footer />
-        <ChatBot/>
-
       </div>
     </>
   );
